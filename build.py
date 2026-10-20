@@ -43,4 +43,6 @@ html = f"""<!DOCTYPE html>
 </html>
 """
 (ROOT / "index.html").write_text(html, encoding="utf-8")
+(ROOT / "v2").mkdir(exist_ok=True)
+(ROOT / "v2" / "index.html").write_text(html, encoding="utf-8")  # misma app en una URL nueva (evita cachés viejas)
 print("index.html generado:", round(len(html.encode("utf-8")) / 1024), "KB")
