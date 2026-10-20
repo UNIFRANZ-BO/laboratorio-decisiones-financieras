@@ -1,0 +1,414 @@
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- HUD -->
+<header id="hud">
+  <div class="hud-logo"><span class="dot"></span><span class="t">NGE·<b>LAB</b></span></div>
+  <div class="hud-mid">
+    <div class="hud-steps" id="hud-steps"></div>
+    <div class="hud-label" id="hud-label"></div>
+  </div>
+  <div class="hud-right">
+    <div class="live-pill" id="live-pill" title="Ranking en vivo"><i></i><span class="txt" id="live-txt">EN VIVO</span></div>
+    <div class="hud-team" id="hud-team"><span class="av" id="hud-av">🦊</span><span id="hud-name"></span></div>
+    <button class="icon-btn" id="snd-btn" onclick="toggleSound()" aria-label="Sonido">🔊</button>
+  </div>
+</header>
+
+<!-- ============ INICIO ============ -->
+<section id="ph-home" class="ph on">
+  <div class="floaters" aria-hidden="true">
+    <span style="top:12%;left:52%;animation-delay:-1s">🪙</span>
+    <span style="top:70%;left:46%;animation-delay:-3s">📈</span>
+    <span style="top:22%;right:6%;animation-delay:-2s">💵</span>
+    <span style="bottom:18%;right:30%;animation-delay:-4s">🚀</span>
+    <span style="top:48%;left:4%;animation-delay:-5s;font-size:1.6rem">🛡️</span>
+  </div>
+  <div class="home">
+    <div>
+      <div class="eyebrow"><i></i><span>UNIFRANZ · Negocios y Gestión Empresarial</span></div>
+      <h1 class="mega">
+        <span class="ln l1"><span>Laboratorio de</span></span>
+        <span class="ln l2"><span>DECISIONES</span></span>
+        <span class="ln l3"><span>FINANCIERAS</span></span>
+      </h1>
+      <p class="home-sub">Dirige un negocio real de Cochabamba con <strong>Bs 100.000</strong> y un equipo de <strong>5 personas</strong>… y descubre cómo esas mismas decisiones manejan <strong>tu propio dinero</strong>.</p>
+      <div class="stats">
+        <div class="stat"><b data-count="100000" data-prefix="Bs ">Bs 0</b><small>de capital</small></div>
+        <div class="stat"><b data-count="9">0</b><small>negocios cochabambinos</small></div>
+        <div class="stat"><b data-count="9">0</b><small>decisiones clave</small></div>
+      </div>
+    </div>
+    <div class="modes">
+      <button class="mode hot" onclick="pickMode('team')">
+        <span class="badge">Taller</span>
+        <span class="mi">👥</span>
+        <span><h3>Jugar en equipo</h3><p>De 3 a 5 personas por celular. Debatan, decidan y compitan en el ranking.</p></span>
+        <span class="arr">→</span>
+      </button>
+      <button class="mode alt" onclick="pickMode('solo')">
+        <span class="mi">🙋</span>
+        <span><h3>Jugar individual</h3><p>Tú solo al mando del negocio. Ideal para repetir y mejorar tu puntaje.</p></span>
+        <span class="arr">→</span>
+      </button>
+      <div class="home-foot">
+        <span class="sala-chip" id="home-sala" style="display:none"></span>
+        <button class="btn-link" onclick="openTeacher()">🎛️ Soy docente: proyectar ranking</button>
+      </div>
+    </div>
+  </div>
+  <div class="ticker"><b>NGE</b><div class="trk">
+    <span>Presupuesto</span><span>Fondo de emergencia</span><span>Negociación</span><span>Capital humano</span><span>Gestión de riesgos</span><span>Decisiones bajo presión</span><span>Contexto Cochabamba</span><span>Finanzas personales</span>
+    <span>Presupuesto</span><span>Fondo de emergencia</span><span>Negociación</span><span>Capital humano</span><span>Gestión de riesgos</span><span>Decisiones bajo presión</span><span>Contexto Cochabamba</span><span>Finanzas personales</span>
+  </div></div>
+</section>
+
+<!-- ============ CONFIGURACIÓN ============ -->
+<section id="ph-setup" class="ph">
+  <div class="ph-head">
+    <span class="tag" id="setup-tag">Modo equipo</span>
+    <h2 class="h2" id="setup-h">¿Cómo se llama <span class="gt">su empresa</span>?</h2>
+    <p class="lead" id="setup-lead">Pónganse un nombre épico. Así aparecerán en el ranking de la sala.</p>
+  </div>
+  <div class="setup glass">
+    <div class="field">
+      <label for="in-name" id="lbl-name">Nombre del equipo</label>
+      <div class="inp-row">
+        <input class="inp" id="in-name" maxlength="28" autocomplete="off" placeholder="Ej: Los Tigres del Valle" oninput="validateSetup()">
+        <button class="icon-btn" style="width:52px;height:52px" onclick="randomName()" aria-label="Nombre al azar">🎲</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Elijan su mascota</label>
+      <div class="avs" id="avs"></div>
+    </div>
+    <div class="field" id="members-field">
+      <label for="in-member">Integrantes <small>(opcional, hasta 6)</small></label>
+      <div class="inp-row">
+        <input class="inp" id="in-member" maxlength="24" autocomplete="off" placeholder="Nombre y presiona +" onkeydown="if(event.key==='Enter'){event.preventDefault();addMember()}">
+        <button class="icon-btn" style="width:52px;height:52px;font-size:1.4rem" onclick="addMember()" aria-label="Agregar">+</button>
+      </div>
+      <div class="members" id="members"></div>
+    </div>
+    <div class="field">
+      <label for="in-sala">Código de sala <small>(lo da el docente para el ranking en vivo)</small></label>
+      <input class="inp" id="in-sala" maxlength="6" autocomplete="off" placeholder="Ej: ABCD" style="text-transform:uppercase;font-family:var(--fm);letter-spacing:4px" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+    </div>
+  </div>
+</section>
+<div id="countdown"><div id="cd-n"></div></div>
+
+<!-- ============ FASE 1: NEGOCIO ============ -->
+<section id="ph-select" class="ph">
+  <div class="wrap">
+    <div class="ph-head">
+      <span class="tag">Fase 1 · Contexto</span>
+      <h2 class="h2">¿Qué negocio <span class="gt">cochabambino</span> dirigirán?</h2>
+      <p class="lead">Toca una carta para ver su historia. Cada negocio tiene su propio reto financiero.</p>
+    </div>
+    <div class="bgrid" id="bgrid"></div>
+    <div class="bdots" id="bdots"></div>
+  </div>
+</section>
+
+<!-- ============ FASE 2: BOCETO ============ -->
+<section id="ph-draw1" class="ph">
+  <div class="wrap">
+    <div class="ph-head">
+      <span class="tag">Fase 2 · Pizarra estratégica</span>
+      <h2 class="h2">Antes de gastar… <span class="gt">¡dibujen su plan!</span></h2>
+      <p class="lead">Usen fichas, flechas y notas para mostrar <strong>dónde pondrían más dinero y por qué</strong>.</p>
+    </div>
+    <div class="draw-card">
+      <div class="draw-open" id="dopen-d1" onclick="openBoard('d1')">
+        <div class="cta"><span class="big">✏️</span><b>Abrir pizarra</b><span>Pantalla completa · funciona con el dedo</span></div>
+      </div>
+      <div class="glass tips">
+        <span class="lbl">Pistas para su boceto</span>
+        <ul style="display:flex;flex-direction:column;gap:10px">
+          <li><i>🧩</i><span>Toquen <b>Fichas</b> y usen la <b>plantilla</b> con las 5 áreas del negocio.</span></li>
+          <li><i>🥇</i><span>Marquen su prioridad 1, 2 y 3. ¿Qué área es vital para <span class="bz-name">este negocio</span>?</span></li>
+          <li><i>🛡️</i><span>¿Guardarán algo para emergencias? ¿Cuánto?</span></li>
+          <li><i>👆</i><span>Con dos dedos acercan, alejan y mueven la pizarra.</span></li>
+        </ul>
+        <div class="team-hint team-only">💬 Una persona dibuja, el resto opina. ¡Roten el celular!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FASE 3: CAPITAL ============ -->
+<section id="ph-capital" class="ph">
+  <div class="wrap">
+    <div class="ph-head">
+      <span class="tag">Fase 3 · Gestión financiera</span>
+      <h2 class="h2">Repartan sus <span class="gt">Bs 100.000</span></h2>
+      <p class="lead">Llenen los 5 frascos hasta usar <strong>exactamente</strong> Bs 100.000. El fondo de emergencia los protege si llega una crisis.</p>
+    </div>
+    <div class="cap-layout">
+      <div>
+        <div class="budget" id="budget">
+          <div class="ring" id="bud-ring"><b id="bud-pct">0%</b></div>
+          <div><span class="bl">Les quedan</span><div class="bn" id="bud-n">Bs 100.000</div></div>
+          <button class="btn-ghost fill-rest" id="fill-rest" onclick="fillRest()" style="display:none">🛡️ Resto a reserva</button>
+          <div class="bud-mets" id="bud-mets"></div>
+        </div>
+        <div class="jars" id="jars"></div>
+        <div id="just-cap"></div>
+      </div>
+      <div class="side" id="cap-side">
+        <div class="glass advisor"><div class="face" id="adv-face">🧑‍💼</div><div class="bubble" id="adv-txt">Toquen <strong>+</strong> para meter billetes en cada frasco. ¡Miren cómo cambian los indicadores!</div></div>
+        <div class="glass mets"><span class="lbl">Indicadores proyectados</span><svg class="mini-radar" id="cap-radar" viewBox="0 0 240 220"></svg><div id="cap-mets"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FASE 4: ORGANIGRAMA ============ -->
+<section id="ph-draw2" class="ph">
+  <div class="wrap">
+    <div class="ph-head">
+      <span class="tag">Fase 4 · Estructura</span>
+      <h2 class="h2">Diseñen su <span class="gt">organigrama</span></h2>
+      <p class="lead">¿Quién lidera? ¿Quién reporta a quién? Usen la plantilla y conecten cajas con flechas.</p>
+    </div>
+    <div class="draw-card">
+      <div class="draw-open" id="dopen-d2" onclick="openBoard('d2')">
+        <div class="cta"><span class="big">🏗️</span><b>Abrir pizarra</b><span>Pantalla completa · funciona con el dedo</span></div>
+      </div>
+      <div class="glass tips">
+        <span class="lbl">Pistas para su organigrama</span>
+        <ul style="display:flex;flex-direction:column;gap:10px">
+          <li><i>✨</i><span>En <b>Fichas → Plantilla</b> aparece un organigrama listo para editar.</span></li>
+          <li><i>➡️</i><span>Con <b>Flecha</b>, arrastren de una caja a otra: quedan conectadas.</span></li>
+          <li><i>🗒️</i><span>Con <b>Nota</b> escriban nombres o responsabilidades.</span></li>
+          <li><i>✋</i><span>Con <b>Mover</b> reacomodan todo. Doble toque para editar el texto.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FASE 5: EQUIPO ============ -->
+<section id="ph-team" class="ph">
+  <div class="wrap">
+    <div class="ph-head">
+      <span class="tag">Fase 5 · Capital humano</span>
+      <h2 class="h2">Armen su <span class="gt">equipo estrella</span></h2>
+      <p class="lead">Toquen una persona y luego el departamento donde trabajará. Si va a su <strong>área ideal ⭐</strong>, rinde más.</p>
+    </div>
+    <div class="roster" id="roster"></div>
+    <div class="depts" id="depts"></div>
+    <div id="just-team"></div>
+  </div>
+</section>
+
+<!-- ============ FASE 6: CRISIS ============ -->
+<section id="ph-crisis" class="ph">
+  <div class="ev-wrap">
+    <div class="timer" id="cr-timer"><span>⏱️</span><div class="tbar"><i id="cr-tbar"></i></div><b id="cr-tnum">60s</b></div>
+    <div class="ev-card crisis">
+      <span class="ev-badge">🚨 Último momento · Cochabamba</span>
+      <span class="ev-ic" id="cr-ic"></span>
+      <div class="ev-t" id="cr-t"></div>
+      <p class="ev-d" id="cr-d"></p>
+      <p class="ev-loc" id="cr-loc"></p>
+      <div class="warn-res" id="cr-warn" style="display:none">⚠️ No tienen fondo de emergencia: los golpes negativos serán <b>1,8 veces más fuertes</b>.</div>
+    </div>
+    <div class="opts" id="cr-opts"></div>
+    <div id="just-crisis"></div>
+  </div>
+</section>
+<div id="breaking"><div class="bk-flash"></div><div class="bk-band"><div>🚨 ÚLTIMO MOMENTO · CRISIS EN COCHABAMBA · 🚨 ÚLTIMO MOMENTO · CRISIS EN COCHABAMBA · </div></div><div class="bk-sub">Prepárense para decidir</div></div>
+
+<!-- ============ FASE 7: NEGOCIACIÓN ============ -->
+<section id="ph-neg" class="ph">
+  <div class="ev-wrap">
+    <div class="ph-head" style="margin-bottom:14px">
+      <span class="tag">Fase 7 · Negociación</span>
+      <h2 class="h2">3 rondas, <span class="gt">3 negociaciones</span></h2>
+    </div>
+    <div class="rounds" id="rounds"></div>
+    <div class="phone">
+      <div class="chat-h"><div class="ca" id="ch-av">🛍️</div><div><b id="ch-name">—</b><small id="ch-status">en línea</small></div><span class="badge" id="ch-badge">Cliente</span></div>
+      <div class="chat-b" id="chat-b"></div>
+      <div class="chat-f" id="chat-f"></div>
+    </div>
+    <div id="just-neg"></div>
+  </div>
+</section>
+
+<!-- ============ FASE 8: OPORTUNIDAD ============ -->
+<section id="ph-opp" class="ph">
+  <div class="ev-wrap">
+    <div class="ph-head" style="margin-bottom:14px">
+      <span class="tag">Fase 8 · Oportunidad</span>
+      <h2 class="h2">¡Llegó una <span class="gt">carta sorpresa</span>!</h2>
+    </div>
+    <div class="scard" id="scard" onclick="revealOpp()">
+      <div class="in">
+        <div class="f front"><div><div class="q">?</div><b>Toquen para revelar</b><small>Una oportunidad estratégica los espera</small></div></div>
+        <div class="f back"><div class="ev-card opp"><span class="ev-badge">✦ Oportunidad estratégica</span><span class="ev-ic" id="op-ic"></span><div class="ev-t" id="op-t"></div><p class="ev-d" id="op-d"></p><p class="ev-loc" id="op-loc"></p></div></div>
+      </div>
+    </div>
+    <div class="opts" id="op-opts"></div>
+    <div id="just-opp"></div>
+  </div>
+</section>
+
+<!-- ============ RESULTADOS ============ -->
+<section id="ph-results" class="ph">
+  <div class="wrap">
+    <div class="res-hero">
+      <div class="score" id="score"><div><b id="sc-n">0</b><small>/ 100 puntos</small></div></div>
+      <div>
+        <span class="lbl">Nivel de gestión</span>
+        <div class="tier" id="sc-tier">—</div>
+        <p class="tier-sub" id="sc-sub"></p>
+        <div class="res-who" id="sc-who"></div>
+      </div>
+    </div>
+    <div class="sent" id="sent-msg" style="display:none"></div>
+    <div class="rgrid">
+      <div class="glass box"><span class="lbl">Mapa de desempeño</span><svg id="radar" viewBox="0 0 420 400" style="width:100%;max-height:330px;display:block;overflow:visible"></svg></div>
+      <div class="glass box"><span class="lbl">Indicadores finales</span><div id="fin-mets"></div>
+        <span class="lbl" style="margin-top:18px">Sus pizarras</span><div class="boards-row" id="res-boards"></div></div>
+    </div>
+    <details class="glass acc" open><summary>🔍 Análisis ejecutivo de su gestión</summary><div class="acc-b" id="feedback"></div></details>
+    <details class="glass acc"><summary>🎓 Esto ya lo estudiaron hoy (malla NGE)</summary><div class="acc-b"><p class="fb-t" style="margin-bottom:12px">Cada decisión que tomaron corresponde a una materia real de <strong>Negocios y Gestión Empresarial</strong>:</p><div class="malla" id="malla"></div></div></details>
+    <details class="glass acc"><summary>📋 Registro completo de decisiones</summary><div class="acc-b"><div class="tl" id="timeline"></div></div></details>
+    <div class="res-actions">
+      <button class="btn-ghost" onclick="shareCard()">📸 Tarjeta para historia</button>
+      <button class="btn-ghost" onclick="window.print()">🖨️ Imprimir resumen</button>
+      <button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRANSFERENCIA ============ -->
+<section id="ph-transfer" class="ph">
+  <div class="wrap">
+    <div class="tr-hero">
+      <span class="big">🔄</span>
+      <h2 class="h2">De su empresa a <span class="gt">su vida personal</span></h2>
+      <p class="lead">Las mismas decisiones las tomarán <strong>con su propio dinero</strong> todos los meses. La lógica es idéntica: solo cambia la escala. <br>Toquen cada tarjeta para darle la vuelta.</p>
+    </div>
+    <div class="fgrid" id="fgrid"></div>
+
+    <div class="glass sueldo">
+      <span class="lbl">Mini simulador · Tu primer sueldo</span>
+      <h3 style="font-family:var(--fd);font-weight:800;font-size:1.4rem;margin-bottom:4px">¿Cómo repartirías tu ingreso mensual?</h3>
+      <p class="fb-t" style="margin-bottom:12px">Elige un ingreso y reparte el 100 %. Prueba la <strong>regla 50/30/20</strong>: 50 % necesidades, 30 % gustos, 20 % ahorro e inversión.</p>
+      <div class="inc" id="inc"></div>
+      <div class="cats" id="cats"></div>
+      <div class="stack" id="stack"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="tot-badge" id="tot-badge">100 %</span>
+        <button class="btn-ghost" onclick="apply503020()">✨ Aplicar regla 50/30/20</button>
+      </div>
+      <div class="sueldo-out" id="sueldo-out"></div>
+    </div>
+
+    <div class="glass perfil" id="perfil">
+      <span class="lbl">Su perfil financiero personal estimado</span>
+      <div class="pv" id="pf-v">—</div>
+      <p class="pd" id="pf-d"></p>
+      <div class="why" id="pf-why"></div>
+    </div>
+
+    <div class="glass box" style="margin-bottom:18px">
+      <span class="lbl">Para reflexionar en equipo</span>
+      <div class="qs">
+        <details><summary>💰 Si tuvieras Bs 1.000 al mes, ¿usarías la misma estrategia que en el simulador?</summary><p>Comparen su reparto del capital con el que hicieron en el mini simulador. ¿Qué cambió? ¿Por qué?</p></details>
+        <details><summary>🛡️ ¿Cuántos meses de gastos necesitarías ahorrar para sentirte seguro?</summary><p>Los expertos recomiendan de 3 a 6 meses de gastos. ¿Cuánto tendrías que ahorrar al mes para tenerlo en un año?</p></details>
+        <details><summary>🤝 ¿Cuántas veces has negociado un precio o una condición?</summary><p>Piensa en tu celular, tu pasaje, tu primer trabajo. Quien negocia bien ahorra más sin ganar más.</p></details>
+        <details><summary>📚 ¿En qué habilidad invertirías primero para ganar más en el futuro?</summary><p>Idiomas, programación, ventas, finanzas… Tu capital humano es tu mejor inversión.</p></details>
+        <details><summary>🪞 ¿Te identificas con el perfil que te salió? ¿Por qué?</summary><p>El autoconocimiento financiero es el primer paso para mejorar tus hábitos.</p></details>
+      </div>
+    </div>
+
+    <div class="career">
+      <span class="tag">Tu ruta en UNIFRANZ</span>
+      <h3>Lo que hicieron hoy en 40 minutos, <span class="gt">dominarlo toma 4 años.</span></h3>
+      <p class="lead" style="margin-top:8px">En <strong>Negocios y Gestión Empresarial</strong> aprendes a decidir con datos, liderar equipos, negociar y crear empresas, con un proyecto integrador real en cada semestre.</p>
+      <div class="years" id="years"></div>
+      <span class="lbl">Elige una de las 2 menciones</span>
+      <div class="menc">
+        <div><span>🤖📊</span><b>Transformación Digital y Analítica de Negocios</b><span>IA, business intelligence y datos para decidir mejor.</span></div>
+        <div><span>🚀💡</span><b>Emprendimiento, Innovación y Desarrollo de Startups</b><span>Diseña, valida y escala modelos de negocio con impacto.</span></div>
+      </div>
+      <span class="lbl">Podrás trabajar como</span>
+      <div class="jobs" id="jobs"></div>
+      <div class="cta-row">
+        <div class="qr" id="cta-qr"></div>
+        <div>
+          <b style="font-family:var(--fd);font-size:1.3rem;display:block">¿Te gustó tomar las decisiones?</b>
+          <p class="fb-t" style="margin:4px 0 12px">Programa Internacionalízate · clases espejo y docentes internacionales · intercambios en América, Asia y Europa.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROYECTOR ============ -->
+<section id="ph-proj" class="ph">
+  <div class="pj-top">
+    <div>
+      <div class="pj-title">🏆 Ranking <span class="gt">en vivo</span></div>
+      <div class="pj-sala">SALA <span id="pj-code">—</span> · <span id="pj-count">0</span> participantes</div>
+    </div>
+    <div class="pj-join"><div class="qr" id="pj-qr"></div><div><b>¡Únanse!</b><small id="pj-url"></small><div class="live-pill on" id="pj-live" style="margin-top:8px;display:inline-flex"><i></i><span id="pj-live-txt">Conectado</span></div></div></div>
+  </div>
+  <div class="pj-grid">
+    <div><span class="lbl">Posiciones</span><div class="pj-list" id="pj-list"></div></div>
+    <div>
+      <span class="lbl">Podio</span>
+      <div class="podium" id="podium"><div class="pod-wait" id="pod-wait"><div><div class="q">🏆</div><p class="lead">Cuando todos terminen, revelen el podio.</p></div></div></div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn" onclick="revealPodium()">🥁 Revelar podio</button>
+        <button class="btn-ghost" onclick="toggleScores()" id="hide-btn">🙈 Ocultar puntajes</button>
+        <button class="btn-ghost" onclick="exitProjector()">← Salir</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Barra de acción -->
+<div class="actionbar" id="actionbar"><span class="hint" id="ab-hint"></span><button class="btn-ghost" id="ab-back" style="display:none">←</button><button class="btn" id="ab-next" disabled>Continuar →</button></div>
+
+<!-- Impacto -->
+<div id="impact"><div class="imp"><h3 id="imp-t">Impacto de su decisión</h3><p id="imp-s"></p><div id="imp-rows"></div><button class="btn" id="imp-btn">Continuar →</button></div></div>
+
+<!-- Modal docente -->
+<div class="modal" id="m-teacher"><div class="card">
+  <h3>🎛️ Modo docente</h3>
+  <p>Crea una sala y proyecta el ranking. Los equipos escanean el QR o escriben el código.</p>
+  <label class="lbl" for="t-sala">Código de sala</label>
+  <div class="inp-row"><input class="inp" id="t-sala" maxlength="6" style="text-transform:uppercase;font-family:var(--fm);letter-spacing:5px;font-size:1.3rem" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"><button class="icon-btn" style="width:52px;height:52px" onclick="document.getElementById('t-sala').value=genCode()">🎲</button></div>
+  <p id="t-warn" style="margin-top:10px;color:#FF8A94;display:none">⚠️ Aún no se configuró la URL del Apps Script (API_URL). El ranking en vivo no funcionará hasta hacerlo.</p>
+  <div class="row"><button class="btn-ghost" onclick="closeModal('m-teacher')">Cancelar</button><button class="btn" onclick="startProjector()">Proyectar →</button></div>
+</div></div>
+
+<!-- Pizarra -->
+<div id="board" class="bd" aria-hidden="true">
+  <div class="bd-top">
+    <button class="bd-done" onclick="closeBoard()">✓ Listo</button>
+    <div class="bd-title"><b id="bd-title">Pizarra</b><span id="bd-prompt"></span></div>
+    <div class="bd-acts">
+      <button class="bd-ib" onclick="Board.undo()" title="Deshacer">↶</button>
+      <button class="bd-ib" onclick="Board.redo()" title="Rehacer">↷</button>
+      <button class="bd-ib" onclick="Board.fit()" title="Ver todo">⤢</button>
+      <button class="bd-ib" onclick="Board.clearAsk()" title="Borrar todo">🗑️</button>
+    </div>
+  </div>
+  <div class="bd-stage" id="bd-stage"><canvas id="bd-cv"></canvas><div class="bd-empty" id="bd-empty"><span>👆</span><b>Toquen 🧩 Fichas → ✨ Plantilla</b><small>o dibujen libremente con ✏️</small></div></div>
+  <div class="bd-dock" id="bd-dock"></div>
+  <div class="bd-sheet" id="bd-sh-stamps"><div class="bd-sh-h"><b>🧩 Fichas</b><button onclick="Board.sheet(null)">✕</button></div><div id="bd-stamps"></div></div>
+  <div class="bd-sheet" id="bd-sh-color"><div class="bd-sh-h"><b>🎨 Color y grosor</b><button onclick="Board.sheet(null)">✕</button></div><div class="bd-colors" id="bd-colors"></div><div class="bd-size"><span>Grosor</span><input type="range" min="2" max="18" value="4" id="bd-size" oninput="Board.setSize(+this.value)"><b id="bd-size-v">4</b></div></div>
+  <div class="bd-modal" id="bd-text"><div class="bd-mc"><b id="bd-text-t">Escribir texto</b><textarea id="bd-text-in" rows="3" maxlength="140"></textarea><div class="bd-note-cols" id="bd-note-cols"></div><div class="bd-mrow"><button class="bd-cancel" onclick="Board.textCancel()">Cancelar</button><button class="bd-ok" onclick="Board.textOk()">Listo</button></div></div></div>
+  <div class="bd-toast" id="bd-toast"></div>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="toasts"></div>
