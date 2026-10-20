@@ -90,17 +90,35 @@ function preparar() {
   sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
   sa.setFrozenRows(1); sa.setColumnWidths(1, 7, 140);
 
-  // Protección: avisa antes de editar a mano las hojas que llena la app
-  [HOJA, HOJA_SALAS, HOJA_ARCH].forEach(n => {
-    const h = ss.getSheetByName(n); if (!h) return;
-    const ya = h.getProtections(SpreadsheetApp.ProtectionType.SHEET).length;
-    if (!ya) h.protect().setDescription('Datos del Laboratorio: usa el menú 🏆 Laboratorio para gestionarlos').setWarningOnly(true);
-  });
+  // Protección: avisa antes de editar a mano las hojas que llena la app (si Google falla, no detiene la preparación)
+  proteger_();
 
   ['Sheet1', 'Hoja 1', 'Hoja1'].forEach(n => { const h = ss.getSheetByName(n); if (h && h.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(h); });
   ss.setActiveSheet(sa);
   try { SpreadsheetApp.getUi().alert('Hojas listas: Ranking, Salas y CONFIG.'); } catch (e) {}
   return 'ok';
+}
+
+function proteger_() {
+  const ss = SpreadsheetApp.getActive(); const hechas = [];
+  [HOJA, HOJA_SALAS, HOJA_ARCH].forEach(n => {
+    const h = ss.getSheetByName(n); if (!h) return;
+    try {
+      if (!h.getProtections(SpreadsheetApp.ProtectionType.SHEET).length) {
+        const p = h.protect();
+        p.setWarningOnly(true);
+        p.setDescription('Datos del Laboratorio: usa el menú 🏆 Laboratorio');
+      }
+      hechas.push(n);
+    } catch (e) { console.warn('No se pudo proteger ' + n + ': ' + e.message); }
+  });
+  return hechas;
+}
+/* Ejecútala sola si la protección no se aplicó al preparar */
+function protegerHojas() {
+  const h = proteger_();
+  try { SpreadsheetApp.getUi().alert(h.length ? '🛡️ Hojas protegidas: ' + h.join(', ') + '.' : 'No se pudo proteger ninguna hoja (revisa el registro de ejecución).'); } catch (e) {}
+  return h;
 }
 
 /* ═════════════ API ═════════════ */
