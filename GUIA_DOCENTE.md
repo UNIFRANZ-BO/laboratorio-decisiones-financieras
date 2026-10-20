@@ -28,7 +28,24 @@
 2. El proyector muestra un QR. Cada equipo lo escanea, elige **Jugar en equipo**, se pone un nombre y una mascota. El código de sala ya viene escrito.
 3. En el proyector ves en vivo a cada equipo: en qué fase está y su puntaje al terminar. Con **🙈 Ocultar puntajes** mantienes el suspenso.
 4. Cuando todos terminen, pulsa **🥁 Revelar podio**.
-5. En la hoja «Ranking» quedan como evidencia pedagógica las decisiones, las 5 justificaciones, los indicadores y el perfil de cada equipo. Menú **🏆 Laboratorio** → «Ver resumen de una sala» o «Borrar una sala».
+5. En la hoja «Ranking» quedan como evidencia pedagógica las decisiones, las 5 justificaciones, los indicadores y el perfil de cada equipo.
+6. Al terminar, usa **🔒 Cerrar o abrir una sala** para que nadie siga enviando datos, y **📄 Exportar sala** si quieres una hoja propia para el colegio.
+
+## 2b. Gestionar los datos (menú 🏆 Laboratorio de la hoja)
+| Opción | Qué hace |
+|---|---|
+| 📊 Resumen de una sala | Ranking, promedio y quiénes siguen jugando. |
+| 📄 Exportar sala a hoja propia | Crea la hoja «Sala XXXX» ordenada por puntaje, con todas las justificaciones. Se descarga en Archivo → Descargar. |
+| 🔒 Cerrar o abrir una sala | La sala deja de aceptar resultados nuevos; su ranking se sigue viendo. La app avisa «Sala cerrada». |
+| ⏯️ Abrir o pausar todo el registro | Interruptor general (CONFIG → Registro abierto). |
+| 🧹 Limpiar incompletos | Borra a quienes no terminaron y llevan más de N horas sin actividad (CONFIG). Acepta `TODAS`. |
+| 📦 Archivar una sala | Mueve sus filas a la hoja «Archivo»: salen del ranking pero se conserva la evidencia. |
+| 🗑️ Borrar una sala | Borra definitivamente (pide confirmación). Ideal para salas de prueba como `ZTEST`. |
+| ⚙️ Preparar o reparar hojas | Crea o repara Ranking, Salas (resumen automático) y CONFIG. |
+
+La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedio, mejor puntaje y fechas de cada sala.
+
+> **Al actualizar el código del Apps Script:** Implementar → Gestionar implementaciones → ✏️ → Versión «Nueva versión» → Implementar. Así la URL `/exec` no cambia y no hay que tocar el HTML.
 
 ## 3. Flujo del juego (estructura original respetada)
 Inicio → Negocio (9 de Cochabamba) → Pizarra: boceto → Capital Bs 100.000 → Pizarra: organigrama → Equipo (5 personas) → Crisis (60 s) → Negociación (3 rondas: cliente, proveedor y distribuidor) → Oportunidad (carta sorpresa) → Resultados → Finanzas personales.
@@ -46,5 +63,5 @@ Inicio → Negocio (9 de Cochabamba) → Pizarra: boceto → Capital Bs 100.000 
 - Ruta de la carrera: 4 años, 2 menciones, salidas laborales y QR (`CONFIG.CTA_URL`).
 
 ## 5. Ajustes rápidos (en `src/app.js` → `CONFIG`, y luego `python build.py`)
-- `CTA_URL`: enlace del botón «Conocer la carrera» y de su QR (hoy apunta a unifranz.edu.bo).
+- `CTA_URL`: enlace del botón «Conocer la carrera» y de su QR (página oficial de la carrera NGE).
 - `POLL_MS`: cada cuánto se actualiza el proyector (4000 = 4 s).

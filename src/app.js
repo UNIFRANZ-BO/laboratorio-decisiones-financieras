@@ -3,7 +3,7 @@
 ═══════════════════════════════════════ */
 const CONFIG={
   API_URL:'https://script.google.com/macros/s/AKfycbx4E1a1cdKiOMZOzahLezsqJVEjW6HmqZSYxLVYQV3wMeV6TssZpivYVLSsnGxfQPw/exec',
-  CTA_URL:'https://unifranz.edu.bo/',
+  CTA_URL:'https://unifranz.edu.bo/carreras/negocios-y-gestion-empresarial/',
   POLL_MS:4000
 };
 
@@ -677,7 +677,7 @@ async function shareCard(){
 ═══════════════════════════════════════ */
 function setLive(st){
   const p=$('live-pill');if(!Live.enabled()){p.classList.remove('on');return}
-  p.classList.add('on');p.classList.toggle('off',st!=='on');$('live-txt').textContent=st==='on'?'EN VIVO · '+S.sala:'SIN CONEXIÓN';
+  p.classList.add('on');p.classList.toggle('off',st!=='on');$('live-txt').textContent=st==='on'?'EN VIVO · '+S.sala:st==='closed'?'SALA CERRADA':'SIN CONEXIÓN';
 }
 const Live={pending:null,busy:false,cb:[],
   enabled(){return!!(CONFIG.API_URL&&S.sala)},
@@ -692,7 +692,11 @@ const Live={pending:null,busy:false,cb:[],
   push(fase,cb){if(!this.enabled()||!S.name)return;this.pending=this.payload(fase);if(cb)this.cb.push(cb);this.flush()},
   async flush(){
     if(this.busy||!this.pending)return;this.busy=true;const body=this.pending;this.pending=null;const cbs=this.cb.splice(0);
-    try{const r=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});const j=await r.json();setLive(j.ok?'on':'err');if(j.ok)cbs.forEach(f=>f())}
+    try{const r=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});const j=await r.json();
+      if(j.ok){setLive('on');cbs.forEach(f=>f())}
+      else if(j.error==='cerrada'){setLive('closed');if(!this.warned){this.warned=true;toast('🔒 '+(j.msg||'La sala está cerrada')+' Pueden seguir jugando, pero sin ranking.',4500)}
+        const sm=$('sent-msg');if(sm&&S.phase==='results')sm.innerHTML='🔒 La sala <b>'+esc(S.sala)+'</b> está cerrada: el resultado no se envió al ranking.'}
+      else setLive('err')}
     catch(e){setLive('err');if(!this.pending)this.pending=body;this.cb.push(...cbs);setTimeout(()=>{this.busy=false;this.flush()},5000);return}
     this.busy=false;if(this.pending)this.flush();
   }
@@ -714,7 +718,7 @@ function exitProjector(){clearInterval(pjTimer);history.replaceState(null,'',loc
 async function pollRanking(){
   if(!CONFIG.API_URL){$('pj-list').innerHTML='<div class="pj-empty">⚠️ Falta configurar <b>API_URL</b> (la URL /exec del Apps Script) en el archivo HTML.</div>';$('pj-live-txt').textContent='Sin configurar';$('pj-live').classList.add('off');return}
   try{const r=await fetch(`${CONFIG.API_URL}?action=ranking&sala=${encodeURIComponent(pjCode)}&t=${Date.now()}`);const j=await r.json();if(!j.ok)throw 0;
-    pjData=j.items||[];$('pj-live').classList.remove('off');$('pj-live-txt').textContent='Conectado';renderRanking()}
+    pjData=j.items||[];$('pj-live').classList.toggle('off',!!j.cerrada);$('pj-live-txt').textContent=j.cerrada?'🔒 Sala cerrada':'Conectado';renderRanking()}
   catch(e){$('pj-live').classList.add('off');$('pj-live-txt').textContent='Reintentando…'}
 }
 function sortedRank(){return pjData.slice().sort((a,b)=>{const fa=a.puntaje!==''&&a.puntaje!=null,fb=b.puntaje!==''&&b.puntaje!=null;if(fa!==fb)return fa?-1:1;if(fa)return b.puntaje-a.puntaje;return(b.progreso||0)-(a.progreso||0)})}
