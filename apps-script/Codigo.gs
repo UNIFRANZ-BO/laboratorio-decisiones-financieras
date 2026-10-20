@@ -14,6 +14,9 @@
  * Al actualizar este código: Implementar → Gestionar implementaciones → ✏️ →
  * Versión: «Nueva versión» → Implementar. Así la URL /exec no cambia.
  *
+ * Informes PDF: la app envía el PDF de cada grupo y se guarda en Drive →
+ *   «Laboratorio NGE – Informes» / Sala XXXX / Nombre del grupo / informe.pdf
+ *
  * Hojas:
  *  · Ranking  — una fila por equipo o jugador (se crea y actualiza sola).
  *  · Salas    — resumen automático por sala (fórmula, no editar).
@@ -25,13 +28,14 @@
 const HOJA = 'Ranking', HOJA_CFG = 'CONFIG', HOJA_SALAS = 'Salas', HOJA_ARCH = 'Archivo';
 const COLS = ['Sala','ID','Modo','Nombre','Avatar','Integrantes','Negocio','Fase','Progreso','Puntaje','Nivel','Perfil',
   'Rentabilidad','Equipo','Clientes','Crecimiento','Sostenibilidad','Capital','Asignación equipo','Decisiones','Pizarras',
-  'Just. capital','Just. equipo','Just. crisis','Just. negociación','Just. oportunidad','Creado','Actualizado'];
-const C = { sala: 0, id: 1, nombre: 3, puntaje: 9, nivel: 10, creado: 26, act: 27 };
+  'Just. capital','Just. equipo','Just. crisis','Just. negociación','Just. oportunidad','Creado','Actualizado','Informe PDF'];
+const C = { sala: 0, id: 1, nombre: 3, puntaje: 9, nivel: 10, creado: 26, act: 27, pdf: 28 };
 const CFG_DEF = [
   ['Parámetro', 'Valor', 'Ayuda'],
   ['Registro abierto', 'SÍ', 'SÍ = los equipos pueden enviar datos. NO = ninguna sala recibe nada (el ranking se sigue viendo).'],
   ['Salas cerradas', '', 'Códigos separados por coma que ya no aceptan datos nuevos. Ej: ABCD, XK7P. Usa el menú para cerrar o abrir.'],
-  ['Retener incompletos (horas)', '24', 'El menú «Limpiar incompletos» borra a quienes no terminaron y llevan más de estas horas sin actividad.']
+  ['Retener incompletos (horas)', '24', 'El menú «Limpiar incompletos» borra a quienes no terminaron y llevan más de estas horas sin actividad.'],
+  ['Carpeta Drive de informes (ID)', '', 'Se llena sola la primera vez. Dentro se crea una carpeta por sala y otra por grupo con su informe PDF.']
 ];
 
 /* ═════════════ MENÚ ═════════════ */
@@ -47,6 +51,7 @@ function onOpen() {
     .addItem('📦 Archivar una sala…', 'archivarSala')
     .addItem('🗑️ Borrar una sala…', 'borrarSala')
     .addSeparator()
+    .addItem('📁 Abrir carpeta de informes', 'abrirCarpeta')
     .addItem('⚙️ Preparar o reparar hojas', 'preparar')
     .addToUi();
 }
@@ -101,6 +106,7 @@ function doGet(e) {
 function doPost(e) {
   let d;
   try { d = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'JSON inválido' }); }
+  if (d.action === 'pdf') return guardarPdf_(d);
   if (d.action !== 'upsert') return json_({ ok: false, error: 'Acción desconocida' });
   const sala = limpiaSala_(d.sala);
   const id = String(d.id || '').slice(0, 40);
@@ -130,12 +136,12 @@ function doPost(e) {
       for (let i = 0; i < keys.length; i++) if (keys[i][0] === sala && keys[i][1] === id) { row = i + 2; break; }
     }
     if (row === -1) {
-      sh.appendRow(fila.concat([now, now]));
+      sh.appendRow(fila.concat([now, now, '']));
     } else {
       // No borrar el puntaje final si llega una actualización posterior sin él
       const prev = sh.getRange(row, 1, 1, COLS.length).getValues()[0];
       for (let c = C.puntaje; c < fila.length; c++) if (fila[c] === '' && prev[c] !== '') fila[c] = prev[c];
-      sh.getRange(row, 1, 1, COLS.length).setValues([fila.concat([prev[C.creado] || now, now])]);
+      sh.getRange(row, 1, 1, COLS.length).setValues([fila.concat([prev[C.creado] || now, now, prev[C.pdf] || ''])]);
     }
     return json_({ ok: true });
   } finally {
@@ -157,7 +163,8 @@ function filas_() {
 function leerSala_(sala) {
   return filas_().filter(r => r[C.sala] === sala)
     .map(r => ({ id: r[1], modo: r[2], nombre: r[3], avatar: r[4], negocio: r[6], fase: r[7], progreso: r[8],
-      puntaje: r[9] === '' ? '' : r[9], nivel: r[10], perfil: r[11] }));
+      puntaje: r[9] === '' ? '' : r[9], nivel: r[10], perfil: r[11],
+      met: { rent: r[12], eq: r[13], cli: r[14], cre: r[15], sos: r[16] } }));
 }
 
 /* CONFIG */
@@ -313,3 +320,46 @@ function borrarSala() {
   if (!confirmar_('Se borrarán definitivamente ' + k + ' filas de la sala ' + sala + '. Esto no se puede deshacer (usa «Archivar» si quieres conservarlas). ¿Continuar?')) return;
   ui.alert(borrarFilas_(r => r[C.sala] === sala) + ' filas borradas.');
 }
+
+/* ═════════════ INFORMES PDF EN DRIVE ═════════════ */
+function carpetaRaiz_() {
+  const id = cfg_('Carpeta Drive de informes (ID)');
+  if (id) { try { return DriveApp.getFolderById(id); } catch (e) {} }
+  const f = DriveApp.createFolder('Laboratorio NGE – Informes');
+  try { setCfg_('Carpeta Drive de informes (ID)', f.getId()); } catch (e) {}
+  return f;
+}
+function subcarpeta_(padre, nombre) {
+  const it = padre.getFoldersByName(nombre);
+  return it.hasNext() ? it.next() : padre.createFolder(nombre);
+}
+function guardarPdf_(d) {
+  const sala = limpiaSala_(d.sala) || 'SIN-SALA';
+  const grupo = String(d.nombre || 'Grupo').replace(/[\/:*?"<>|#%]/g, '').trim().slice(0, 60) || 'Grupo';
+  if (!d.b64) return json_({ ok: false, error: 'Falta el PDF' });
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const carpeta = subcarpeta_(subcarpeta_(carpetaRaiz_(), 'Sala ' + sala), grupo);
+    const nombre = String(d.filename || ('Informe ' + grupo + '.pdf')).replace(/[\/:*?"<>|#%]/g, '');
+    const blob = Utilities.newBlob(Utilities.base64Decode(d.b64), 'application/pdf', nombre);
+    const file = carpeta.createFile(blob);
+    const url = file.getUrl();
+    const sh = hoja_(HOJA);
+    const n = sh.getLastRow() - 1;
+    if (n > 0 && d.id) {
+      const keys = sh.getRange(2, 1, n, 2).getValues();
+      for (let i = 0; i < keys.length; i++) if (keys[i][0] === sala && keys[i][1] === String(d.id)) { sh.getRange(i + 2, C.pdf + 1).setValue(url); break; }
+    }
+    return json_({ ok: true, url: url, carpeta: carpeta.getUrl() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+function abrirCarpeta() {
+  const f = carpetaRaiz_();
+  const html = HtmlService.createHtmlOutput('<p style="font-family:sans-serif">Carpeta de informes:<br><a href="' + f.getUrl() + '" target="_blank">' + f.getName() + '</a></p>').setWidth(360).setHeight(120);
+  SpreadsheetApp.getUi().showModalDialog(html, '📁 Informes PDF');
+}
+/* Ejecuta esta función una vez desde el editor para autorizar Google Drive */
+function autorizarDrive() { return carpetaRaiz_().getUrl(); }

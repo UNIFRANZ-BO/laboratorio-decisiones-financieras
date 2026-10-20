@@ -47,6 +47,17 @@ La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedi
 
 > **Al actualizar el código del Apps Script:** Implementar → Gestionar implementaciones → ✏️ → Versión «Nueva versión» → Implementar. Así la URL `/exec` no cambia y no hay que tocar el HTML.
 
+## Novedades v3 (enlace: `…/laboratorio-decisiones-financieras/v3/`)
+- **Voz neural boliviana**: Sofía (mentora) da la bienvenida, presenta la misión de cada negocio y cierra; Marcelo (noticiero) anuncia crisis y oportunidades. Se apaga con 🎙️. Los MP3 están en `voz/` y se regeneran con `node herramientas/textos_voz.js` y `python herramientas/generar_voz.py`.
+- **Eventos realistas por rubro**: cada negocio tiene sus propias 2 crisis, 3 negociaciones tipo chat (cliente, proveedor y aliado) y 2 oportunidades (`src/eventos.js`).
+- **Sin puntajes visibles**: las opciones ya no muestran cuánto suman; el efecto se revela después y depende de decisiones previas (reserva, inversión, personal contratado).
+- **Contratación**: de 3 a 10 personas de 17 perfiles con sueldo. La planilla sale del presupuesto de Talento; si se pasan, se consume la reserva o se genera deuda. Al final se evalúa si cada contratación tenía relación con el rubro.
+- **Pizarra pro (Excalidraw)**: mover, redimensionar, texto dentro de formas, flechas que se pegan, colores, fondos, tamaños de letra, deshacer, plantillas y fichas. Sin internet se usa la pizarra ligera.
+- **Tablero en vivo (📊)**, misión inicial, transiciones de fase, logros y resultados con 4 pestañas: tablero (radar vs. clase, competencias vs. egresado NGE, evolución, capital vs. lo recomendado, evaluación del equipo), decisiones con la mejor práctica, mapa interactivo de la malla y registro.
+- **Informe PDF detallado (6 páginas)** que se descarga y además se guarda en Drive: `Laboratorio NGE – Informes / Sala XXXX / Nombre del grupo`.
+
+> **Para activar el guardado en Drive:** pega el nuevo `apps-script/Codigo.gs`, ejecuta una vez la función **autorizarDrive** (acepta el permiso de Drive), luego **preparar**, y publica **Gestionar implementaciones → ✏️ → Nueva versión**. El menú 🏆 Laboratorio suma **📁 Abrir carpeta de informes**.
+
 ## 3. Flujo del juego (estructura original respetada)
 Inicio → Negocio (9 de Cochabamba) → Pizarra: boceto → Capital Bs 100.000 → Pizarra: organigrama → Equipo (5 personas) → Crisis (60 s) → Negociación (3 rondas: cliente, proveedor y distribuidor) → Oportunidad (carta sorpresa) → Resultados → Finanzas personales.
 

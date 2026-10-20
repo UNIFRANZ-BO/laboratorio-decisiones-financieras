@@ -11,6 +11,8 @@
   <div class="hud-right">
     <div class="live-pill" id="live-pill" title="Ranking en vivo"><i></i><span class="txt" id="live-txt">EN VIVO</span></div>
     <div class="hud-team" id="hud-team"><span class="av" id="hud-av">🦊</span><span id="hud-name"></span></div>
+    <button class="icon-btn" id="dash-btn" onclick="openDash()" aria-label="Tablero" title="Tablero en vivo" style="display:none">📊</button>
+    <button class="icon-btn" id="voz-btn" onclick="toggleVoz()" aria-label="Voz" title="Voz de la narradora">🎙️</button>
     <button class="icon-btn" id="snd-btn" onclick="toggleSound()" aria-label="Sonido">🔊</button>
   </div>
 </header>
@@ -111,6 +113,25 @@
   </div>
 </section>
 
+<!-- ============ MISIÓN ============ -->
+<section id="ph-mision" class="ph">
+  <div class="mision">
+    <div class="ms-left">
+      <span class="tag">Su misión</span>
+      <div class="ms-em" id="ms-em">🏢</div>
+      <h2 class="h2" id="ms-name">—</h2>
+      <div class="ms-barrio" id="ms-barrio"></div>
+      <p class="ms-text" id="ms-text"></p>
+      <div class="btags" id="ms-tags"></div>
+    </div>
+    <div class="ms-right glass">
+      <span class="lbl">Así arranca su empresa</span>
+      <svg id="ms-radar" viewBox="-75 0 570 400" class="ms-radar"></svg>
+      <div class="ms-reto"><b>🎯 Reto financiero</b><span id="ms-reto"></span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FASE 2: BOCETO ============ -->
 <section id="ph-draw1" class="ph">
   <div class="wrap">
@@ -189,16 +210,23 @@
   </div>
 </section>
 
-<!-- ============ FASE 5: EQUIPO ============ -->
+<!-- ============ FASE 5: CONTRATACIÓN ============ -->
 <section id="ph-team" class="ph">
   <div class="wrap">
     <div class="ph-head">
-      <span class="tag">Fase 5 · Capital humano</span>
-      <h2 class="h2">Armen su <span class="gt">equipo estrella</span></h2>
-      <p class="lead">Toquen una persona y luego el departamento donde trabajará. Si va a su <strong>área ideal ⭐</strong>, rinde más.</p>
+      <span class="tag">Fase 5 · Contratación</span>
+      <h2 class="h2">Contraten a su <span class="gt">equipo</span></h2>
+      <p class="lead">Elijan de <strong>3 a 10 personas</strong>. Cada sueldo sale de su presupuesto de <strong>Talento</strong>. Ojo: no todos sirven para su rubro.</p>
     </div>
-    <div class="roster" id="roster"></div>
-    <div class="depts" id="depts"></div>
+    <div class="hire-bar glass" id="hire-bar">
+      <div class="hb-count"><div class="ring" id="hb-ring"><b id="hb-n">0</b></div><span>de 10<br>personas</span></div>
+      <div class="hb-pay"><span class="lbl" style="margin:0 0 6px">Planilla mensual vs. presupuesto de Talento</span>
+        <div class="hb-gauge"><i id="hb-fill"></i><em id="hb-mark"></em></div>
+        <div class="hb-nums"><b id="hb-pay">Bs 0</b><span id="hb-bud">de Bs 0</span></div>
+        <div class="hb-warn" id="hb-warn"></div></div>
+      <div class="hb-depts" id="hb-depts"></div>
+    </div>
+    <div class="cands" id="cands"></div>
     <div id="just-team"></div>
   </div>
 </section>
@@ -267,21 +295,43 @@
         <p class="tier-sub" id="sc-sub"></p>
         <div class="res-who" id="sc-who"></div>
       </div>
+      <div class="rank-box" id="rank-box"></div>
     </div>
     <div class="sent" id="sent-msg" style="display:none"></div>
-    <div class="rgrid">
-      <div class="glass box"><span class="lbl">Mapa de desempeño</span><svg id="radar" viewBox="0 0 420 400" style="width:100%;max-height:330px;display:block;overflow:visible"></svg></div>
-      <div class="glass box"><span class="lbl">Indicadores finales</span><div id="fin-mets"></div>
-        <span class="lbl" style="margin-top:18px">Sus pizarras</span><div class="boards-row" id="res-boards"></div></div>
+    <div class="logros" id="logros"></div>
+    <div class="res-tabs" id="res-tabs" role="tablist">
+      <button class="on" data-t="t-dash">📊 Tablero</button><button data-t="t-dec">🧠 Decisiones</button><button data-t="t-malla">🎓 Malla NGE</button><button data-t="t-reg">📋 Registro</button>
     </div>
-    <details class="glass acc" open><summary>🔍 Análisis ejecutivo de su gestión</summary><div class="acc-b" id="feedback"></div></details>
-    <details class="glass acc"><summary>🎓 Esto ya lo estudiaron hoy (malla NGE)</summary><div class="acc-b"><p class="fb-t" style="margin-bottom:12px">Cada decisión que tomaron corresponde a una materia real de <strong>Negocios y Gestión Empresarial</strong>:</p><div class="malla" id="malla"></div></div></details>
-    <details class="glass acc"><summary>📋 Registro completo de decisiones</summary><div class="acc-b"><div class="tl" id="timeline"></div></div></details>
+    <div class="res-tab on" id="t-dash">
+      <div class="rgrid">
+        <div class="glass box"><span class="lbl">Indicadores · ustedes vs. la clase</span><svg id="radar" viewBox="-75 0 570 400" class="big-radar"></svg><div class="legend" id="lg-radar"></div></div>
+        <div class="glass box"><span class="lbl">Competencias · ustedes vs. egresado NGE</span><svg id="radar-comp" viewBox="-75 0 570 400" class="big-radar"></svg><div class="legend" id="lg-comp"></div></div>
+      </div>
+      <div class="glass box" style="margin-bottom:16px"><span class="lbl">Evolución de su empresa, decisión por decisión</span><div id="evo"></div></div>
+      <div class="rgrid">
+        <div class="glass box"><span class="lbl">Capital · ustedes vs. lo recomendado para su rubro</span><div id="cap-vs"></div></div>
+        <div class="glass box"><span class="lbl">Su equipo · ¿contrataron bien?</span><div id="team-eval"></div></div>
+      </div>
+      <div class="rgrid">
+        <div class="glass box"><span class="lbl">Indicadores finales</span><div id="fin-mets"></div></div>
+        <div class="glass box"><span class="lbl">Sus pizarras</span><div class="boards-row" id="res-boards"></div></div>
+      </div>
+    </div>
+    <div class="res-tab" id="t-dec"><div id="dec-cards"></div><div class="glass box" style="margin-top:14px"><span class="lbl">Análisis ejecutivo</span><div id="feedback"></div></div></div>
+    <div class="res-tab" id="t-malla">
+      <div class="glass box">
+        <span class="lbl">Su mapa en la carrera de Negocios y Gestión Empresarial</span>
+        <p class="fb-t" style="margin-bottom:12px">Las materias que <b class="hl-rec">brillan</b> son las que más les ayudarían según sus decisiones de hoy. Toquen cualquiera para ver qué aprenderían.</p>
+        <div class="mmap" id="mmap"></div>
+      </div>
+    </div>
+    <div class="res-tab" id="t-reg"><div class="glass box"><div class="tl" id="timeline"></div></div></div>
     <div class="res-actions">
+      <button class="btn" id="pdf-btn" onclick="makePDF()">📄 Descargar informe PDF</button>
       <button class="btn-ghost" onclick="shareCard()">📸 Tarjeta para historia</button>
-      <button class="btn-ghost" onclick="window.print()">🖨️ Imprimir resumen</button>
       <button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button>
     </div>
+    <div class="pdf-status" id="pdf-status"></div>
   </div>
 </section>
 
@@ -409,6 +459,50 @@
   <div class="bd-modal" id="bd-text"><div class="bd-mc"><b id="bd-text-t">Escribir texto</b><textarea id="bd-text-in" rows="3" maxlength="140"></textarea><div class="bd-note-cols" id="bd-note-cols"></div><div class="bd-mrow"><button class="bd-cancel" onclick="Board.textCancel()">Cancelar</button><button class="bd-ok" onclick="Board.textOk()">Listo</button></div></div></div>
   <div class="bd-toast" id="bd-toast"></div>
 </div>
+
+<!-- Transición de fase -->
+<div id="splash"><div class="sp-in"><div class="sp-n" id="sp-n">1</div><div class="sp-t" id="sp-t"></div></div></div>
+
+<!-- Narradora -->
+<div id="narr" aria-live="polite">
+  <div class="nr-av" id="nr-av">👩🏽‍💼</div>
+  <div class="nr-body"><b id="nr-who">Sofía · tu mentora</b><div class="nr-wave"><i></i><i></i><i></i><i></i><i></i></div><p id="nr-txt"></p></div>
+  <button class="nr-x" onclick="Voz.stop()" aria-label="Saltar">⏭</button>
+</div>
+
+<!-- Tablero en vivo -->
+<div id="dash" class="modal"><div class="card dash-card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><h3>📊 Tablero en vivo</h3><button class="icon-btn" onclick="closeModal('dash')">✕</button></div>
+  <svg id="dash-radar" viewBox="-75 0 570 400" class="big-radar"></svg>
+  <div id="dash-evo"></div>
+  <div id="dash-donut"></div>
+</div></div>
+
+<!-- Detalle de materia -->
+<div class="modal" id="m-malla"><div class="card">
+  <span class="tag" id="mm-sem">Semestre</span>
+  <h3 id="mm-s"></h3>
+  <p id="mm-q"></p>
+  <div class="mm-you" id="mm-you"></div>
+  <div class="row"><button class="btn" onclick="closeModal('m-malla')">Entendido</button></div>
+</div></div>
+
+<!-- Pizarra pro -->
+<div id="xb">
+  <div class="xb-top">
+    <button class="bd-done" onclick="Pizarra.close()">✓ Listo</button>
+    <div class="bd-title"><b id="xb-title">Pizarra</b><span id="xb-prompt"></span></div>
+    <button class="xb-act" onclick="Pizarra.template()">✨ <span>Plantilla</span></button>
+    <button class="xb-act" onclick="Pizarra.sheet()">🧩 <span>Fichas</span></button>
+  </div>
+  <div class="xb-canvas" id="xb-canvas"></div>
+  <div class="xb-empty" id="xb-empty"><span>👆</span><b>Toquen ✨ Plantilla para empezar</b><small>o 🧩 Fichas · dibujen con las herramientas de arriba</small></div>
+  <div class="xb-loading" id="xb-loading"><div class="spin"></div><b>Cargando pizarra…</b></div>
+  <div class="bd-sheet" id="xb-sheet"><div class="bd-sh-h"><b>🧩 Fichas</b><button onclick="Pizarra.sheet(false)">✕</button></div><div id="xb-fichas"></div></div>
+</div>
+
+<!-- Informe PDF (se arma fuera de pantalla) -->
+<div id="pdf-root" aria-hidden="true"></div>
 
 <canvas id="confetti"></canvas>
 <div id="toasts"></div>

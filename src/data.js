@@ -91,76 +91,13 @@ const METS=[
   {id:'sos',lbl:'Sostenibilidad',ic:'🌱',col:'#B8F34A'}
 ];
 
-const CRISES=[
-  {ic:'🚧',title:'¡Bloqueo en la carretera principal!',desc:'Los sindicatos cerraron la Av. Blanco Galindo durante 3 días. Tu proveedor no puede llegar y los pedidos se acumulan. Cada hora sin resolver te cuesta clientes.',loc:'📍 Zona Norte · Situación recurrente en Cochabamba',opts:[
-    {lbl:'Buscar proveedor alternativo local',sub:'Más caro pero disponible. Protege la operación a corto plazo.',fx:{rent:-10,eq:0,cli:4,cre:0,sos:8}},
-    {lbl:'Cerrar operaciones temporalmente',sub:'Reduces pérdidas inmediatas pero dañas la relación con clientes clave.',fx:{rent:4,eq:-6,cli:-12,cre:-8,sos:2}},
-    {lbl:'Comunicar proactivamente y ofrecer descuentos',sub:'Sacrificas margen pero mantienes la confianza del cliente.',fx:{rent:-6,eq:8,cli:10,cre:4,sos:6}}]},
-  {ic:'💧',title:'Corte de agua por SEMAPA',desc:'Servicio cortado por reparaciones de emergencia durante 48 horas. Tu operación lo necesita y los vecinos están en la misma situación.',loc:'📍 Cochabamba Centro · Crisis recurrente de servicios básicos',opts:[
-    {lbl:'Contratar cisterna privada de inmediato',sub:'Costoso pero el negocio no para.',fx:{rent:-12,eq:2,cli:8,cre:0,sos:-4}},
-    {lbl:'Adaptar el servicio temporalmente',sub:'Creatividad ante la adversidad, pero puede afectar la calidad percibida.',fx:{rent:0,eq:4,cli:-8,cre:6,sos:2}},
-    {lbl:'Coordinar con vecinos para compartir cisterna',sub:'Más lento pero construye comunidad y reduce el gasto.',fx:{rent:-4,eq:10,cli:0,cre:4,sos:12}}]},
-  {ic:'📉',title:'Competidor informal con precios más bajos',desc:'Un vendedor informal opera en la misma cuadra a mitad de precio. Tus ventas cayeron 25 % en 2 semanas.',loc:'📍 Tu zona de influencia · Competencia informal común en Bolivia',opts:[
-    {lbl:'Bajar precios para competir directamente',sub:'Recuperas clientes pero reduces el margen operativo significativamente.',fx:{rent:-14,eq:0,cli:10,cre:-4,sos:-4}},
-    {lbl:'Diferenciarte por calidad y experiencia',sub:'Apuestas al segmento que valora calidad sobre precio.',fx:{rent:4,eq:4,cli:-4,cre:10,sos:8}},
-    {lbl:'Denunciar y regularizar la situación',sub:'Proceso lento pero establece una ventaja legal y formal.',fx:{rent:2,eq:0,cli:2,cre:-6,sos:6}}]}
-];
 
-/* Negociación: 3 rondas (cliente, proveedor, distribuidor). Cada ronda pesa la mitad que el evento original. */
+
+/* Negociación: 3 rondas por rubro. Cada ronda pesa la mitad que un evento completo. */
 const NEG_WEIGHT=.5;
-const NEGS=[
-  {tipo:'cliente',ic:'🛍️',who:'Don Ernesto',role:'Cliente principal · 30 % de tus ingresos',badge:'Cliente',title:'Cliente clave pide descuento del 20 %',
-   msgs:['Hola, buen día 👋','Te soy sincero: otra empresa me ofrece mejor precio. Si no me das un <b>descuento permanente del 20 %</b>, me voy.','Necesito tu respuesta hoy.'],
-   loc:'Reunión presencial · Tu local, Cochabamba',opts:[
-     {lbl:'Otorgar el 20 % que pide',sub:'Retienes al cliente pero tu margen cae drásticamente.',fx:{rent:-12,eq:0,cli:8,cre:-4,sos:-2},r:'¡Perfecto! Sabía que aceptarías 😏 Mañana te pido otra cosita…'},
-     {lbl:'Negociar: 10 % a cambio de contrato anual',sub:'Cedes menos pero aseguras ingresos estables.',fx:{rent:-4,eq:2,cli:10,cre:6,sos:8},r:'Mmm… 10 % con contrato de un año. Me da seguridad. ¡Trato hecho! 🤝'},
-     {lbl:'Rechazar y ofrecer valor diferencial',sub:'Propones servicio premium en lugar de bajar precio.',fx:{rent:6,eq:4,cli:-8,cre:4,sos:6},r:'No era lo que esperaba… Lo voy a pensar. Quizá pruebe con la otra empresa 😒'}]},
-  {tipo:'cliente',ic:'⭐',who:'Fer Rojas',role:'@cochalover · 8.000 seguidores',badge:'Cliente',title:'Cliente insatisfecho amenaza con reseñas negativas',
-   msgs:['Tuve una PÉSIMA experiencia con su negocio 😡','Quiero <b>compensación total</b>. Si no, lo publico en Instagram para mis 8.000 seguidores.'],
-   loc:'Redes sociales · Mercado digital cochabambino',opts:[
-     {lbl:'Dar compensación completa sin preguntar',sub:'Resuelves rápido pero abres la puerta a abusos futuros.',fx:{rent:-8,eq:0,cli:12,cre:0,sos:4},r:'¡Genial! Ya borré la queja. Mis amigos también van a querer lo mismo 😅'},
-     {lbl:'Investigar el caso y ofrecer solución parcial',sub:'Más lento pero justo y con criterio profesional.',fx:{rent:-2,eq:6,cli:6,cre:4,sos:10},r:'Ok, me explicaron bien lo que pasó. Acepto la solución, gracias por escucharme 👍'},
-     {lbl:'Responder públicamente con hechos concretos',sub:'Arriesgado: puede escalar o fortalecer tu reputación.',fx:{rent:2,eq:0,cli:-10,cre:2,sos:4},r:'¿¡En público!? 😤 Esto se va a poner feo en los comentarios…'}]},
-  {tipo:'proveedor',ic:'📦',who:'Insumos del Valle',role:'Tu proveedor hace 3 años',badge:'Proveedor',title:'Proveedor principal sube precios un 18 %',
-   msgs:['Estimado cliente, le escribimos por algo importante.','Por inflación y transporte, desde el lunes nuestros precios suben <b>18 %</b> 📈','Esperamos seguir trabajando juntos.'],
-   loc:'Zona Industrial · Av. Blanco Galindo, Cbba',opts:[
-     {lbl:'Aceptar y trasladar el alza al precio final',sub:'Proteges tu margen pero pierdes competitividad.',fx:{rent:6,eq:0,cli:-10,cre:-4,sos:0},r:'Gracias por entender. Eso sí, tus clientes van a notar el nuevo precio.'},
-     {lbl:'Negociar: 10 % a cambio de contrato exclusivo',sub:'Cedes menos y aseguras abastecimiento estable.',fx:{rent:-2,eq:4,cli:2,cre:4,sos:8},r:'10 % con exclusividad… nos conviene asegurar tu volumen. ¡Hecho! 📝'},
-     {lbl:'Buscar proveedores alternativos',sub:'Más independencia, pero riesgo de quedarte sin insumos.',fx:{rent:-6,eq:0,cli:-4,cre:8,sos:6},r:'Entendemos. Si no te va bien con los nuevos, aquí estaremos… o no 🤷'}]},
-  {tipo:'proveedor',ic:'🔗',who:'Altiplano Express',role:'Proveedor nuevo · La Paz',badge:'Proveedor',title:'Proveedor nuevo ofrece precio 25 % más bajo',
-   msgs:['¡Hola! Somos distribuidores de La Paz 🏔️','Te ofrecemos los mismos insumos <b>25 % más baratos</b> que tu proveedor actual.','¿Empezamos esta semana?'],
-   loc:'Contacto remoto · Sin referencias verificadas',opts:[
-     {lbl:'Cambiar al proveedor nuevo de inmediato',sub:'Máximo ahorro, pero sin red de seguridad si fallan.',fx:{rent:14,eq:0,cli:-8,cre:4,sos:-8},r:'¡Excelente decisión! El primer envío sale… cuando haya transporte 😅'},
-     {lbl:'Probar con un pedido pequeño primero',sub:'Verificas calidad y cumplimiento antes de comprometerte.',fx:{rent:4,eq:2,cli:0,cre:6,sos:4},r:'Me parece razonable. Te mandamos la muestra esta semana 📦'},
-     {lbl:'Usar la oferta para negociar con el actual',sub:'Bajas el precio sin cambiar de proveedor conocido.',fx:{rent:8,eq:2,cli:2,cre:0,sos:6},r:'Ah, ¿solo querías nuestro precio para negociar? Bueno… suerte con eso 😑'}]},
-  {tipo:'distribuidor',ic:'🚛',who:'Transportes Valle Alto',role:'Canal Quillacollo – Punata',badge:'Distribuidor',title:'Distribuidor quiere exclusividad regional',
-   msgs:['¡Buenas! Tenemos una propuesta grande 🚛','Si nos das <b>exclusividad regional</b>, aumentamos tu volumen un 40 %.','Eso sí: tendrías que dejar a tus otros distribuidores.'],
-   loc:'Valle Alto · Quillacollo – Punata',opts:[
-     {lbl:'Aceptar la exclusividad a cambio del volumen',sub:'Más ingresos, pero dependencia total de un solo canal.',fx:{rent:12,eq:0,cli:8,cre:6,sos:-8},r:'¡Excelente! Desde hoy solo trabajas con nosotros 🚛💨'},
-     {lbl:'Aceptar solo por 6 meses con revisión',sub:'Evalúas antes de comprometerte definitivamente.',fx:{rent:6,eq:2,cli:6,cre:4,sos:4},r:'Seis meses de prueba… justo. Hagamos que funcione 🤝'},
-     {lbl:'Rechazar y mantener diversidad de canales',sub:'Conservas flexibilidad estratégica a largo plazo.',fx:{rent:-4,eq:4,cli:-4,cre:2,sos:10},r:'Bueno, seguimos como hasta ahora. Tú te lo pierdes 🙃'}]},
-  {tipo:'distribuidor',ic:'📊',who:'Distribuidora Zona Sur',role:'Mueve el 25 % de tu volumen',badge:'Distribuidor',title:'Distribuidor pide rebaja del 15 % en precio mayorista',
-   msgs:['Hola, te hablo claro 📊','La competencia nos ofrece mejores condiciones. Necesitamos un <b>15 % menos</b> en el precio mayorista.','Si no, cambiamos de marca.'],
-   loc:'Zona Sur · Sacaba – Colcapirhua, Cbba',opts:[
-     {lbl:'Dar el 15 % que pide',sub:'Retienes el canal pero comprimes seriamente el margen.',fx:{rent:-14,eq:0,cli:6,cre:-2,sos:2},r:'¡Así me gusta! Seguimos trabajando 😁'},
-     {lbl:'Ofrecer 8 % + campaña de marketing conjunta',sub:'Cedes menos dinero y creas una alianza más profunda.',fx:{rent:-4,eq:4,cli:8,cre:8,sos:6},r:'8 % y campañas juntos… ¡me gusta la idea! Somos socios 🤜🤛'},
-     {lbl:'Proponer descuento escalonado por volumen',sub:'Más justo y escalable, aunque más complejo de gestionar.',fx:{rent:2,eq:2,cli:4,cre:6,sos:8},r:'Si vendo más, gano más descuento… me motiva. ¡Acepto! 📈'}]}
-];
 
-const OPPS=[
-  {ic:'🎪',title:'¡Feria de la Exposición de Cochabamba!',desc:'La Feria Internacional abre sus puertas. Oportunidad de presentar tu negocio ante miles de visitantes y compradores nacionales.',loc:'📍 Recinto Ferial · Evento anual más importante de la región',opts:[
-    {lbl:'Participar con stand completo',sub:'Inversión alta pero acceso a nuevos mercados.',fx:{rent:-8,eq:-4,cli:16,cre:20,sos:0}},
-    {lbl:'Participar con presencia mínima',sub:'Bajo costo, presencia moderada, aprendizaje sin riesgo.',fx:{rent:-2,eq:0,cli:8,cre:8,sos:4}},
-    {lbl:'No participar, enfocarse en lo local',sub:'Fortaleces el mercado actual sin distracciones.',fx:{rent:8,eq:4,cli:-4,cre:-8,sos:8}}]},
-  {ic:'🤝',title:'Propuesta de alianza estratégica local',desc:'Un negocio complementario propone compartir costos de distribución y recomendarse clientes mutuamente.',loc:'📍 Cochabamba · Ecosistema empresarial local',opts:[
-    {lbl:'Aceptar la alianza completa',sub:'Creces más rápido pero compartes información sensible.',fx:{rent:8,eq:4,cli:14,cre:14,sos:0}},
-    {lbl:'Proponer una prueba de 3 meses',sub:'Evalúas antes de comprometerte formalmente.',fx:{rent:4,eq:2,cli:8,cre:6,sos:6}},
-    {lbl:'Rechazar y crecer de forma independiente',sub:'Mantienes control total de tu estrategia.',fx:{rent:-4,eq:0,cli:-4,cre:-8,sos:10}}]},
-  {ic:'💳',title:'Acceso a crédito productivo del BDP',desc:'El Banco de Desarrollo Productivo ofrece un crédito a tasa preferencial para expansión. Requiere garantías y documentación formal.',loc:'📍 Oficinas BDP · Centro, Cochabamba',opts:[
-    {lbl:'Tomar el crédito completo y expandir',sub:'Creces rápido pero aumenta tu endeudamiento.',fx:{rent:-6,eq:0,cli:12,cre:18,sos:-6}},
-    {lbl:'Tomar el crédito solo para modernizar',sub:'Mejoras eficiencia sin exponerte a sobreexpandirte.',fx:{rent:8,eq:6,cli:4,cre:6,sos:4}},
-    {lbl:'Rechazar el crédito y crecer con recursos propios',sub:'Crecimiento más lento pero sin deuda adicional.',fx:{rent:4,eq:2,cli:-2,cre:-4,sos:12}}]}
-];
+
+
 
 const TIERS=[
   [78,'🏆 Visionario Empresarial','Gestión estratégica ejemplar. Pocas personas llegan a este nivel sin formación formal.'],
@@ -170,21 +107,7 @@ const TIERS=[
   [0,'📚 Futuro Estudiante de Negocios','Resultado crítico… y es exactamente por qué existe la carrera de Negocios.']
 ];
 
-/* Malla NGE 2026 (unifranz.edu.bo) — cada decisión enlazada con su materia */
-const MALLA=[
-  {ic:'💰',a:'Repartieron Bs 100.000 con criterio',s:'Técnicas Básicas de Gestión Contable Financiera',sem:'1.er semestre'},
-  {ic:'📊',a:'Leyeron el impacto en 5 indicadores',s:'Análisis Financiero y Decisiones Estratégicas',sem:'4.º semestre'},
-  {ic:'🛡️',a:'Se protegieron ante el entorno (o no)',s:'Análisis del Entorno Económico y Financiero',sem:'2.º semestre'},
-  {ic:'✏️',a:'Bocetaron su plan antes de invertir',s:'Lean Startup y Modelos de Negocio',sem:'3.er semestre'},
-  {ic:'🏗️',a:'Diseñaron su organigrama',s:'Fundamentos de Gestión Empresarial',sem:'1.er semestre'},
-  {ic:'👥',a:'Pusieron a cada persona en su lugar',s:'Gestión del Talento Humano',sem:'4.º semestre'},
-  {ic:'🧭',a:'Lideraron al equipo en la decisión',s:'Liderazgo Organizacional',sem:'2.º semestre'},
-  {ic:'🚧',a:'Resolvieron una crisis de abastecimiento',s:'Innovación en Logística y Supply Chain',sem:'4.º semestre'},
-  {ic:'🤝',a:'Negociaron con cliente, proveedor y distribuidor',s:'Métodos Alternativos de Solución de Controversias',sem:'Electiva · 3.er semestre'},
-  {ic:'📣',a:'Invirtieron (o no) en atraer clientes',s:'Fundamentos de Marketing Digital',sem:'2.º semestre'},
-  {ic:'💳',a:'Evaluaron una oportunidad y un crédito',s:'Finanzas para Emprendedores',sem:'Mención Startups'},
-  {ic:'📈',a:'Interpretaron su radar de desempeño',s:'Business Intelligence y Análisis Prescriptivo',sem:'Mención Analítica'}
-];
+
 const YEARS=[
   {n:'1',t:'Fundamentos',l:['Fundamentos de Gestión Empresarial','Gestión Contable Financiera','Marketing Digital','Liderazgo Organizacional']},
   {n:'2',t:'Estrategia y datos',l:['Lean Startup y Modelos de Negocio','Inteligencia Artificial Aplicada','Planificación Estratégica','Análisis Financiero']},

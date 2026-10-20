@@ -29,6 +29,7 @@ html = f"""<!DOCTYPE html>
 <style>
 {read("styles.css")}
 {read("board.css")}
+{read("styles3.css")}
 </style>
 </head>
 <body>
@@ -36,13 +37,15 @@ html = f"""<!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 {read("data.js")}
+{read("eventos.js")}
 {read("board.js")}
+{read("pizarra.js")}
 {app}
 </script>
 </body>
 </html>
 """
 (ROOT / "index.html").write_text(html, encoding="utf-8")
-(ROOT / "v2").mkdir(exist_ok=True)
-(ROOT / "v2" / "index.html").write_text(html, encoding="utf-8")  # misma app en una URL nueva (evita cachés viejas)
+(ROOT / "v3").mkdir(exist_ok=True)
+(ROOT / "v3" / "index.html").write_text(html, encoding="utf-8")  # versión actual en una URL nueva (evita cachés viejas); /v2/ queda congelada
 print("index.html generado:", round(len(html.encode("utf-8")) / 1024), "KB")

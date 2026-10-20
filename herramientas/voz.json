@@ -1,0 +1,257 @@
+[
+ {
+  "key": "bienvenida",
+  "voz": "sofia",
+  "text": "¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. Bienvenidos al Laboratorio de Decisiones Financieras de UNIFRANZ. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?"
+ },
+ {
+  "key": "intro_chi",
+  "voz": "sofia",
+  "text": "Ustedes dirigen la Chicharronería El Pairumani, un clásico familiar de la zona norte. Los domingos se llena, pero los costos del cerdo, el gas y el personal cambian cada semana. Su reto: crecer sin perder el sabor ni la caja."
+ },
+ {
+  "key": "crisis_chi_0",
+  "voz": "marcelo",
+  "text": "Último momento: escasez de cerdo en el trópico dispara el precio un treinta por ciento. Los restaurantes de Cochabamba ya sienten el golpe."
+ },
+ {
+  "key": "crisis_chi_1",
+  "voz": "marcelo",
+  "text": "Último momento: la Intendencia Municipal intensifica inspecciones sanitarias en restaurantes de la zona norte. Hay locales clausurados."
+ },
+ {
+  "key": "opp_chi_0",
+  "voz": "marcelo",
+  "text": "Atención: se acerca Urkupiña y Quillacollo espera a más de un millón de visitantes. Los negocios gastronómicos se preparan."
+ },
+ {
+  "key": "opp_chi_1",
+  "voz": "marcelo",
+  "text": "Atención: un influencer gastronómico con cien mil seguidores recorre Cochabamba buscando el mejor chicharrón."
+ },
+ {
+  "key": "intro_tra",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Cocha Express, transporte de pasajeros y encomiendas desde la Terminal de Cochabamba. Cada día salen buses a La Paz, Oruro y Santa Cruz. Su reto: llegar siempre, aunque el camino se complique."
+ },
+ {
+  "key": "crisis_tra_0",
+  "voz": "marcelo",
+  "text": "Último momento: los transportistas anuncian un bloqueo de setenta y dos horas en la carretera al occidente. Cientos de pasajeros quedan varados."
+ },
+ {
+  "key": "crisis_tra_1",
+  "voz": "marcelo",
+  "text": "Último momento: largas filas de camiones y buses en los surtidores por escasez de diésel en el país."
+ },
+ {
+  "key": "opp_tra_0",
+  "voz": "marcelo",
+  "text": "Atención: Oruro espera a medio millón de visitantes para el Carnaval. Las empresas de transporte compiten por los pasajeros."
+ },
+ {
+  "key": "opp_tra_1",
+  "voz": "marcelo",
+  "text": "Atención: las compras por internet crecen y las encomiendas entre ciudades se duplican en Bolivia."
+ },
+ {
+  "key": "intro_can",
+  "voz": "sofia",
+  "text": "Ustedes dirigen la Tienda Doña Rosario, un puesto de abarrotes en La Cancha, el mercado más grande de Bolivia. Venden mucho, pero ganan centavos por producto. Su reto: que la caja crezca sin perder a la clientela de siempre."
+ },
+ {
+  "key": "crisis_can_0",
+  "voz": "marcelo",
+  "text": "Último momento: falta aceite y azúcar en los mercados de Cochabamba y los precios se disparan por la especulación."
+ },
+ {
+  "key": "crisis_can_1",
+  "voz": "marcelo",
+  "text": "Último momento: fuertes lluvias inundan pasillos de La Cancha. Comerciantes reportan pérdidas de mercadería."
+ },
+ {
+  "key": "opp_can_0",
+  "voz": "marcelo",
+  "text": "Atención: cada vez más familias cochabambinas compran sus abarrotes por WhatsApp desde la casa."
+ },
+ {
+  "key": "opp_can_1",
+  "voz": "marcelo",
+  "text": "Atención: la Alcaldía lanza un programa de capacitación y créditos para comerciantes de mercados."
+ },
+ {
+  "key": "intro_art",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Llajta Manos, un taller de cerámica y textiles de Quillacollo que ya exporta a Europa. Cada pieza es única, pero producirlas toma tiempo. Su reto: crecer en el mundo sin perder la identidad."
+ },
+ {
+  "key": "crisis_art_0",
+  "voz": "marcelo",
+  "text": "Último momento: paro en el puerto de Arica retiene contenedores bolivianos. Exportadores temen perder pedidos."
+ },
+ {
+  "key": "crisis_art_1",
+  "voz": "marcelo",
+  "text": "Último momento: copias industriales de artesanía boliviana aparecen en tiendas en línea a mitad de precio."
+ },
+ {
+  "key": "opp_art_0",
+  "voz": "marcelo",
+  "text": "Atención: Bolivia es invitada de honor en una feria internacional de artesanía en Europa."
+ },
+ {
+  "key": "opp_art_1",
+  "voz": "marcelo",
+  "text": "Atención: el turismo vivencial crece en el valle de Cochabamba. Los visitantes quieren aprender de los artesanos."
+ },
+ {
+  "key": "intro_tec",
+  "voz": "sofia",
+  "text": "Ustedes dirigen KobolDev, una startup de la incubadora de UNIFRANZ que crea software para negocios de Cochabamba. Tienen talento y muchas ideas, pero cada mes la plata se va en sueldos y servidores. Su reto: crecer rápido sin quedarse sin caja."
+ },
+ {
+  "key": "crisis_tec_0",
+  "voz": "marcelo",
+  "text": "Último momento: un ataque informático secuestra los datos de varias empresas bolivianas y pide rescate en criptomonedas."
+ },
+ {
+  "key": "crisis_tec_1",
+  "voz": "marcelo",
+  "text": "Último momento: empresas extranjeras contratan programadores bolivianos de forma remota pagando en dólares."
+ },
+ {
+  "key": "opp_tec_0",
+  "voz": "marcelo",
+  "text": "Atención: una aceleradora internacional busca startups latinoamericanas. El premio: inversión y mentoría en Silicon Valley."
+ },
+ {
+  "key": "opp_tec_1",
+  "voz": "marcelo",
+  "text": "Atención: la Alcaldía de Cochabamba licita una aplicación para digitalizar trámites ciudadanos."
+ },
+ {
+  "key": "intro_imp",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Andes Global, una importadora de maquinaria en la Zona Franca. Venden equipos a constructoras y fábricas, pero compran en dólares y cobran en bolivianos. Su reto: sobrevivir al tipo de cambio y crecer con contratos grandes."
+ },
+ {
+  "key": "crisis_imp_0",
+  "voz": "marcelo",
+  "text": "Último momento: los bancos limitan la venta de dólares y el tipo de cambio paralelo se dispara. Los importadores no pueden pagar a sus proveedores."
+ },
+ {
+  "key": "crisis_imp_1",
+  "voz": "marcelo",
+  "text": "Último momento: paro portuario en Arica. Contenedores con destino a Bolivia acumulan semanas de retraso."
+ },
+ {
+  "key": "opp_imp_0",
+  "voz": "marcelo",
+  "text": "Atención: el Gobierno Municipal licita maquinaria pesada por más de dos millones de bolivianos."
+ },
+ {
+  "key": "opp_imp_1",
+  "voz": "marcelo",
+  "text": "Atención: fabricantes brasileños buscan representantes exclusivos en Bolivia."
+ },
+ {
+  "key": "intro_fin",
+  "voz": "sofia",
+  "text": "Ustedes dirigen la Cooperativa Señor de Mayo, en Punata. Guardan los ahorros y prestan dinero a familias y productores del Valle Alto. Su mayor activo no es el dinero: es la confianza. Su reto: cuidarla."
+ },
+ {
+  "key": "crisis_fin_0",
+  "voz": "marcelo",
+  "text": "Último momento: un audio viral en redes asegura que una cooperativa del Valle Alto estaría en quiebra. Ahorristas hacen fila."
+ },
+ {
+  "key": "crisis_fin_1",
+  "voz": "marcelo",
+  "text": "Último momento: la sequía golpea al Valle Alto. Agricultores pierden cosechas y temen no poder pagar sus créditos."
+ },
+ {
+  "key": "opp_fin_0",
+  "voz": "marcelo",
+  "text": "Atención: el uso de pagos con código QR se dispara en Bolivia. Las entidades financieras corren a digitalizarse."
+ },
+ {
+  "key": "opp_fin_1",
+  "voz": "marcelo",
+  "text": "Atención: una aseguradora busca cooperativas para ofrecer microseguros contra sequía y helada."
+ },
+ {
+  "key": "intro_may",
+  "voz": "sofia",
+  "text": "Ustedes dirigen El Mayorista, una distribuidora de consumo masivo en la Avenida Oquendo. Sus camiones abastecen a cientos de tiendas, mercados y restaurantes. Ganan poco por producto y mucho por volumen. Su reto: que la mercadería nunca deje de moverse."
+ },
+ {
+  "key": "crisis_may_0",
+  "voz": "marcelo",
+  "text": "Último momento: la escasez de diésel paraliza camiones de distribución en Cochabamba. Tiendas de barrio reportan desabastecimiento."
+ },
+ {
+  "key": "crisis_may_1",
+  "voz": "marcelo",
+  "text": "Último momento: productos de contrabando inundan los mercados a precios más bajos que los de fábrica."
+ },
+ {
+  "key": "opp_may_0",
+  "voz": "marcelo",
+  "text": "Atención: crecen las plataformas para que las tiendas de barrio hagan sus pedidos desde el celular."
+ },
+ {
+  "key": "opp_may_1",
+  "voz": "marcelo",
+  "text": "Atención: marcas nacionales buscan distribuidores para el Trópico de Cochabamba, un mercado en crecimiento."
+ },
+ {
+  "key": "intro_hot",
+  "voz": "sofia",
+  "text": "Ustedes dirigen el Hostal Cordillera, en el centro histórico de Cochabamba. Reciben mochileros, familias y turistas extranjeros. En temporada alta no hay cama libre; en temporada baja, el silencio. Su reto: llenar el hostal todo el año."
+ },
+ {
+  "key": "crisis_hot_0",
+  "voz": "marcelo",
+  "text": "Último momento: los conflictos sociales y bloqueos provocan cancelaciones masivas de turistas en Bolivia."
+ },
+ {
+  "key": "crisis_hot_1",
+  "voz": "marcelo",
+  "text": "Último momento: SEMAPA anuncia corte de agua de cuarenta y ocho horas en el centro de Cochabamba."
+ },
+ {
+  "key": "opp_hot_0",
+  "voz": "marcelo",
+  "text": "Atención: el turismo de aventura crece en Cochabamba. El Parque Tunari y Torotoro atraen a miles de visitantes."
+ },
+ {
+  "key": "opp_hot_1",
+  "voz": "marcelo",
+  "text": "Atención: la Feria Internacional de Cochabamba y las festividades de agosto llenan los hoteles de la ciudad."
+ },
+ {
+  "key": "cierre_0",
+  "voz": "sofia",
+  "text": "¡Impresionante! Su gestión fue de nivel profesional. Imaginen lo que lograrán con cuatro años de formación en Negocios y Gestión Empresarial."
+ },
+ {
+  "key": "cierre_1",
+  "voz": "sofia",
+  "text": "¡Muy bien! Tomaron decisiones sólidas. En la carrera aprenderán a convertir esa intuición en método."
+ },
+ {
+  "key": "cierre_2",
+  "voz": "sofia",
+  "text": "Buen trabajo. Hubo aciertos y también decisiones costosas; justamente eso se aprende en Negocios y Gestión Empresarial."
+ },
+ {
+  "key": "cierre_3",
+  "voz": "sofia",
+  "text": "Su empresa sobrevivió con dificultades. Lo importante es que hoy descubrieron por qué cada decisión importa."
+ },
+ {
+  "key": "cierre_4",
+  "voz": "sofia",
+  "text": "Fue un reto duro, y está bien: así empiezan los grandes gerentes. Revisen su tablero y descubran qué materias les ayudarían."
+ }
+]
