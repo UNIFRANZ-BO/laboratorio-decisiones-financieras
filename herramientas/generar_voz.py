@@ -23,8 +23,14 @@ async def main():
         if dst.exists() and not todo:
             continue
         v = VOCES[it["voz"]]
-        await edge_tts.Communicate(it["text"], v["voice"], rate=v["rate"], pitch=v["pitch"]).save(str(dst))
-        print("ok", dst.name)
+        for intento in range(4):  # el servicio a veces corta: reintenta
+            try:
+                await edge_tts.Communicate(it["text"], v["voice"], rate=v["rate"], pitch=v["pitch"]).save(str(dst))
+                print("ok", dst.name)
+                break
+            except Exception as e:
+                print("reintento", dst.name, type(e).__name__)
+                await asyncio.sleep(2)
     total = sum(f.stat().st_size for f in OUT.glob("*.mp3"))
     print(f"{len(list(OUT.glob('*.mp3')))} archivos · {total/1024/1024:.1f} MB")
 

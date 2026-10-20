@@ -491,26 +491,6 @@ const BENCH={
   hot:{mkt:25,ops:20,rrhh:20,inf:20,res:15}
 };
 
-/* Candidatos (contratación hasta 10). fit: 2 clave · 1 útil · 0 no aporta */
-const CANDS=[
-  {id:'p_ven',av:'👩‍💼',name:'Vale',role:'Vendedora nata',dept:'ven',sal:3800,fit:{chi:1,tra:1,can:2,art:1,tec:1,imp:2,fin:1,may:2,hot:1}},
-  {id:'p_coc',av:'👨‍🍳',name:'Don Rodo',role:'Cocinero con 20 años de oficio',dept:'prod',sal:3200,fit:{chi:2,hot:1}},
-  {id:'p_cho',av:'🚌',name:'Wilo',role:'Chofer profesional (licencia C)',dept:'prod',sal:3500,fit:{tra:2,may:2,imp:1}},
-  {id:'p_mec',av:'🔧',name:'Freddy',role:'Mecánico automotriz',dept:'prod',sal:3800,fit:{tra:2,may:1,imp:2}},
-  {id:'p_dev',av:'👩‍💻',name:'Sofi',role:'Programadora full-stack',dept:'inn',sal:7500,fit:{tec:2,fin:1}},
-  {id:'p_ti',av:'🧑‍🔧',name:'Tito',role:'Técnico de soporte TI',dept:'inn',sal:4200,fit:{tec:2,fin:2,imp:1,may:1}},
-  {id:'p_dat',av:'📊',name:'Nico',role:'Analista de datos',dept:'inn',sal:6000,fit:{tec:2,fin:2,may:2,imp:1,can:1}},
-  {id:'p_dis',av:'🎨',name:'Majo',role:'Diseñadora y community manager',dept:'ven',sal:4000,fit:{art:2,hot:2,tec:1,chi:1,can:1,fin:1}},
-  {id:'p_cont',av:'🧮',name:'Javi',role:'Contador público',dept:'adm',sal:5000,fit:{chi:1,tra:1,can:1,art:1,tec:1,imp:2,fin:2,may:2,hot:1}},
-  {id:'p_ate',av:'🙋‍♀️',name:'Marce',role:'Atención al cliente (inglés básico)',dept:'aten',sal:3200,fit:{hot:2,fin:2,tra:1,can:1,tec:1,chi:1,art:1}},
-  {id:'p_art',av:'🏺',name:'Doña Juana',role:'Artesana ceramista',dept:'prod',sal:3000,fit:{art:2}},
-  {id:'p_alm',av:'📦',name:'Ronald',role:'Encargado de almacén y logística',dept:'prod',sal:3200,fit:{may:2,imp:2,can:1,art:1,tra:1}},
-  {id:'p_cred',av:'🏦',name:'Paola',role:'Asesora de créditos',dept:'ven',sal:4500,fit:{fin:2}},
-  {id:'p_com',av:'🌎',name:'Kevin',role:'Comercio exterior y aduanas',dept:'adm',sal:6000,fit:{imp:2,art:1}},
-  {id:'p_guia',av:'🗺️',name:'Luz',role:'Guía turística bilingüe',dept:'aten',sal:3500,fit:{hot:2,art:1}},
-  {id:'p_lim',av:'🧹',name:'Rosa',role:'Limpieza y mantenimiento',dept:'prod',sal:2700,fit:{hot:2,chi:1,can:1}},
-  {id:'p_abo',av:'⚖️',name:'Dra. Ruiz',role:'Abogada corporativa',dept:'adm',sal:6500,fit:{fin:2,imp:1}}
-];
 const TEAM_MIN=3,TEAM_MAX=10;
 
 /* Competencias (resultados y comparación con el perfil de egreso NGE) */
@@ -551,8 +531,8 @@ const MALLA_MAP=[
 /* Logros */
 const LOGROS=[
   {id:'escudo',ic:'🛡️',n:'Escudo previsor',d:'Reserva de al menos 15 %.',t:s=>s.cap.res>=15000},
-  {id:'ojo',ic:'🔎',n:'Ojo de reclutador',d:'Nadie contratado “sin relación” con el rubro y 3+ perfiles clave.',t:s=>s.hireEval.none===0&&s.hireEval.key>=3},
-  {id:'planilla',ic:'🧾',n:'Planilla sana',d:'La planilla cupo en el presupuesto de talento.',t:s=>s.payroll<=s.cap.rrhh},
+  {id:'ojo',ic:'🔎',n:'Ojo de reclutador',d:'Cubrieron las funciones críticas sin contratar a nadie “sin relación” con el rubro.',t:s=>s.hireEval.none===0&&!s.critMiss.length},
+  {id:'planilla',ic:'🧾',n:'Planilla sana',d:'La planilla cupo en el presupuesto de talento.',t:s=>s.hires.length>0&&s.payroll<=(s.capL.pla||0)},
   {id:'ganar',ic:'🤝',n:'Maestro ganar-ganar',d:'Las 3 negociaciones con la mejor práctica.',t:s=>s.negQ.filter(q=>q===2).length===3},
   {id:'rayo',ic:'⚡',n:'Decisión relámpago',d:'Resolvieron la crisis en menos de 25 s.',t:s=>s.crisisTime>0&&s.crisisTime<25},
   {id:'visual',ic:'✏️',n:'Pensamiento visual',d:'Usaron las dos pizarras.',t:s=>s.boards.d1&&s.boards.d2},

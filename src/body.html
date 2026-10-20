@@ -108,6 +108,7 @@
       <h2 class="h2">¿Qué negocio <span class="gt">cochabambino</span> dirigirán?</h2>
       <p class="lead">Toca una carta para ver su historia. Cada negocio tiene su propio reto financiero.</p>
     </div>
+    <div class="bfilter" id="bfilter"></div>
     <div class="bgrid" id="bgrid"></div>
     <div class="bdots" id="bdots"></div>
   </div>
@@ -164,7 +165,7 @@
     <div class="ph-head">
       <span class="tag">Fase 3 · Gestión financiera</span>
       <h2 class="h2">Repartan sus <span class="gt">Bs 100.000</span></h2>
-      <p class="lead">Llenen los 5 frascos hasta usar <strong>exactamente</strong> Bs 100.000. El fondo de emergencia los protege si llega una crisis.</p>
+      <p class="lead">Repartan <strong>exactamente</strong> Bs 100.000 entre las partidas de su negocio. Incluyan <strong>sueldos del equipo</strong> y un <strong>fondo de emergencia</strong>.</p>
     </div>
     <div class="cap-layout">
       <div>
@@ -216,7 +217,7 @@
     <div class="ph-head">
       <span class="tag">Fase 5 · Contratación</span>
       <h2 class="h2">Contraten a su <span class="gt">equipo</span></h2>
-      <p class="lead">Elijan de <strong>3 a 10 personas</strong>. Cada sueldo sale de su presupuesto de <strong>Talento</strong>. Ojo: no todos sirven para su rubro.</p>
+      <p class="lead">Elijan de <strong>3 a 10 personas</strong>. Los sueldos se pagan con su partida de <strong>Sueldos del equipo</strong>. Ojo: no todos sirven para su rubro.</p>
     </div>
     <div class="hire-bar glass" id="hire-bar">
       <div class="hb-count"><div class="ring" id="hb-ring"><b id="hb-n">0</b></div><span>de 10<br>personas</span></div>
@@ -225,7 +226,9 @@
         <div class="hb-nums"><b id="hb-pay">Bs 0</b><span id="hb-bud">de Bs 0</span></div>
         <div class="hb-warn" id="hb-warn"></div></div>
       <div class="hb-depts" id="hb-depts"></div>
+      <button class="btn-ghost hb-adj" onclick="openPla()">↔️ Ajustar planilla</button>
     </div>
+    <p class="cand-note">Tienen <b id="cand-count">0</b> candidatos. Algunos son clave para su rubro, otros útiles… y otros no aportan nada. ¡Elijan bien!</p>
     <div class="cands" id="cands"></div>
     <div id="just-team"></div>
   </div>
@@ -476,6 +479,15 @@
   <svg id="dash-radar" viewBox="-75 0 570 400" class="big-radar"></svg>
   <div id="dash-evo"></div>
   <div id="dash-donut"></div>
+</div></div>
+
+<!-- Ajustar planilla -->
+<div class="modal" id="m-pla"><div class="card">
+  <h3>↔️ Ajustar la planilla</h3>
+  <p>Pasen dinero de otras partidas a <b>Sueldos del equipo</b> sin volver atrás. El total sigue siendo Bs 100.000.</p>
+  <div class="pla-sum"><div><small>Planilla disponible</small><b id="pla-now">Bs 0</b></div><div><small>Sueldos elegidos</small><b id="pla-need">Bs 0</b></div></div>
+  <div id="pla-list"></div>
+  <div class="row"><button class="btn" onclick="closeModal('m-pla')">Listo</button></div>
 </div></div>
 
 <!-- Detalle de materia -->

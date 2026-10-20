@@ -41,6 +41,8 @@ const CFG_DEF = [
 /* ═════════════ MENÚ ═════════════ */
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('🏆 Laboratorio')
+    .addItem('🛠️ Panel de control (seguro)', 'abrirPanel')
+    .addSeparator()
     .addItem('📊 Resumen de una sala…', 'resumenSala')
     .addItem('📄 Exportar sala a hoja propia…', 'exportarSala')
     .addSeparator()
@@ -87,6 +89,13 @@ function preparar() {
   sa.getRange('F:G').setNumberFormat('dd/MM/yyyy HH:mm');
   sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
   sa.setFrozenRows(1); sa.setColumnWidths(1, 7, 140);
+
+  // Protección: avisa antes de editar a mano las hojas que llena la app
+  [HOJA, HOJA_SALAS, HOJA_ARCH].forEach(n => {
+    const h = ss.getSheetByName(n); if (!h) return;
+    const ya = h.getProtections(SpreadsheetApp.ProtectionType.SHEET).length;
+    if (!ya) h.protect().setDescription('Datos del Laboratorio: usa el menú 🏆 Laboratorio para gestionarlos').setWarningOnly(true);
+  });
 
   ['Sheet1', 'Hoja 1', 'Hoja1'].forEach(n => { const h = ss.getSheetByName(n); if (h && h.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(h); });
   ss.setActiveSheet(sa);
@@ -162,7 +171,7 @@ function hoja_(nombre) {
   const ss = SpreadsheetApp.getActive();
   return ss.getSheetByName(nombre) || ss.insertSheet(nombre);
 }
-function limpiaSala_(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); }
+function limpiaSala_(s) { const v = String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); return v === 'TODAS' ? v : v.slice(0, 6); }
 function filas_() {
   const sh = hoja_(HOJA);
   const n = sh.getLastRow() - 1;
@@ -239,6 +248,150 @@ function borrarFilas_(pred) {
   return k;
 }
 
+/* Núcleo de cada acción: lo usan el menú y el panel de control */
+function exportarSala_(sala) {
+  const rows = filas_().filter(r => r[C.sala] === sala)
+    .sort((a, b) => (b[C.puntaje] === '' ? -1 : b[C.puntaje]) - (a[C.puntaje] === '' ? -1 : a[C.puntaje]));
+  if (!rows.length) return 'La sala ' + sala + ' no tiene datos.';
+  const ss = SpreadsheetApp.getActive();
+  const nombre = 'Sala ' + sala;
+  const old = ss.getSheetByName(nombre); if (old) ss.deleteSheet(old);
+  const sh = ss.insertSheet(nombre);
+  const cols = COLS.filter((_, i) => i !== C.id);
+  sh.getRange(1, 1, 1, cols.length).setValues([cols]).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
+  sh.getRange(2, 1, rows.length, cols.length).setValues(rows.map(r => r.filter((_, i) => i !== C.id)));
+  sh.setFrozenRows(1); sh.setColumnWidths(1, cols.length, 120); sh.setColumnWidths(21, 5, 300);
+  sh.getRange(2, 21, rows.length, 5).setWrap(true);
+  ss.setActiveSheet(sh);
+  return '📄 Hoja «' + nombre + '» creada con ' + rows.length + ' filas, ordenadas por puntaje. Se descarga en Archivo → Descargar.';
+}
+function alternarSala_(sala) {
+  const l = salasCerradas_(); const i = l.indexOf(sala);
+  if (i >= 0) { l.splice(i, 1); setCfg_('Salas cerradas', l.join(', ')); return '🔓 La sala ' + sala + ' está abierta otra vez.'; }
+  l.push(sala); setCfg_('Salas cerradas', l.join(', '));
+  return '🔒 Sala ' + sala + ' cerrada: ya no recibe resultados nuevos. Su ranking se sigue viendo.';
+}
+function alternarRegistro_() {
+  const nuevo = String(cfg_('Registro abierto') || 'SÍ').toUpperCase() === 'NO' ? 'SÍ' : 'NO';
+  setCfg_('Registro abierto', nuevo);
+  return nuevo === 'SÍ' ? '▶️ Registro abierto: las salas abiertas vuelven a recibir datos.' : '⏸️ Registro pausado: ninguna sala recibe datos nuevos.';
+}
+function limpiarIncompletos_(sala) {
+  const horas = Number(cfg_('Retener incompletos (horas)')) || 0;
+  const lim = Date.now() - horas * 3600000;
+  const pred = r => (sala === 'TODAS' || r[C.sala] === sala) && r[C.puntaje] === '' && (!(r[C.act] instanceof Date) || r[C.act].getTime() < lim);
+  const k = borrarFilas_(pred);
+  return k ? '🧹 ' + k + ' filas sin terminar borradas (más de ' + horas + ' h sin actividad).' : 'No había incompletos con más de ' + horas + ' h sin actividad.';
+}
+function archivarSala_(sala) {
+  const rows = filas_().filter(r => r[C.sala] === sala);
+  if (!rows.length) return 'La sala ' + sala + ' no tiene datos.';
+  const ar = hoja_(HOJA_ARCH);
+  if (ar.getLastRow() === 0) {
+    ar.getRange(1, 1, 1, COLS.length + 1).setValues([COLS.concat(['Archivado'])]).setFontWeight('bold').setBackground('#7A6A82').setFontColor('#FFFFFF');
+    ar.setFrozenRows(1);
+    ar.protect().setDescription('Archivo del Laboratorio').setWarningOnly(true);
+  }
+  const now = new Date();
+  ar.getRange(ar.getLastRow() + 1, 1, rows.length, COLS.length + 1).setValues(rows.map(r => r.concat([now])));
+  borrarFilas_(r => r[C.sala] === sala);
+  return '📦 ' + rows.length + ' filas de la sala ' + sala + ' archivadas. La evidencia quedó en la hoja «Archivo».';
+}
+function borrarSala_(sala) {
+  const k = borrarFilas_(r => r[C.sala] === sala);
+  return k ? '🗑️ ' + k + ' filas de la sala ' + sala + ' borradas definitivamente.' : 'La sala ' + sala + ' no tenía datos.';
+}
+
+/* ═════════════ PANEL DE CONTROL (barra lateral) ═════════════ */
+function abrirPanel() {
+  const html = HtmlService.createHtmlOutput(PANEL_HTML).setTitle('🏆 Laboratorio · Panel de control');
+  SpreadsheetApp.getUi().showSidebar(html);
+}
+function panelDatos() {
+  const st = {};
+  filas_().forEach(r => {
+    const s = r[C.sala]; if (!s) return;
+    st[s] = st[s] || { sala: s, n: 0, fin: 0, suma: 0, ult: 0, pdf: 0 };
+    st[s].n++; if (r[C.puntaje] !== '') { st[s].fin++; st[s].suma += Number(r[C.puntaje]); }
+    if (r[C.pdf]) st[s].pdf++;
+    const t = r[C.act] instanceof Date ? r[C.act].getTime() : 0; if (t > st[s].ult) st[s].ult = t;
+  });
+  const cerr = salasCerradas_(), tz = Session.getScriptTimeZone();
+  let carpeta = '';
+  try { const id = cfg_('Carpeta Drive de informes (ID)'); if (id) carpeta = DriveApp.getFolderById(id).getUrl(); } catch (e) {}
+  return {
+    abierto: String(cfg_('Registro abierto') || 'SÍ').toUpperCase() !== 'NO', carpeta: carpeta,
+    salas: Object.values(st).sort((a, b) => b.ult - a.ult).map(x => ({ sala: x.sala, n: x.n, fin: x.fin, pdf: x.pdf,
+      prom: x.fin ? Math.round(x.suma / x.fin) : null, cerrada: cerr.indexOf(x.sala) >= 0,
+      ult: x.ult ? Utilities.formatDate(new Date(x.ult), tz, 'dd/MM HH:mm') : '' }))
+  };
+}
+function panelAccion(accion, sala, confirmacion) {
+  sala = sala === 'TODAS' ? 'TODAS' : limpiaSala_(sala);
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    if (accion === 'registro') return alternarRegistro_();
+    if (!sala) return '⚠️ Falta el código de sala.';
+    if (accion === 'resumen') {
+      const fin = leerSala_(sala).filter(x => x.puntaje !== '').sort((a, b) => b.puntaje - a.puntaje);
+      return fin.length ? fin.map((x, i) => (i + 1) + '. ' + x.nombre + ' — ' + x.puntaje + ' pts').join('\n') : 'Nadie terminó todavía en la sala ' + sala + '.';
+    }
+    if (accion === 'exportar') return exportarSala_(sala);
+    if (accion === 'cerrar') return alternarSala_(sala);
+    if (accion === 'limpiar') return limpiarIncompletos_(sala);
+    if (accion === 'archivar') return archivarSala_(sala);
+    if (accion === 'borrar') {
+      if (String(confirmacion || '').toUpperCase().trim() !== sala) return '✋ No se borró nada: para confirmar escribe exactamente el código ' + sala + '.';
+      return borrarSala_(sala);
+    }
+    return 'Acción desconocida.';
+  } finally { lock.releaseLock(); }
+}
+const PANEL_HTML = `<!doctype html><html><head><base target="_top"><style>
+body{font-family:Arial,sans-serif;margin:0;padding:12px;color:#1d1626;font-size:13px}
+h3{margin:4px 0 8px;font-size:15px}
+.top{display:flex;gap:6px;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:#FFF3E6;margin-bottom:10px}
+.pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px}
+.on{background:#E8F9D0;color:#3c6b00}.off{background:#FFDCE0;color:#a3172a}
+button{font:inherit;cursor:pointer;border:1px solid #e3d6c6;background:#fff;border-radius:8px;padding:6px 8px;font-size:12px}
+button:hover{background:#FFF3E6}button.prim{background:#FF8A00;color:#fff;border-color:#FF8A00;font-weight:700}
+button.dang{color:#a3172a;border-color:#f3c0c6}
+.sala{border:1px solid #eee;border-radius:10px;padding:10px;margin-bottom:8px}
+.sala b{font-size:15px;letter-spacing:1px}.meta{color:#6b6475;font-size:11.5px;margin:3px 0 8px}
+.acts{display:flex;flex-wrap:wrap;gap:5px}
+#msg{white-space:pre-wrap;padding:10px;border-radius:10px;background:#F4F1FA;margin:10px 0;display:none}
+.vac{color:#6b6475;padding:20px;text-align:center}
+a{color:#c2410c}
+</style></head><body>
+<h3>🏆 Panel de control</h3>
+<div class="top"><span>Registro de resultados: <span id="reg" class="pill"></span></span><button onclick="act(\'registro\')">⏯️ Cambiar</button></div>
+<div id="carp"></div>
+<div id="msg"></div>
+<div id="lista"><div class="vac">Cargando…</div></div>
+<p style="font-size:11px;color:#6b6475">Las hojas Ranking, Salas y Archivo están protegidas: Google te avisará si intentas editarlas a mano. Usa este panel para gestionarlas sin riesgos.</p>
+<button onclick="cargar()">🔄 Actualizar</button>
+<script>
+function msg(t){var m=document.getElementById(\'msg\');m.style.display=\'block\';m.textContent=t}
+function cargar(){google.script.run.withSuccessHandler(pintar).withFailureHandler(function(e){msg(\'Error: \'+e.message)}).panelDatos()}
+function pintar(d){
+  var r=document.getElementById(\'reg\');r.textContent=d.abierto?\'ABIERTO\':\'PAUSADO\';r.className=\'pill \'+(d.abierto?\'on\':\'off\');
+  document.getElementById(\'carp\').innerHTML=d.carpeta?\'<p>📁 <a href="\'+d.carpeta+\'" target="_blank">Abrir carpeta de informes PDF</a></p>\':\'\';
+  var L=document.getElementById(\'lista\');
+  if(!d.salas.length){L.innerHTML=\'<div class="vac">Aún no hay salas registradas.</div>\';return}
+  L.innerHTML=d.salas.map(function(s){return \'<div class="sala"><b>\'+s.sala+\'</b> \'+(s.cerrada?\'<span class="pill off">🔒 cerrada</span>\':\'<span class="pill on">abierta</span>\')+
+   \'<div class="meta">\'+s.n+\' participantes · \'+s.fin+\' terminaron\'+(s.prom!==null?\' · promedio \'+s.prom:\'\')+\' · \'+s.pdf+\' PDF · \'+s.ult+\'</div><div class="acts">\'+
+   \'<button onclick="act(\\'resumen\\',\\'\'+s.sala+\'\\')">📊 Resumen</button>\'+
+   \'<button onclick="act(\\'exportar\\',\\'\'+s.sala+\'\\')">📄 Exportar</button>\'+
+   \'<button onclick="act(\\'cerrar\\',\\'\'+s.sala+\'\\')">\'+(s.cerrada?\'🔓 Abrir\':\'🔒 Cerrar\')+\'</button>\'+
+   \'<button onclick="act(\\'limpiar\\',\\'\'+s.sala+\'\\')">🧹 Limpiar incompletos</button>\'+
+   \'<button onclick="if(confirm(\\'¿Archivar la sala \'+s.sala+\'? Dejará de verse en el ranking, pero se conserva en la hoja Archivo.\\'))act(\\'archivar\\',\\'\'+s.sala+\'\\')">📦 Archivar</button>\'+
+   \'<button class="dang" onclick="borrar(\\'\'+s.sala+\'\\')">🗑️ Borrar</button></div></div>\'}).join(\'\');
+}
+function act(a,s,c){msg(\'⏳ Procesando…\');google.script.run.withSuccessHandler(function(t){msg(t);cargar()}).withFailureHandler(function(e){msg(\'Error: \'+e.message)}).panelAccion(a,s||\'\',c||\'\')}
+function borrar(s){var c=prompt(\'Esto borra DEFINITIVAMENTE la sala \'+s+\'. Para confirmar, escribe el código de la sala:\');if(c!==null)act(\'borrar\',s,c)}
+cargar();
+</script></body></html>`;
+
 function resumenSala() {
   const ui = SpreadsheetApp.getUi();
   const sala = pedirSala_('📊 Resumen de sala', 'que quieres ver'); if (!sala) return;
@@ -254,79 +407,30 @@ function resumenSala() {
 }
 
 function exportarSala() {
-  const ui = SpreadsheetApp.getUi();
   const sala = pedirSala_('📄 Exportar sala', 'que quieres exportar'); if (!sala) return;
-  const rows = filas_().filter(r => r[C.sala] === sala)
-    .sort((a, b) => (b[C.puntaje] === '' ? -1 : b[C.puntaje]) - (a[C.puntaje] === '' ? -1 : a[C.puntaje]));
-  if (!rows.length) { ui.alert('La sala ' + sala + ' no tiene datos.'); return; }
-  const ss = SpreadsheetApp.getActive();
-  const nombre = 'Sala ' + sala;
-  const old = ss.getSheetByName(nombre); if (old) ss.deleteSheet(old);
-  const sh = ss.insertSheet(nombre);
-  const cols = COLS.filter((_, i) => i !== C.id);
-  sh.getRange(1, 1, 1, cols.length).setValues([cols]).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
-  sh.getRange(2, 1, rows.length, cols.length).setValues(rows.map(r => r.filter((_, i) => i !== C.id)));
-  sh.setFrozenRows(1); sh.setColumnWidths(1, cols.length, 120); sh.setColumnWidths(21, 5, 300);
-  sh.getRange(2, 21, rows.length, 5).setWrap(true);
-  ss.setActiveSheet(sh);
-  ui.alert('Listo: hoja «' + nombre + '» con ' + rows.length + ' filas, ordenadas por puntaje.\nPuedes descargarla en Archivo → Descargar.');
+  SpreadsheetApp.getUi().alert(exportarSala_(sala));
 }
-
 function alternarSala() {
-  const ui = SpreadsheetApp.getUi();
   const sala = pedirSala_('🔒 Cerrar o abrir sala', 'que quieres cerrar o volver a abrir'); if (!sala) return;
-  const l = salasCerradas_();
-  const i = l.indexOf(sala);
-  if (i >= 0) { l.splice(i, 1); setCfg_('Salas cerradas', l.join(', ')); ui.alert('🔓 La sala ' + sala + ' está abierta otra vez.'); }
-  else { l.push(sala); setCfg_('Salas cerradas', l.join(', ')); ui.alert('🔒 Sala ' + sala + ' cerrada: ya no recibe resultados nuevos. Su ranking se sigue viendo.'); }
+  SpreadsheetApp.getUi().alert(alternarSala_(sala));
 }
-
-function alternarRegistro() {
-  const ui = SpreadsheetApp.getUi();
-  const now = String(cfg_('Registro abierto') || 'SÍ').toUpperCase() === 'NO' ? 'NO' : 'SÍ';
-  const nuevo = now === 'SÍ' ? 'NO' : 'SÍ';
-  setCfg_('Registro abierto', nuevo);
-  ui.alert(nuevo === 'SÍ' ? '▶️ Registro abierto: las salas abiertas vuelven a recibir datos.' : '⏸️ Registro pausado: ninguna sala recibe datos nuevos.');
-}
-
+function alternarRegistro() { SpreadsheetApp.getUi().alert(alternarRegistro_()); }
 function limpiarIncompletos() {
-  const ui = SpreadsheetApp.getUi();
-  const sala = pedirSala_('🧹 Limpiar incompletos', 'que quieres limpiar (escribe TODAS para todas)');
-  if (!sala) return;
-  const horas = Number(cfg_('Retener incompletos (horas)')) || 0;
-  const lim = Date.now() - horas * 3600000;
-  const pred = r => (sala === 'TODAS' || r[C.sala] === sala) && r[C.puntaje] === '' &&
-    (!(r[C.act] instanceof Date) || r[C.act].getTime() < lim);
-  const k = filas_().filter(pred).length;
-  if (!k) { ui.alert('No hay incompletos con más de ' + horas + ' h sin actividad en ' + (sala === 'TODAS' ? 'ninguna sala' : 'la sala ' + sala) + '.'); return; }
-  if (!confirmar_('Se borrarán ' + k + ' filas sin puntaje final (más de ' + horas + ' h sin actividad). ¿Continuar?')) return;
-  ui.alert(borrarFilas_(pred) + ' filas borradas.');
+  const sala = pedirSala_('🧹 Limpiar incompletos', 'que quieres limpiar (escribe TODAS para todas)'); if (!sala) return;
+  if (!confirmar_('Se borrarán las filas sin puntaje final con más de ' + (cfg_('Retener incompletos (horas)') || 0) + ' h sin actividad. ¿Continuar?')) return;
+  SpreadsheetApp.getUi().alert(limpiarIncompletos_(sala));
 }
-
 function archivarSala() {
-  const ui = SpreadsheetApp.getUi();
   const sala = pedirSala_('📦 Archivar sala', 'que quieres archivar'); if (!sala) return;
-  const rows = filas_().filter(r => r[C.sala] === sala);
-  if (!rows.length) { ui.alert('La sala ' + sala + ' no tiene datos.'); return; }
-  if (!confirmar_('Se moverán ' + rows.length + ' filas de la sala ' + sala + ' a la hoja «Archivo». Dejarán de verse en el ranking. ¿Continuar?')) return;
-  const ar = hoja_(HOJA_ARCH);
-  if (ar.getLastRow() === 0) {
-    ar.getRange(1, 1, 1, COLS.length + 1).setValues([COLS.concat(['Archivado'])]).setFontWeight('bold').setBackground('#7A6A82').setFontColor('#FFFFFF');
-    ar.setFrozenRows(1);
-  }
-  const now = new Date();
-  ar.getRange(ar.getLastRow() + 1, 1, rows.length, COLS.length + 1).setValues(rows.map(r => r.concat([now])));
-  borrarFilas_(r => r[C.sala] === sala);
-  ui.alert('📦 ' + rows.length + ' filas archivadas. La evidencia quedó en la hoja «Archivo».');
+  if (!confirmar_('La sala ' + sala + ' pasará a la hoja «Archivo» y dejará de verse en el ranking. ¿Continuar?')) return;
+  SpreadsheetApp.getUi().alert(archivarSala_(sala));
 }
-
 function borrarSala() {
   const ui = SpreadsheetApp.getUi();
   const sala = pedirSala_('🗑️ Borrar sala', 'que quieres BORRAR definitivamente'); if (!sala) return;
-  const k = filas_().filter(r => r[C.sala] === sala).length;
-  if (!k) { ui.alert('La sala ' + sala + ' no tiene datos.'); return; }
-  if (!confirmar_('Se borrarán definitivamente ' + k + ' filas de la sala ' + sala + '. Esto no se puede deshacer (usa «Archivar» si quieres conservarlas). ¿Continuar?')) return;
-  ui.alert(borrarFilas_(r => r[C.sala] === sala) + ' filas borradas.');
+  const r = ui.prompt('Confirmar borrado', 'Esto no se puede deshacer (usa «Archivar» si quieres conservarla).\nEscribe otra vez el código ' + sala + ' para confirmar:', ui.ButtonSet.OK_CANCEL);
+  if (r.getSelectedButton() !== ui.Button.OK || limpiaSala_(r.getResponseText()) !== sala) { ui.alert('No se borró nada.'); return; }
+  ui.alert(borrarSala_(sala));
 }
 
 /* ═════════════ INFORMES PDF EN DRIVE ═════════════ */

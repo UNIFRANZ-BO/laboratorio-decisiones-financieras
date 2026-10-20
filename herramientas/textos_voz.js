@@ -4,7 +4,7 @@ const fs = require('fs'), path = require('path'), vm = require('vm');
 const src = p => fs.readFileSync(path.join(__dirname, '..', 'src', p), 'utf8');
 const ctx = {};
 vm.createContext(ctx);
-vm.runInContext(src('data.js') + '\n' + src('eventos.js') + '\n;this.BIZS=BIZS;this.EV=EV;', ctx);
+vm.runInContext(src('data.js') + '\n' + src('eventos.js') + '\n' + src('rubros.js') + '\n;this.BIZS=BIZS;this.EV=EV;', ctx);
 const app = src('app.js');
 const bienvenida = app.match(/const BIENVENIDA='([^']+)'/)[1];
 const cierres = eval(app.match(/const C=(\[[\s\S]*?\]);/)[1]);

@@ -230,6 +230,156 @@
   "text": "Atención: la Feria Internacional de Cochabamba y las festividades de agosto llenan los hoteles de la ciudad."
  },
  {
+  "key": "intro_lac",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Lácteos Valle Lechero, una planta en Punata que transforma la leche de trescientas familias productoras en yogurt y quesos. Todo depende de la cadena de frío y de pagar puntual a los productores. Su reto: crecer sin cortar la leche, ni la confianza."
+ },
+ {
+  "key": "crisis_lac_0",
+  "voz": "marcelo",
+  "text": "Último momento: un corte eléctrico de doce horas afecta al Valle Alto. Las plantas lecheras temen perder su producción."
+ },
+ {
+  "key": "crisis_lac_1",
+  "voz": "marcelo",
+  "text": "Último momento: productores lecheros del Valle Alto exigen mejor precio y anuncian suspensión de entregas."
+ },
+ {
+  "key": "opp_lac_0",
+  "voz": "marcelo",
+  "text": "Atención: crece la demanda de quesos madurados gourmet en restaurantes y hoteles de Bolivia."
+ },
+ {
+  "key": "opp_lac_1",
+  "voz": "marcelo",
+  "text": "Atención: Perú abre cupos de importación para lácteos bolivianos."
+ },
+ {
+  "key": "intro_agr",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Trópico Fresh, una agroexportadora de Shinahota que envía banano y piña a Argentina y Chile. Cobran en dólares, pagan en bolivianos y dependen del clima y de las carreteras. Su reto: que la fruta llegue fresca, y que la plata vuelva."
+ },
+ {
+  "key": "crisis_agr_0",
+  "voz": "marcelo",
+  "text": "Último momento: lluvias torrenciales inundan cultivos en el Trópico de Cochabamba. Productores reportan grandes pérdidas."
+ },
+ {
+  "key": "crisis_agr_1",
+  "voz": "marcelo",
+  "text": "Último momento: un paro de transportistas cierra el paso fronterizo hacia Argentina. Camiones con fruta quedan varados."
+ },
+ {
+  "key": "opp_agr_0",
+  "voz": "marcelo",
+  "text": "Atención: Europa busca piña orgánica certificada de Sudamérica, y paga hasta el doble."
+ },
+ {
+  "key": "opp_agr_1",
+  "voz": "marcelo",
+  "text": "Atención: la fruta deshidratada boliviana gana mercado como snack saludable."
+ },
+ {
+  "key": "intro_cli",
+  "voz": "sofia",
+  "text": "Ustedes dirigen la Clínica Salud Cala Cala: consultorios, laboratorio y ecografía en la zona norte. Los equipos cuestan como una casa y cada paciente confía su salud a su equipo. Su reto: ser rentables sin dejar de cuidar a las personas."
+ },
+ {
+  "key": "crisis_cli_0",
+  "voz": "marcelo",
+  "text": "Último momento: el SEDES declara alerta por brote de dengue en Cochabamba. Los centros de salud están desbordados."
+ },
+ {
+  "key": "crisis_cli_1",
+  "voz": "marcelo",
+  "text": "Último momento: la falta de repuestos importados afecta a equipos médicos en clínicas de Cochabamba."
+ },
+ {
+  "key": "opp_cli_0",
+  "voz": "marcelo",
+  "text": "Atención: la telemedicina crece en Bolivia y los pacientes de provincias buscan consultas en línea."
+ },
+ {
+  "key": "opp_cli_1",
+  "voz": "marcelo",
+  "text": "Atención: los bancos ofrecen créditos productivos para equipamiento médico de alta tecnología."
+ },
+ {
+  "key": "intro_con",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Tunari Obras, una constructora de la zona sur que levanta viviendas y obras para el municipio. Cada proyecto mueve millones, pero el dinero entra por avance de obra y el cemento cambia de precio cada mes. Su reto: terminar las obras sin quedarse sin caja."
+ },
+ {
+  "key": "crisis_con_0",
+  "voz": "marcelo",
+  "text": "Último momento: escasez de cemento y fierro en el mercado nacional. Las obras se paralizan en varias ciudades."
+ },
+ {
+  "key": "crisis_con_1",
+  "voz": "marcelo",
+  "text": "Último momento: un accidente laboral en una obra de la zona sur deja a un trabajador herido. El Ministerio de Trabajo inspeccionará."
+ },
+ {
+  "key": "opp_con_0",
+  "voz": "marcelo",
+  "text": "Atención: el Estado lanza un programa de vivienda social y busca constructoras locales en Cochabamba."
+ },
+ {
+  "key": "opp_con_1",
+  "voz": "marcelo",
+  "text": "Atención: crece la demanda de departamentos en el sur de Cochabamba."
+ },
+ {
+  "key": "intro_sol",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Sol del Valle, una empresa que instala paneles solares en casas, colegios y fábricas de Cochabamba. Venden ahorro para el futuro, pero los paneles se compran en dólares y el cliente quiere pagar en cuotas. Su reto: hacer crecer la energía limpia sin quemar la caja."
+ },
+ {
+  "key": "crisis_sol_0",
+  "voz": "marcelo",
+  "text": "Último momento: el tipo de cambio paralelo encarece los equipos importados. Empresas de tecnología suspenden ventas."
+ },
+ {
+  "key": "crisis_sol_1",
+  "voz": "marcelo",
+  "text": "Último momento: la autoridad eléctrica cambia los requisitos para conectar sistemas solares a la red."
+ },
+ {
+  "key": "opp_sol_0",
+  "voz": "marcelo",
+  "text": "Atención: llegan más autos eléctricos a Bolivia y faltan estaciones de carga."
+ },
+ {
+  "key": "opp_sol_1",
+  "voz": "marcelo",
+  "text": "Atención: productores del Valle Alto buscan bombas solares para riego ante la sequía."
+ },
+ {
+  "key": "intro_cer",
+  "voz": "sofia",
+  "text": "Ustedes dirigen Llajta Brew, una cervecería artesanal de Tiquipaya que usa maíz y frutas del valle. La gente ama su sabor, pero compiten con una industria gigante que controla bares y distribuidores. Su reto: hacerse un espacio sin que los aplasten."
+ },
+ {
+  "key": "crisis_cer_0",
+  "voz": "marcelo",
+  "text": "Último momento: una gran cervecera ofrece refrigeradores gratis a bares de Cochabamba a cambio de exclusividad."
+ },
+ {
+  "key": "crisis_cer_1",
+  "voz": "marcelo",
+  "text": "Último momento: la autoridad sanitaria observa lotes de bebidas artesanales con registros desactualizados."
+ },
+ {
+  "key": "opp_cer_0",
+  "voz": "marcelo",
+  "text": "Atención: se viene el festival de cerveza artesanal más grande de Bolivia, con jurado internacional."
+ },
+ {
+  "key": "opp_cer_1",
+  "voz": "marcelo",
+  "text": "Atención: supermercados nacionales abren espacio para productos artesanales locales."
+ },
+ {
   "key": "cierre_0",
   "voz": "sofia",
   "text": "¡Impresionante! Su gestión fue de nivel profesional. Imaginen lo que lograrán con cuatro años de formación en Negocios y Gestión Empresarial."

@@ -148,7 +148,7 @@ function donut(el,cap,o){
 ═══════════════════════════════════════ */
 function newState(prev){return{
   id:uid(),mode:prev?prev.mode:'team',name:prev?prev.name:'',av:prev?prev.av:'🦊',members:prev?prev.members:[],sala:prev?prev.sala:'',
-  biz:null,cap:{mkt:0,ops:0,rrhh:0,inf:0,res:0},hires:[],payroll:0,resEff:0,
+  biz:null,cap:{mkt:0,ops:0,rrhh:0,inf:0,res:0},capL:{},hires:[],candIds:null,critMiss:[],payroll:0,resEff:0,
   met:{rent:50,eq:50,cli:50,cre:50,sos:50},noRes:false,hist:[],
   crisis:null,cIdx:0,cOpt:null,timedOut:false,crisisT0:0,crisisTime:0,cRes:null,
   negs:[],negOpts:[null,null,null],negRes:[null,null,null],negRound:0,
@@ -166,7 +166,7 @@ const SOLO={
   '#ph-capital .lead':'Llena los 5 frascos hasta usar <strong>exactamente</strong> Bs 100.000. El fondo de emergencia te protege si llega una crisis.',
   '#ph-draw2 .h2':'Diseña tu <span class="gt">organigrama</span>',
   '#ph-team .h2':'Contrata a tu <span class="gt">equipo</span>',
-  '#ph-team .lead':'Elige de <strong>3 a 10 personas</strong>. Cada sueldo sale de tu presupuesto de <strong>Talento</strong>. Ojo: no todos sirven para tu rubro.',
+  '#ph-team .lead':'Elige de <strong>3 a 10 personas</strong>. Los sueldos se pagan con tu partida de <strong>Sueldos del equipo</strong>. Ojo: no todos sirven para tu rubro.',
   '#ph-transfer .h2':'De tu empresa a <span class="gt">tu vida personal</span>'
 };
 function applyModeTexts(){
@@ -265,8 +265,13 @@ async function startGame(){
 /* ═══════════════════════════════════════
    FASE 1 — NEGOCIO + MISIÓN
 ═══════════════════════════════════════ */
+let bizFilter='all';
+const BF=[['all','Todos'],['1','★ Fácil'],['3','★★★ Medio'],['4','★★★★ Experto']];
+function setBizFilter(f){bizFilter=f;Snd.click();initSelect()}
 function initSelect(){
-  $('bgrid').innerHTML=BIZS.map(b=>`
+  $('bfilter').innerHTML=BF.map(([k,l])=>`<button class="${bizFilter===k?'on':''}" onclick="setBizFilter('${k}')">${l} <small>${k==='all'?BIZS.length:BIZS.filter(b=>k==='1'?b.stars<=2:b.stars==k).length}</small></button>`).join('');
+  const list=BIZS.filter(b=>bizFilter==='all'||(bizFilter==='1'?b.stars<=2:b.stars==bizFilter));
+  $('bgrid').innerHTML=list.map(b=>`
     <div class="bcard${S.biz&&S.biz.id===b.id?' sel':''}" id="bc-${b.id}" onclick="flipBiz('${b.id}')">
       <div class="in">
         <div class="bface"><span class="glow" style="background:${b.glow}"></span>
@@ -283,7 +288,7 @@ function initSelect(){
       </div>
     </div>`).join('');
   document.querySelectorAll('.bcard').forEach(tilt);
-  $('bdots').innerHTML=BIZS.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('');
+  $('bdots').innerHTML=list.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('');
   $('bgrid').onscroll=()=>{const g=$('bgrid');const w=g.firstElementChild.offsetWidth+14;const k=Math.round(g.scrollLeft/w);document.querySelectorAll('#bdots i').forEach((d,j)=>d.classList.toggle('on',j===k))};
   AB.set('Ver la misión →',()=>go('mision'),{disabled:!S.biz,back:()=>go('setup')});
   if(!S.biz)AB.ok(false,P('Toquen una carta y elijan su negocio','Toca una carta y elige tu negocio'));
@@ -291,7 +296,8 @@ function initSelect(){
 function flipBiz(id){const c=$('bc-'+id);Snd.whoosh();document.querySelectorAll('.bcard.flip').forEach(x=>{if(x!==c)x.classList.remove('flip')});c.classList.toggle('flip')}
 function pickBiz(id,e){
   e.stopPropagation();
-  if(S.biz&&S.biz.id!==id){S.hires=[];S.crisis=null;S.opp=null;S.negs=[]}
+  if(!S.biz||S.biz.id!==id){S.hires=[];S.candIds=null;S.crisis=null;S.opp=null;S.negs=[];
+    S.capL=Object.fromEntries(CAPLINES[id].map(l=>[l.id,0]));S.cap={mkt:0,ops:0,rrhh:0,inf:0,res:0};Pizarra.reset()}
   S.biz=BIZS.find(b=>b.id===id);S.met={...S.biz.base};
   document.querySelectorAll('.bcard').forEach(x=>x.classList.toggle('sel',x.id==='bc-'+id));
   document.querySelectorAll('.bz-name').forEach(x=>x.textContent=S.biz.name);
@@ -385,20 +391,24 @@ const justHint=()=>P('Escriban su justificación (mín. 45 caracteres)','Escribe
    FASE 3 — CAPITAL
 ═══════════════════════════════════════ */
 const TOTAL=100000,STEP=5000;
-let capDone=false,lastArea=null,prevBM=null;
-const totalCap=()=>Object.values(S.cap).reduce((a,b)=>a+b,0);
+let capDone=false,lastLine=null,prevBM=null;
+const lines=()=>CAPLINES[S.biz.id];
+const areaOf=id=>AREAS.find(a=>a.id===id);
+function syncCap(){const c={mkt:0,ops:0,rrhh:0,inf:0,res:0};lines().forEach(l=>c[l.area]+=S.capL[l.id]||0);S.cap=c}
+const totalCap=()=>lines().reduce((a,l)=>a+(S.capL[l.id]||0),0);
 function initCapital(){
-  $('jars').innerHTML=AREAS.map(a=>`
-    <div class="jar" id="jar-${a.id}" style="--jc:${a.col}">
-      <div class="liquid" id="liq-${a.id}"></div>
-      <div class="jar-top"><div class="jar-ic">${a.icon}</div><div><div class="jar-name">${a.name}</div><div class="jar-hint">${a.hint}</div></div></div>
-      <div class="jar-amt" id="amt-${a.id}">Bs 0</div>
+  lines().forEach(l=>{if(S.capL[l.id]==null)S.capL[l.id]=0});syncCap();
+  $('jars').innerHTML=lines().map(l=>{const a=areaOf(l.area);return`
+    <div class="jar${l.id==='pla'?' jar-pla':''}" id="jar-${l.id}" style="--jc:${a.col}">
+      <div class="liquid" id="liq-${l.id}"></div>
+      <div class="jar-top"><div class="jar-ic">${l.icon}</div><div><div class="jar-name">${l.name}</div><div class="jar-hint">${l.hint}</div><span class="jar-area">${a.icon} ${a.name}</span></div></div>
+      <div class="jar-amt" id="amt-${l.id}">Bs 0</div>
       <div class="jar-ctrl">
-        <button class="step" onclick="capStep('${a.id}',-1,event)" aria-label="Quitar">−</button>
-        <input class="rng" type="range" min="0" max="${TOTAL}" step="1000" value="${S.cap[a.id]}" id="rng-${a.id}" oninput="capSet('${a.id}',+this.value)" aria-label="${a.name}">
-        <button class="step plus" onclick="capStep('${a.id}',1,event)" aria-label="Agregar">+</button>
+        <button class="step" onclick="capStep('${l.id}',-1,event)" aria-label="Quitar">−</button>
+        <input class="rng" type="range" min="0" max="${TOTAL}" step="1000" value="${S.capL[l.id]}" id="rng-${l.id}" oninput="capSet('${l.id}',+this.value)" aria-label="${l.name}">
+        <button class="step plus" onclick="capStep('${l.id}',1,event)" aria-label="Agregar">+</button>
       </div>
-    </div>`).join('');
+    </div>`}).join('');
   renderJust('cap','just-cap',capAB);
   AB.set('Organizar el equipo →',()=>{S.hist=S.hist.filter(h=>h.k==='Inicio');S.hist.push({k:'Capital',m:projMet()});go('draw2')},{back:()=>go('draw1')});
   capDone=totalCap()===TOTAL;prevBM=null;updCap();
@@ -406,19 +416,19 @@ function initCapital(){
 function capStep(id,d,e){
   const rem=TOTAL-totalCap();
   if(d>0){
-    if(rem<=0){$('budget').classList.remove('over');void $('budget').offsetWidth;$('budget').classList.add('over');Snd.bad();vib(80);toast('💸 ¡Ya no queda dinero! Quiten de otro frasco.');return}
-    const add=Math.min(STEP,rem);S.cap[id]+=add;Snd.coin();vib(15);
-    if(e){const r=e.target.getBoundingClientRect();floatFx('+'+fmt(add),r.left,r.top,AREAS.find(a=>a.id===id).col)}
-  }else{if(S.cap[id]<=0)return;S.cap[id]=Math.max(0,S.cap[id]-STEP);Snd.click()}
-  lastArea=id;updCap();
+    if(rem<=0){$('budget').classList.remove('over');void $('budget').offsetWidth;$('budget').classList.add('over');Snd.bad();vib(80);toast('💸 ¡Ya no queda dinero! Quiten de otra partida.');return}
+    const add=Math.min(STEP,rem);S.capL[id]+=add;Snd.coin();vib(15);
+    if(e){const r=e.target.getBoundingClientRect();floatFx('+'+fmt(add),r.left,r.top,areaOf(lines().find(l=>l.id===id).area).col)}
+  }else{if(S.capL[id]<=0)return;S.capL[id]=Math.max(0,S.capL[id]-STEP);Snd.click()}
+  lastLine=id;updCap();
 }
-function capSet(id,v){const max=S.cap[id]+(TOTAL-totalCap());S.cap[id]=Math.max(0,Math.min(v,max));if(v>max)$('rng-'+id).value=S.cap[id];lastArea=id;updCap()}
-function fillRest(){const rem=TOTAL-totalCap();if(rem<=0)return;S.cap.res+=rem;lastArea='res';Snd.coin();updCap()}
+function capSet(id,v){const max=S.capL[id]+(TOTAL-totalCap());S.capL[id]=Math.max(0,Math.min(v,max));if(v>max)$('rng-'+id).value=S.capL[id];lastLine=id;updCap()}
+function fillRest(){const rem=TOTAL-totalCap();if(rem<=0)return;S.capL.res+=rem;lastLine='res';Snd.coin();updCap()}
 function updCap(){
-  const used=totalCap(),rem=TOTAL-used,pct=Math.round(used/TOTAL*100);
-  AREAS.forEach(a=>{const v=S.cap[a.id];$('amt-'+a.id).innerHTML=fmt(v)+`<span class="jar-pct">${Math.round(v/TOTAL*100)} %</span>`;
-    const lq=$('liq-'+a.id);const f=Math.min(100,v/TOTAL*100*1.6)+'%';lq.style.height=f;lq.style.setProperty('--fillw',f);
-    const r=$('rng-'+a.id);r.value=v;r.style.setProperty('--v',(v/TOTAL*100)+'%');$('jar-'+a.id).classList.toggle('act',v>0)});
+  syncCap();const used=totalCap(),rem=TOTAL-used,pct=Math.round(used/TOTAL*100);
+  lines().forEach(l=>{const v=S.capL[l.id];$('amt-'+l.id).innerHTML=fmt(v)+`<span class="jar-pct">${Math.round(v/TOTAL*100)} %</span>`;
+    const lq=$('liq-'+l.id);const f=Math.min(100,v/TOTAL*100*2)+'%';lq.style.height=f;lq.style.setProperty('--fillw',f);
+    const r=$('rng-'+l.id);r.value=v;r.style.setProperty('--v',(v/TOTAL*100)+'%');$('jar-'+l.id).classList.toggle('act',v>0)});
   const b=$('budget');b.classList.toggle('ok',rem===0);
   $('bud-n').textContent=fmt(rem);$('bud-pct').textContent=pct+'%';
   const ring=$('bud-ring');ring.style.setProperty('--p',pct);ring.style.setProperty('--rc',rem===0?'#B8F34A':'#FF8A00');
@@ -431,14 +441,16 @@ function advisor(){
   const used=totalCap(),rem=TOTAL-used;let face='🧑‍💼',msg='';
   const big=AREAS.find(a=>S.cap[a.id]/TOTAL>.55);
   const zero=AREAS.slice(0,4).filter(a=>S.cap[a.id]===0);
-  if(used===0)msg=P('Toquen <strong>+</strong> para meter billetes en cada frasco. Piensen en <strong>su rubro</strong>: ¿qué necesita más?','Toca <strong>+</strong> para meter billetes en cada frasco. Piensa en <strong>tu rubro</strong>: ¿qué necesita más?');
-  else if(big){face='🤔';msg=`Más del 55 % en <strong>${big.name}</strong>: después de cierto punto, cada boliviano extra rinde menos.`}
-  else if(rem===0&&S.cap.res===0){face='😬';msg='Cuadraron… ¡pero <strong>sin fondo de emergencia</strong>! Si llega una crisis, el golpe será 1,8 veces más fuerte.'}
-  else if(rem===0){face='🤩';msg=`¡Cuadre perfecto! Recuerden: con <strong>${fmt(S.cap.rrhh)}</strong> de Talento pagarán la planilla de su equipo.`}
-  else if(S.cap.res===0&&used>=50000){face='😬';msg='¿Y la reserva? <strong>Sin fondo de emergencia</strong>, la primera crisis puede cerrar el negocio.'}
-  else if(zero.length&&used>=60000){face='🤔';msg=`Ojo: dejar <strong>${zero.map(z=>z.name).join(', ')}</strong> en cero tiene penalización.`}
-  else if(lastArea==='rrhh'){msg=`Con <strong>${fmt(S.cap.rrhh)}</strong> en Talento podrán pagar el primer mes de unas <strong>${Math.max(0,Math.floor(S.cap.rrhh/4000))} personas</strong>.`}
-  else if(lastArea){msg=AREAS.find(a=>a.id===lastArea).tip}
+  const ll=lastLine&&lines().find(l=>l.id===lastLine);
+  if(used===0)msg=P('Cada frasco es una partida real de <strong>su rubro</strong>. Toquen <strong>+</strong> y piensen: ¿qué necesita más este negocio?','Cada frasco es una partida real de <strong>tu rubro</strong>. Toca <strong>+</strong> y piensa: ¿qué necesita más este negocio?');
+  else if(big){face='🤔';msg=`Más del 55 % va a <strong>${big.name}</strong>: después de cierto punto, cada boliviano extra rinde menos.`}
+  else if(S.capL.pla===0&&used>=40000){face='😬';msg='¡Ojo! <strong>Sueldos del equipo</strong> está en cero: sin planilla, cada persona que contraten será deuda o saldrá del fondo de emergencia.'}
+  else if(rem===0&&S.capL.res===0){face='😬';msg='Cuadraron… ¡pero <strong>sin fondo de emergencia</strong>! Si llega una crisis, el golpe será 1,8 veces más fuerte.'}
+  else if(rem===0){face='🤩';msg=`¡Cuadre perfecto! Con <strong>${fmt(S.capL.pla)}</strong> de planilla podrán pagar a unas <strong>${Math.max(0,Math.floor(S.capL.pla/4500))} personas</strong> (según sus sueldos).`}
+  else if(S.capL.res===0&&used>=50000){face='😬';msg='¿Y la reserva? <strong>Sin fondo de emergencia</strong>, la primera crisis puede cerrar el negocio.'}
+  else if(zero.length&&used>=60000){face='🤔';msg=`Ojo: no pusieron nada en partidas de <strong>${zero.map(z=>z.name).join(', ')}</strong>; eso tiene penalización.`}
+  else if(ll&&ll.id==='pla'){msg=`Con <strong>${fmt(S.capL.pla)}</strong> de planilla pagarán el primer mes de sueldos. Un perfil técnico cuesta entre Bs 3.000 y 9.000.`}
+  else if(ll){msg=`<strong>${ll.icon} ${ll.name}</strong>: ${ll.hint}. Mueve el indicador de <strong>${areaOf(ll.area).name}</strong>.`}
   const f=$('adv-face');if(f.textContent!==face){f.textContent=face;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}
   $('adv-txt').innerHTML=msg;
 }
@@ -455,8 +467,15 @@ function capAB(){const t=totalCap();AB.ok(t===TOTAL&&justOk('cap'),t!==TOTAL?`Fa
 ═══════════════════════════════════════ */
 const hired=()=>CANDS.filter(c=>S.hires.includes(c.id));
 const fitOf=c=>(c.fit[S.biz.id]||0);
+function candPool(){
+  if(S.candIds)return S.candIds;
+  const rel=CANDS.filter(c=>fitOf(c)>0),dis=CANDS.filter(c=>fitOf(c)===0).sort(()=>Math.random()-.5).slice(0,5);
+  S.candIds=[...rel,...dis].sort(()=>Math.random()-.5).map(c=>c.id);return S.candIds;
+}
 function initTeam(){
-  $('cands').innerHTML=CANDS.map(c=>`<button class="cand" id="cd-${c.id}" onclick="toggleHire('${c.id}')"><span class="ca">${c.av}</span><span class="cn">${c.name}</span><span class="cr">${c.role}</span><span class="cs">${fmt(c.sal)}/mes</span><span class="cd">${DEPTOS.find(d=>d.id===c.dept).ic} ${DEPTOS.find(d=>d.id===c.dept).name}</span></button>`).join('');
+  const pool=candPool().map(id=>CANDS.find(c=>c.id===id));
+  $('cands').innerHTML=pool.map(c=>`<button class="cand" id="cd-${c.id}" onclick="toggleHire('${c.id}')"><span class="ca">${c.av}</span><span class="cn">${c.name}</span><span class="cr">${c.role}</span><span class="cs">${fmt(c.sal)}/mes</span><span class="cd">${DEPTOS.find(d=>d.id===c.dept).ic} ${DEPTOS.find(d=>d.id===c.dept).name}</span></button>`).join('');
+  $('cand-count').textContent=pool.length;
   document.querySelectorAll('.cand').forEach(tilt);
   renderJust('team','just-team',teamAB);updTeam();
   AB.set('Enfrentar los desafíos →',()=>{resolveAll();S.hist.push({k:'Equipo',m:{...S.met}});go('crisis')},{back:()=>go('draw2')});teamAB();
@@ -468,20 +487,32 @@ function toggleHire(id){
   updTeam();teamAB();
 }
 function updTeam(){
-  const H=hired(),n=H.length,pay=H.reduce((a,c)=>a+c.sal,0),bud=S.cap.rrhh;S.payroll=pay;
-  CANDS.forEach(c=>{const el=$('cd-'+c.id);el.classList.toggle('on',S.hires.includes(c.id));el.classList.toggle('full',n>=TEAM_MAX&&!S.hires.includes(c.id))});
+  const H=hired(),n=H.length,pay=H.reduce((a,c)=>a+c.sal,0),bud=S.capL.pla||0;S.payroll=pay;
+  candPool().forEach(id=>{const el=$('cd-'+id);if(!el)return;el.classList.toggle('on',S.hires.includes(id));el.classList.toggle('full',n>=TEAM_MAX&&!S.hires.includes(id))});
   $('hb-n').textContent=n;$('hb-ring').style.setProperty('--p',n*10);
   const mx=Math.max(bud,pay,1)*1.15;$('hb-fill').style.width=(pay/mx*100)+'%';$('hb-mark').style.left=(bud/mx*100)+'%';
   $('hire-bar').querySelector('.hb-gauge').classList.toggle('over',pay>bud);
-  $('hb-pay').textContent=fmt(pay)+'/mes';$('hb-bud').textContent='presupuesto '+fmt(bud);
+  $('hb-pay').textContent=fmt(pay)+'/mes';$('hb-bud').textContent='presupuesto de planilla '+fmt(bud);
   const w=$('hb-warn');const over=pay-bud;
-  if(over>0){const fromRes=Math.min(over,S.cap.res);w.className='hb-warn bad';w.innerHTML=`⚠️ Exceden por ${fmt(over)}: ${fromRes?`${fmt(fromRes)} saldrán del fondo de emergencia`:''}${over>fromRes?`${fromRes?' y ':''}${fmt(over-fromRes)} serán deuda`:''}.`}
-  else if(n){w.className='hb-warn ok';w.textContent=`✓ Les sobran ${fmt(-over)} para capacitación.`}else{w.className='hb-warn';w.textContent=''}
+  if(bud===0&&!n){w.className='hb-warn bad';w.innerHTML='⚠️ No reservaron dinero para <b>sueldos</b>. Usen <b>↔️ Ajustar planilla</b> para pasar dinero desde otra partida.'}
+  else if(over>0){const fromRes=Math.min(over,S.capL.res);w.className='hb-warn bad';w.innerHTML=`⚠️ La planilla excede por ${fmt(over)}: ${fromRes?`${fmt(fromRes)} saldrán del fondo de emergencia`:''}${over>fromRes?`${fromRes?' y ':''}${fmt(over-fromRes)} serán deuda`:''}.`}
+  else if(n){w.className='hb-warn ok';w.textContent=`✓ La planilla cabe. Les sobran ${fmt(-over)} (irán a capacitación).`}else{w.className='hb-warn';w.textContent=''}
   const T={};DEPTOS.forEach(d=>T[d.id]=0);H.forEach(c=>T[c.dept]++);
   $('hb-depts').innerHTML=DEPTOS.map(d=>`<span class="hb-dep${T[d.id]?'':' zero'}">${d.ic} ${T[d.id]}</span>`).join('');
 }
 function teamAB(){const n=S.hires.length;AB.ok(n>=TEAM_MIN&&justOk('team'),n<TEAM_MIN?`Contraten al menos ${TEAM_MIN} personas`:justHint())}
 function hireEval(){const e={key:0,useful:0,none:0};hired().forEach(c=>{const f=fitOf(c);f===2?e.key++:f===1?e.useful++:e.none++});return e}
+/* Ajustar la planilla sin volver a la fase de capital */
+function openPla(){renderPla();$('m-pla').classList.add('on');Snd.whoosh()}
+function renderPla(){
+  $('pla-now').textContent=fmt(S.capL.pla);$('pla-need').textContent=fmt(S.payroll);
+  $('pla-list').innerHTML=lines().filter(l=>l.id!=='pla').map(l=>`<div class="pla-row"><span>${l.icon} ${l.name}</span><b>${fmt(S.capL[l.id])}</b><button class="btn-ghost" ${S.capL[l.id]<STEP?'disabled':''} onclick="movePla('${l.id}',1)">→ Bs 5.000</button><button class="btn-ghost" ${S.capL.pla<STEP?'disabled':''} onclick="movePla('${l.id}',-1)">←</button></div>`).join('');
+}
+function movePla(id,d){
+  if(d>0&&S.capL[id]>=STEP){S.capL[id]-=STEP;S.capL.pla+=STEP;Snd.coin()}
+  else if(d<0&&S.capL.pla>=STEP){S.capL.pla-=STEP;S.capL[id]+=STEP;Snd.click()}
+  syncCap();renderPla();updTeam();
+}
 
 /* Cálculo del puntaje base (capital + equipo) */
 function resolveAll(){
@@ -493,11 +524,11 @@ function resolveAll(){
   if(S.cap.inf===0){m.rent-=6;m.eq-=4;m.sos-=3}
   AREAS.forEach(a=>{const pct=S.cap[a.id]/TOTAL;if(pct>.55){const pf=(pct-.55)*1.4;const fx=a.fx((pct-.55)*TOTAL/500);Object.keys(fx).forEach(k=>m[k]-=fx[k]*(mods[a.id]||1)*pf)}});
   // Planilla vs. presupuesto de Talento
-  const H=hired();S.payroll=H.reduce((a,c)=>a+c.sal,0);const over=Math.max(0,S.payroll-S.cap.rrhh);
+  const H=hired();S.payroll=H.reduce((a,c)=>a+c.sal,0);const over=Math.max(0,S.payroll-(S.capL.pla||0));
   const fromRes=Math.min(over,S.cap.res);S.resEff=S.cap.res-fromRes;const debt=over-fromRes;
   if(over>0)m.rent-=Math.min(8,over/3000);
   if(debt>0){m.rent-=Math.min(12,debt/2000);m.sos-=Math.min(8,debt/3000)}
-  if(S.cap.rrhh-S.payroll>=8000)m.eq+=3;
+  if((S.capL.pla||0)-S.payroll>=8000)m.eq+=3;
   S.noRes=S.resEff<=0;
   // Aporte de cada persona según su pertinencia para el rubro
   const T={};DEPTOS.forEach(d=>T[d.id]=0);
@@ -505,13 +536,12 @@ function resolveAll(){
     const k=f===2?1.25:f===1?.7:0;Object.keys(d.eff).forEach(x=>m[x]+=d.eff[x]*k);
     if(f===2)Object.keys(d.bonus).forEach(x=>m[x]+=d.bonus[x]);
     if(f===0){m.rent-=2;m.eq-=1}});
-  const ev=hireEval();
-  if(ev.key===0){m.rent-=8;m.sos-=4}
-  if(!T.ven){m.cli-=6;m.cre-=4}
-  if(!T.adm){m.rent-=4;m.eq-=3;m.sos-=3}
+  // Funciones críticas del rubro
+  S.critMiss=(CRIT[S.biz.id]||[]).filter(g=>!g.ids.some(id=>S.hires.includes(id))).map(g=>g.l);
+  S.critMiss.forEach(()=>{m.rent-=5;m.cli-=3;m.sos-=3});
   if(H.length>7)m.rent-=(H.length-7)*2;
   const allF=AREAS.slice(0,4).every(a=>S.cap[a.id]>0),cover=DEPTOS.filter(d=>T[d.id]>0).length,capC=Math.max(...Object.values(S.cap))/TOTAL;
-  if(allF&&cover>=4&&capC<=.40)METS.forEach(x=>m[x.id]+=10);else if(allF&&cover>=3)METS.forEach(x=>m[x.id]+=5);else if(allF&&capC<=.50)METS.forEach(x=>m[x.id]+=3);
+  if(allF&&cover>=3&&!S.critMiss.length&&capC<=.40)METS.forEach(x=>m[x.id]+=10);else if(allF&&!S.critMiss.length)METS.forEach(x=>m[x.id]+=5);else if(allF&&capC<=.50)METS.forEach(x=>m[x.id]+=3);
   S.met=m;
 }
 
@@ -679,12 +709,12 @@ function computeAll(){
   S.hireEval=hireEval();
   S.benchDist=AREAS.reduce((a,x)=>a+Math.abs(S.cap[x.id]/1000-BENCH[S.biz.id][x.id]),0);
   S.negQ=S.negRes.map(r=>r?r.q:0);S.cQ=S.cRes?S.cRes.q:0;S.oQ=S.oRes?S.oRes.q:0;
-  const resP=S.cap.res/1000,mx=Math.max(...Object.values(S.cap))/1000,payOk=S.payroll<=S.cap.rrhh,T={};DEPTOS.forEach(d=>T[d.id]=0);hired().forEach(c=>{if(fitOf(c)>0)T[c.dept]++});
+  const resP=S.cap.res/1000,mx=Math.max(...Object.values(S.cap))/1000,payOk=S.payroll<=(S.capL.pla||0),T={};DEPTOS.forEach(d=>T[d.id]=0);hired().forEach(c=>{if(fitOf(c)>0)T[c.dept]++});
   const cover=DEPTOS.filter(d=>T[d.id]).length,e=S.hireEval;
   S.comps={
     fin:cl(40+(mx<=55?10:-10)+(resP>=10&&resP<=25?15:resP>=5?6:resP>25?8:-18)+(payOk?14:-14)+(S.met.rent-50)/3,5,98),
     est:cl(92-S.benchDist*.9+S.oQ*6+(S.boards.d1?4:0)+(S.boards.d2?4:0),5,98),
-    tal:cl(24+e.key*13+e.useful*5-e.none*12+cover*4+(payOk?8:-10),5,98),
+    tal:cl(30+e.key*12+e.useful*5-e.none*12+cover*3+(payOk?8:-10)-S.critMiss.length*12,5,98),
     neg:cl(26+S.negQ.reduce((a,b)=>a+b,0)*11,5,98),
     rie:cl(28+S.cQ*20+(resP>=10?14:resP>0?5:-12)+(S.timedOut?-14:S.crisisTime&&S.crisisTime<25?6:0),5,98),
     mer:cl(30+(S.met.cli-45)*.7+(S.cap.mkt>0?8:-12)+(T.ven?10:-4)+(T.aten?4:0),5,98)
@@ -721,9 +751,9 @@ function renderDashTab(c){
   const B=BENCH[S.biz.id];
   $('cap-vs').innerHTML=AREAS.map(a=>{const v=S.cap[a.id]/1000,b=B[a.id];return`<div class="capbar"><span class="cl">${a.icon} ${a.name}</span><div class="cb"><i style="width:${v}%;background:${a.col}"></i><em style="left:${b}%" title="Recomendado ${b} %"></em></div><span class="cv">${Math.round(v)}%</span></div>`}).join('')+`<p class="cap-leg">▮ Barra blanca = distribución recomendada para un ${S.biz.name.split(' ')[0].toLowerCase()} (${AREAS.map(a=>B[a.id]+'%').join(' · ')})</p>`;
   const H=hired();const e=S.hireEval;
-  $('team-eval').innerHTML=`<div class="dfx" style="margin-bottom:8px"><span class="chip g">⭐ ${e.key} clave</span><span class="chip">🟡 ${e.useful} útiles</span><span class="chip r">✗ ${e.none} sin relación</span><span class="chip">${S.payroll<=S.cap.rrhh?'🧾 Planilla dentro del presupuesto':'⚠️ Planilla excedida en '+fmt(S.payroll-S.cap.rrhh)}</span></div><div class="teval">`+
+  $('team-eval').innerHTML=`<div class="dfx" style="margin-bottom:8px"><span class="chip g">⭐ ${e.key} clave</span><span class="chip">🟡 ${e.useful} útiles</span><span class="chip r">✗ ${e.none} sin relación</span><span class="chip">${S.payroll<=(S.capL.pla||0)?'🧾 Planilla dentro del presupuesto':'⚠️ Planilla excedida en '+fmt(S.payroll-(S.capL.pla||0))}</span></div><div class="teval">`+
     H.map(c=>{const f=fitOf(c);return`<div class="te"><span class="ta">${c.av}</span><span class="tn">${c.name} · ${c.role}<small>${fmt(c.sal)}/mes</small></span><span class="tv ${f===2?'k':f===1?'u':'n'}">${f===2?'⭐ Clave':f===1?'Útil':'✗ No aporta'}</span></div>`}).join('')+
-    `</div>`+(()=>{const miss=CANDS.filter(c=>fitOf(c)===2&&!S.hires.includes(c.id));return miss.length?`<p class="cap-leg" style="margin-top:8px">💡 Perfiles clave que no contrataron: ${miss.map(c=>c.av+' '+c.role).join(' · ')}</p>`:''})();
+    `</div><div class="crit">${(CRIT[S.biz.id]||[]).map(g=>{const ok=!S.critMiss.includes(g.l);return`<span class="chip ${ok?'g':'r'}">${ok?'✓':'✗'} ${g.l}</span>`}).join('')}</div>`+(()=>{const miss=CANDS.filter(c=>fitOf(c)===2&&!S.hires.includes(c.id));return miss.length?`<p class="cap-leg" style="margin-top:8px">💡 Perfiles clave que no contrataron: ${miss.map(c=>c.av+' '+c.role).join(' · ')}</p>`:''})();
   $('fin-mets').innerHTML=metBars(S.met);
   $('res-boards').innerHTML=['d1','d2'].map(k=>{const i=Pizarra.info(k);return`<figure>${i.png?`<img src="${i.png}" alt="">`:'<span>Sin dibujo</span>'}<figcaption>${k==='d1'?'✏️ Boceto':'🏗️ Organigrama'}</figcaption></figure>`}).join('');
 }
@@ -748,8 +778,8 @@ function renderDecisions(){
     ${best&&res&&res.q<2?`<p class="imp-best">💡 Mejor práctica: <b>«${esc(best.lbl)}»</b></p>`:''}
     ${just?`<div class="tl-j">“${esc(just)}”</div>`:''}</div>`;
   const B=BENCH[S.biz.id];const worst=AREAS.slice().sort((a,b)=>Math.abs(S.cap[b.id]/1000-B[b.id])-Math.abs(S.cap[a.id]/1000-B[a.id]))[0];
-  let h=card('💰','Fase 3 · Capital','Distribución de Bs 100.000',null,null,null,S.justif.cap,`<p class="dch">Distancia al reparto recomendado: <b>${Math.round(S.benchDist)} puntos</b>. La mayor diferencia fue en <b>${worst.icon} ${worst.name}</b> (${Math.round(S.cap[worst.id]/1000)} % vs. ${B[worst.id]} % recomendado).</p>`);
-  h+=card('👥','Fase 5 · Contratación',`${S.hires.length} personas contratadas`,null,null,null,S.justif.team,`<p class="dch">${S.hireEval.key} clave · ${S.hireEval.useful} útiles · ${S.hireEval.none} sin relación con el rubro. Planilla: <b>${fmt(S.payroll)}/mes</b> de ${fmt(S.cap.rrhh)} presupuestados.</p>`);
+  let h=card('💰','Fase 3 · Capital','Distribución de Bs 100.000',null,null,null,S.justif.cap,`<div class="dfx">${lines().map(l=>`<span class="chip">${l.icon} ${l.name}: ${fmt(S.capL[l.id])}</span>`).join('')}</div><p class="dch">Distancia al reparto recomendado: <b>${Math.round(S.benchDist)} puntos</b>. La mayor diferencia fue en <b>${worst.icon} ${worst.name}</b> (${Math.round(S.cap[worst.id]/1000)} % vs. ${B[worst.id]} % recomendado).</p>`);
+  h+=card('👥','Fase 5 · Contratación',`${S.hires.length} personas contratadas`,null,null,null,S.justif.team,`<p class="dch">${S.critMiss.length?`⚠️ Les faltó: <b>${S.critMiss.join(', ')}</b>. `:'✅ Cubrieron todas las funciones críticas del rubro. '}${S.hireEval.key} clave · ${S.hireEval.useful} útiles · ${S.hireEval.none} sin relación con el rubro. Planilla: <b>${fmt(S.payroll)}/mes</b> de ${fmt(S.capL.pla||0)} presupuestados.</p>`);
   h+=card(S.crisis.ic,'Fase 6 · Crisis',S.crisis.title,S.crisis.opts[S.cOpt].lbl,S.cRes,bestOf(S.crisis.opts),S.justif.crisis,S.timedOut?'<div class="imp-note ko">⏰ Se les acabó el tiempo antes de decidir.</div>':S.crisisTime?`<p class="dch">Tiempo de decisión: <b>${S.crisisTime} s</b></p>`:'');
   S.negs.forEach((n,i)=>h+=card(n.ic,`Fase 7 · Negociación ${i+1}/3 · ${n.badge}`,`${n.who}: ${n.title}`,n.opts[S.negOpts[i]].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:''));
   h+=card(S.opp.ic,'Fase 8 · Oportunidad',S.opp.title,S.opp.opts[S.oppOpt].lbl,S.oRes,bestOf(S.opp.opts),S.justif.opp);
@@ -770,9 +800,9 @@ function renderMalla(){
   $('mmap').innerHTML=[1,2,3,4,5,6,7,8].map(n=>`<div class="mcol"><h4>${n}.º sem.</h4>`+sc.filter(s=>s.sem===n).map(s=>{const i=MALLA_MAP.findIndex(x=>x.s===s.s);return`<button class="msub${rec.includes(s.s)?' rec':''}" onclick="openSubj(${i})">${esc(s.s)}<span class="mc">${s.c.map(c=>COMPS.find(x=>x.id===c).ic).join(' ')}</span></button>`}).join('')+'</div>').join('');
 }
 const COMP_NOTE={
-  fin:()=>`Reservaron ${Math.round(S.cap.res/1000)} % para emergencias y su planilla ${S.payroll<=S.cap.rrhh?'cupo':'no cupo'} en el presupuesto de Talento.`,
+  fin:()=>`Reservaron ${Math.round(S.cap.res/1000)} % para emergencias y su planilla ${S.payroll<=(S.capL.pla||0)?'cupo':'no cupo'} en el presupuesto de Talento.`,
   est:()=>`Su reparto de capital estuvo a ${Math.round(S.benchDist)} puntos del recomendado para su rubro.`,
-  tal:()=>`Contrataron ${S.hireEval.key} perfiles clave, ${S.hireEval.useful} útiles y ${S.hireEval.none} sin relación con el negocio.`,
+  tal:()=>`Contrataron ${S.hireEval.key} perfiles clave, ${S.hireEval.useful} útiles y ${S.hireEval.none} sin relación con el negocio${S.critMiss.length?`; les faltó: ${S.critMiss.join(', ')}`:''}.`,
   neg:()=>`${S.negQ.filter(q=>q===2).length} de 3 negociaciones con la mejor práctica.`,
   rie:()=>`En la crisis «${S.crisis.title}» su decisión fue ${QTXT[S.cQ].replace(/^\S+\s/,'').toLowerCase()}${S.timedOut?' y se les acabó el tiempo':''}.`,
   mer:()=>`Terminaron con Clientes en ${Math.round(S.met.cli)}/100 e invirtieron ${Math.round(S.cap.mkt/1000)} % en marketing.`
@@ -786,7 +816,7 @@ function renderTimeline(){
   const it=[];
   it.push({i:'🏢',s:'Fase 1',d:`Negocio: ${S.biz.em} ${S.biz.name}`,x:S.biz.barrio});
   it.push({i:'✏️',s:'Fase 2',d:'Pizarra de boceto',x:S.boards.d1?'✅ Planificaron visualmente antes de invertir.':'⚪ Omitieron la planificación visual.'});
-  it.push({i:'💰',s:'Fase 3',d:'Distribución del capital',tags:AREAS.map(a=>`${a.icon} ${fmt(S.cap[a.id])}`),j:S.justif.cap});
+  it.push({i:'💰',s:'Fase 3',d:'Distribución del capital',tags:lines().map(l=>`${l.icon} ${l.name}: ${fmt(S.capL[l.id])}`),j:S.justif.cap});
   it.push({i:'🏗️',s:'Fase 4',d:'Organigrama',x:S.boards.d2?'✅ Diseñaron su estructura.':'⚪ Omitieron el organigrama.'});
   it.push({i:'👥',s:'Fase 5',d:`Contratación: ${S.hires.length} personas · ${fmt(S.payroll)}/mes`,tags:hired().map(c=>`${c.av} ${c.name} (${c.role})`),j:S.justif.team});
   it.push({i:'🚨',s:'Fase 6',d:`Crisis: ${S.crisis.title}`,x:`Opción: «${S.crisis.opts[S.cOpt].lbl}»${S.timedOut?' · ⏰ fuera de tiempo':''}`,j:S.justif.crisis});
@@ -861,11 +891,12 @@ function reportHTML(){
     <h3>Competencias</h3><table><tr>${COMPS.map(c=>`<th>${c.ic} ${c.lbl}</th>`).join('')}</tr><tr>${COMPS.map(c=>`<td><b>${Math.round(S.comps[c.id])}</b> / 100</td>`).join('')}</tr><tr>${COMPS.map(c=>`<td style="color:#7B61C9">Egresado: ${EGRESADO[c.id]}</td>`).join('')}</tr></table>
     ${foot(2)}</div>`;
   const p3=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">💰 Decisiones financieras</h2>
-    <h3>Distribución del capital (Bs 100.000)</h3><table><tr><th>Área</th><th>Monto</th><th>%</th><th>Recomendado</th><th>Diferencia</th></tr>${AREAS.map(a=>{const v=S.cap[a.id]/1000;return`<tr><td>${a.icon} ${a.name}</td><td>${fmt(S.cap[a.id])}</td><td>${Math.round(v)} %</td><td>${B[a.id]} %</td><td>${v-B[a.id]>0?'+':''}${Math.round(v-B[a.id])} pts</td></tr>`}).join('')}</table>
+    <h3>Distribución del capital (Bs 100.000) por partida</h3><table><tr><th>Partida</th><th>Monto</th><th>%</th><th>Mueve el indicador de</th></tr>${lines().map(l=>`<tr><td>${l.icon} ${l.name}</td><td>${fmt(S.capL[l.id])}</td><td>${Math.round(S.capL[l.id]/1000)} %</td><td>${areaOf(l.area).name}</td></tr>`).join('')}</table>
+    <table><tr><th>Área</th><th>Ustedes</th><th>Recomendado para el rubro</th><th>Diferencia</th></tr>${AREAS.map(a=>{const v=S.cap[a.id]/1000;return`<tr><td>${a.icon} ${a.name}</td><td>${Math.round(v)} %</td><td>${B[a.id]} %</td><td>${v-B[a.id]>0?'+':''}${Math.round(v-B[a.id])} pts</td></tr>`}).join('')}</table>
     <div class="quote">“${esc(S.justif.cap)}”</div>
-    <h3>👥 Contratación: ${S.hires.length} personas · planilla ${fmt(S.payroll)}/mes (presupuesto ${fmt(S.cap.rrhh)})</h3>
+    <h3>👥 Contratación: ${S.hires.length} personas · planilla ${fmt(S.payroll)}/mes (presupuesto ${fmt(S.capL.pla||0)})</h3><p>Funciones críticas del rubro: ${(CRIT[S.biz.id]||[]).map(g=>(S.critMiss.includes(g.l)?'✗ ':'✓ ')+g.l).join(' · ')}</p>
     <table><tr><th>Persona</th><th>Rol</th><th>Sueldo</th><th>Pertinencia para el rubro</th></tr>${hired().map(c=>{const f=fitOf(c);return`<tr><td>${c.av} ${c.name}</td><td>${c.role}</td><td>${fmt(c.sal)}</td><td><span class="tag2 ${f===2?'t-k':f===1?'t-u':'t-n'}">${f===2?'⭐ Clave':f===1?'Útil':'✗ No aporta'}</span></td></tr>`}).join('')}</table>
-    <p>${S.payroll<=S.cap.rrhh?'✅ La planilla cupo en el presupuesto de Talento.':`⚠️ La planilla excedió el presupuesto en ${fmt(S.payroll-S.cap.rrhh)}: se cubrió con el fondo de emergencia${S.payroll-S.cap.rrhh>S.cap.res?' y deuda':''}.`}</p>
+    <p>${S.payroll<=(S.capL.pla||0)?'✅ La planilla cupo en el presupuesto de Talento.':`⚠️ La planilla excedió el presupuesto en ${fmt(S.payroll-(S.capL.pla||0))}: se cubrió con el fondo de emergencia${S.payroll-(S.capL.pla||0)>S.cap.res?' y deuda':''}.`}</p>
     <div class="quote">“${esc(S.justif.team)}”</div>${foot(3)}</div>`;
   const p4=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🧠 Eventos y decisiones bajo presión</h2>
     ${ev(S.crisis.ic,'Crisis: '+S.crisis.title,S.crisis.opts[S.cOpt].lbl,S.cRes,bestOf(S.crisis.opts),S.justif.crisis,S.timedOut?'<p>⏰ Se les acabó el tiempo antes de decidir.</p>':S.crisisTime?`<p>Tiempo de decisión: ${S.crisisTime} s</p>`:'')}
@@ -909,7 +940,7 @@ function initTransfer(){
     {i:'💰',t:'Distribución del capital',b:`Su mayor inversión fue <strong>${topA.name}</strong>: ${fmt(top[1])} (${Math.round(top[1]/TOTAL*100)} %).`,f:'Cada mes repartirás tu ingreso entre <strong>gastos fijos</strong>, <strong>formación</strong>, <strong>gustos</strong> y <strong>ahorro</strong>. Es el mismo ejercicio, con tu propio dinero.'},
     {i:'🛡️',t:'El fondo de emergencia',b:res===0?'No guardaron reserva: la crisis los golpeó <strong>1,8 veces</strong> más fuerte.':`Guardaron <strong>${fmt(res)}</strong> (${Math.round(res/TOTAL*100)} %) para emergencias.`,f:'Sin ahorro, cualquier imprevisto (enfermedad, robo, reparación) te obliga a endeudarte. Se recomiendan <strong>3 a 6 meses</strong> de gastos guardados.'},
     {i:'🤝',t:'La negociación',b:`Cerraron <strong>${wins} de 3</strong> tratos con la mejor práctica.`,f:'Negociarás tu <strong>sueldo</strong>, tu <strong>alquiler</strong>, servicios y créditos. Quien negocia bien ahorra más sin ganar más.'},
-    {i:'👥',t:'Contratar bien (invertir en ti)',b:`Contrataron <strong>${e.key} perfiles clave</strong> y ${e.none} sin relación con el rubro; la planilla ${S.payroll<=S.cap.rrhh?'cupo':'no cupo'} en el presupuesto.`,f:'Tu formación (idiomas, cursos, certificaciones) es tu capital humano: define cuánto podrás ganar. Y como en la planilla: no gastes en lo que no aporta.'},
+    {i:'👥',t:'Contratar bien (invertir en ti)',b:`Contrataron <strong>${e.key} perfiles clave</strong> y ${e.none} sin relación con el rubro; la planilla ${S.payroll<=(S.capL.pla||0)?'cupo':'no cupo'} en el presupuesto.`,f:'Tu formación (idiomas, cursos, certificaciones) es tu capital humano: define cuánto podrás ganar. Y como en la planilla: no gastes en lo que no aporta.'},
     {i:'⚡',t:'Decidir bajo presión',b:S.timedOut?'Se les acabó el tiempo en la crisis: <strong>la indecisión también cuesta</strong>.':`En la crisis eligieron: «${esc(S.crisis.opts[S.cOpt].lbl)}».`,f:'Los préstamos rápidos y gastos urgentes son los errores más caros si no tienes criterios claros <strong>antes</strong> de la emergencia.'},
     {i:'🌱',t:'Sostenibilidad',b:`Terminaron con Sostenibilidad <strong>${Math.round(S.met.sos)}/100</strong>.`,f:'Gastar todo lo que ganas es lo mismo que una empresa sin reservas. La <strong>libertad financiera</strong> se construye con decisiones sostenidas, no con una gran ganancia.'}
   ];
@@ -984,7 +1015,7 @@ const Live={pending:null,busy:false,cb:[],warned:false,
     negocio:S.biz?S.biz.em+' '+S.biz.name:'',fase:fase||LABELS[S.phase]||S.phase,progreso:PROG[S.phase]||0,
     puntaje:S.finished?S.score:'',nivel:S.finished?S.tier:'',perfil:S.finished?S.perfil:'',
     met:S.finished?Object.fromEntries(METS.map(m=>[m.id,Math.round(S.met[m.id])])):null,
-    capital:AREAS.map(a=>`${a.name}: ${S.cap[a.id]}`).join(' | '),
+    capital:S.biz?lines().map(l=>`${l.name}: ${S.capL[l.id]||0}`).join(' | '):'',
     equipo:S.hires.length?hired().map(c=>`${c.name} (${c.role})${S.biz?' ['+(['no aporta','útil','clave'][fitOf(c)])+']':''}`).join(' | ')+` · planilla ${S.payroll}`:'',
     decisiones:S.finished?[`Crisis: ${S.crisis.opts[S.cOpt].lbl}${S.timedOut?' (fuera de tiempo)':''}`,...S.negs.map((n,i)=>`${n.badge}: ${n.opts[S.negOpts[i]].lbl}`),`Oportunidad: ${S.opp.opts[S.oppOpt].lbl}`,`Logros: ${(S.logros||[]).join(', ')}`].join(' | '):'',
     pizarras:`Boceto ${S.boards.d1?'sí':'no'} · Organigrama ${S.boards.d2?'sí':'no'}`,justif:S.finished?S.justif:null}},
@@ -1051,7 +1082,7 @@ function qrInto(el,url){
 ═══════════════════════════════════════ */
 function restart(){
   if(S.phase!=='transfer'&&S.phase!=='results'&&!confirm('¿Empezar una nueva partida?'))return;
-  Voz.stop(true);S=newState(S);Pizarra.reset();capDone=false;stopTimer();clearInterval(skipT);
+  Voz.stop(true);S=newState(S);Pizarra.reset();capDone=false;bizFilter='all';stopTimer();clearInterval(skipT);
   document.querySelectorAll('.just').forEach(j=>j.remove());
   go('select');toast(P('🔄 Nueva partida: ¡elijan otro negocio!','🔄 Nueva partida: ¡elige otro negocio!'));
 }

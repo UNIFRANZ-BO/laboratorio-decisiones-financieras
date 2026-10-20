@@ -58,6 +58,15 @@ La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedi
 
 > **Para activar el guardado en Drive:** pega el nuevo `apps-script/Codigo.gs`, ejecuta una vez la función **autorizarDrive** (acepta el permiso de Drive), luego **preparar**, y publica **Gestionar implementaciones → ✏️ → Nueva versión**. El menú 🏆 Laboratorio suma **📁 Abrir carpeta de informes**.
 
+## Novedades v3.1
+- **15 negocios**: se suman 6 de dificultad experta (★★★★): 🥛 Lácteos Valle Lechero, 🍌 Agroexportadora Trópico Fresh, 🏥 Clínica Salud Cala Cala, 🏗️ Constructora Tunari Obras, ☀️ Energía solar Sol del Valle y 🍺 Cervecería Llajta Brew. Hay un filtro por dificultad en la selección.
+- **Capital por partidas del rubro**: 7 frascos propios de cada negocio (por ejemplo, la clínica: equipos médicos, reactivos, bioseguridad…), siempre con **Sueldos del equipo (planilla)** y **Fondo de emergencia**.
+- **Planilla clara**: al contratar se compara con la partida de sueldos y el botón **↔️ Ajustar planilla** mueve dinero desde otras partidas sin volver atrás.
+- **Contratación por rubro**: 37 perfiles; cada negocio muestra los que le sirven más 5 que no aportan. Ya no hay que cubrir todos los departamentos, sino las **funciones críticas** del rubro (por ejemplo, la constructora necesita un residente de obra y un maestro albañil). Los resultados indican cuál faltó.
+- **Panel de control seguro en el Sheets**: menú **🏆 Laboratorio → 🛠️ Panel de control (seguro)**. Muestra cada sala con resumen, exportar, cerrar o abrir, limpiar incompletos, archivar y borrar (este último pide escribir el código de la sala). Las hojas Ranking, Salas y Archivo quedan protegidas: Google avisa antes de editarlas a mano.
+
+> **¿No aparece el menú 🏆 Laboratorio junto a «Ayuda»?** El menú se crea al **abrir la hoja**. Recarga la pestaña del Sheets (F5). Si aún no aparece, en el editor de Apps Script elige la función **onOpen** y pulsa ▶ Ejecutar una vez.
+
 ## 3. Flujo del juego (estructura original respetada)
 Inicio → Negocio (9 de Cochabamba) → Pizarra: boceto → Capital Bs 100.000 → Pizarra: organigrama → Equipo (5 personas) → Crisis (60 s) → Negociación (3 rondas: cliente, proveedor y distribuidor) → Oportunidad (carta sorpresa) → Resultados → Finanzas personales.
 

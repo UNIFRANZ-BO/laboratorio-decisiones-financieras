@@ -39,17 +39,17 @@ const Pizarra=(()=>{
   const narrow=()=>innerWidth<640;
   const TEMPLATES={
     d1:()=>{
+      const LN=CAPLINES[S.biz.id],BG={mkt:'#FFD6E8',ops:'#FFF0C2',rrhh:'#CFF5EE',inf:'#E4DCFF',res:'#E2F7C2'};
+      const money=a=>({type:'text',x:a.x+10,y:a.y+a.height+8,text:'Bs ______',fontSize:18,fontFamily:FONT,strokeColor:'#c2410c'});
       if(narrow()){
-        const c=box('c',90,0,240,74,'🏢 Nuestro negocio','#FFE2C4',{fs:22});
-        const ar=AREAS.map((a,i)=>box('a'+i,i%2?230:0,140+Math.floor(i/2)*150,200,76,a.icon+' '+a.name,AREA_BG[a.id],{fs:16}));
-        const money=ar.map(a=>({type:'text',x:a.x+10,y:a.y+84,text:'Bs ______',fontSize:18,fontFamily:FONT,strokeColor:'#c2410c'}));
-        return[c,...ar,...ar.map(a=>arrow(c,a,'#B08A5A')),...money];
+        const c=box('c',90,0,240,74,S.biz.em+' Nuestro negocio','#FFE2C4',{fs:20});
+        const ar=LN.map((l,i)=>box('a'+i,i%2?230:0,140+Math.floor(i/2)*150,205,80,l.icon+' '+l.name,BG[l.area],{fs:15}));
+        return[c,...ar,...ar.map(a=>arrow(c,a,'#B08A5A')),...ar.map(money)];
       }
-      const c=box('c',420,280,250,80,'🏢 Nuestro negocio','#FFE2C4',{fs:24});
-      const pos=[[60,60],[420,40],[780,60],[150,520],[700,520]];
-      const ar=AREAS.map((a,i)=>box('a'+i,pos[i][0],pos[i][1],250,70,a.icon+' '+a.name,AREA_BG[a.id]));
-      const money=[{type:'text',x:60,y:150,text:'Bs ______',fontSize:20,fontFamily:FONT,strokeColor:'#c2410c'},{type:'text',x:420,y:130,text:'Bs ______',fontSize:20,fontFamily:FONT,strokeColor:'#c2410c'},{type:'text',x:780,y:150,text:'Bs ______',fontSize:20,fontFamily:FONT,strokeColor:'#c2410c'},{type:'text',x:150,y:610,text:'Bs ______',fontSize:20,fontFamily:FONT,strokeColor:'#c2410c'},{type:'text',x:700,y:610,text:'Bs ______',fontSize:20,fontFamily:FONT,strokeColor:'#c2410c'}];
-      return[c,...ar,...ar.map(a=>sideArrow(c,a)),...money,{type:'text',x:60,y:-10,text:'✍️ Escriban cuánto pondrían en cada área y numeren sus prioridades',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
+      const c=box('c',430,300,260,80,S.biz.em+' Nuestro negocio','#FFE2C4',{fs:22});
+      const R=[430,300],n=LN.length;
+      const ar=LN.map((l,i)=>{const t=-Math.PI/2+i*2*Math.PI/n;return box('a'+i,560+Math.cos(t)*470-120,340+Math.sin(t)*270-40,240,80,l.icon+' '+l.name,BG[l.area],{fs:16})});
+      return[c,...ar,...ar.map(a=>sideArrow(c,a)),...ar.map(money),{type:'text',x:120,y:-30,text:'✍️ Escriban cuánto pondrían en cada partida y numeren sus prioridades',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
     },
     d2:()=>{
       if(narrow()){
@@ -66,20 +66,18 @@ const Pizarra=(()=>{
       return[g,...ds,...ps,...ds.map(d=>arrow(g,d)),...ds.map((d,i)=>arrow(d,ps[i],'#14A38B')),{type:'text',x:20,y:-40,text:'✍️ Doble toque en una caja para escribir · arrastren flechas entre cajas',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
     }
   };
-  const FICHAS={
-    d1:[
-      {g:'Áreas',items:AREAS.map(a=>({t:a.icon+' '+a.name,bg:AREA_BG[a.id]}))},
+  function fichas(k){
+    if(k==='d1'){const BG={mkt:'#FFD6E8',ops:'#FFF0C2',rrhh:'#CFF5EE',inf:'#E4DCFF',res:'#E2F7C2'};return[
+      {g:'Partidas de su negocio',items:CAPLINES[S.biz.id].map(l=>({t:l.icon+' '+l.name,bg:BG[l.area]}))},
       {g:'Dinero',items:[{t:'💵 Bs 5.000',bg:'#E2F7C2'},{t:'💵 Bs 10.000',bg:'#E2F7C2'},{t:'💰 Bs 25.000',bg:'#FFF0C2'},{t:'🏦 Bs 50.000',bg:'#FFF0C2'}]},
       {g:'Prioridades',items:[{t:'🥇 Prioridad 1',bg:'#FFF0C2'},{t:'🥈 Prioridad 2',bg:'#EEEEEE'},{t:'🥉 Prioridad 3',bg:'#FFE2C4'},{t:'⚠️ Riesgo',bg:'#FFD6D6'},{t:'✅ Meta',bg:'#CFF5D8'},{t:'💡 Idea',bg:'#FFF3A6'}]},
-      {g:'Notas',items:[{t:'Nota…',bg:'#FFF3A6',note:1},{t:'Nota…',bg:'#CFF5D8',note:1},{t:'Nota…',bg:'#D6E9FF',note:1},{t:'Nota…',bg:'#FFD6E8',note:1}]}
-    ],
-    d2:[
+      {g:'Notas',items:[{t:'Nota…',bg:'#FFF3A6',note:1},{t:'Nota…',bg:'#CFF5D8',note:1},{t:'Nota…',bg:'#D6E9FF',note:1},{t:'Nota…',bg:'#FFD6E8',note:1}]}]}
+    const rel=CANDS.filter(c=>(c.fit[S.biz.id]||0)>0);
+    return[
       {g:'Cargos',items:[{t:'👑 Gerente General',bg:'#FFF0C2'},...DEPTOS.map(d=>({t:d.ic+' '+d.name,bg:'#E9E4F7'}))]},
-      {g:'Personas',items:[...CANDS.slice(0,12).map(c=>({t:c.av+' '+c.name,bg:'#CFF5EE',shape:'ellipse'})),{t:'👤 Nueva persona',bg:'#EEEEEE',shape:'ellipse'}]},
-      {g:'Notas',items:[{t:'Responsable de…',bg:'#FFF3A6',note:1},{t:'Reporta a…',bg:'#D6E9FF',note:1}]}
-    ]
-  };
-
+      {g:'Perfiles de su rubro',items:[...rel.map(c=>({t:c.av+' '+c.role,bg:'#CFF5EE',shape:'ellipse'})),{t:'👤 Nueva persona',bg:'#EEEEEE',shape:'ellipse'}]},
+      {g:'Notas',items:[{t:'Responsable de…',bg:'#FFF3A6',note:1},{t:'Reporta a…',bg:'#D6E9FF',note:1}]}];
+  }
   /* ---------- abrir / cerrar ---------- */
   async function open(k,conf){
     key=k;cfg=conf;
@@ -136,10 +134,10 @@ const Pizarra=(()=>{
     addSkeleton(TEMPLATES[key](),true);Snd.ok();toast('✨ Plantilla lista: toquen una caja para cambiarla');
   }
   function buildFichas(k){
-    $('xb-fichas').innerHTML=FICHAS[k].map((g,gi)=>`<div class="bd-grp">${g.g}</div><div class="bd-stamps">`+g.items.map((it,ii)=>`<button class="bd-stamp" style="background:${it.bg}" onclick="Pizarra.ficha(${gi},${ii})">${esc(it.t)}</button>`).join('')+'</div>').join('');
+    const F=fichas(k);$('xb-fichas').innerHTML=F.map((g,gi)=>`<div class="bd-grp">${g.g}</div><div class="bd-stamps">`+g.items.map((it,ii)=>`<button class="bd-stamp" style="background:${it.bg}" onclick="Pizarra.ficha(${gi},${ii})">${esc(it.t)}</button>`).join('')+'</div>').join('');
   }
   function ficha(gi,ii){
-    const it=FICHAS[key][gi].items[ii];const c=center();const w=it.note?190:Math.max(150,it.t.length*11+40),h=it.note?110:64;
+    const it=fichas(key)[gi].items[ii];const c=center();const w=it.note?190:Math.max(150,it.t.length*11+40),h=it.note?110:64;
     const j=()=>Math.random()*40-20;
     addSkeleton([box('f'+Date.now(),c.x-w/2+j(),c.y-h/2+j(),w,h,it.t,it.bg,{shape:it.shape,fs:it.note?16:18,stroke:it.note?'#C9A227':undefined})]);
     sheet(false);Snd.click();toast('Ficha agregada · arrástrala o cambia su tamaño');

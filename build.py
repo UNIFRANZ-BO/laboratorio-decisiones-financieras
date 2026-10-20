@@ -38,6 +38,7 @@ html = f"""<!DOCTYPE html>
 <script>
 {read("data.js")}
 {read("eventos.js")}
+{read("rubros.js")}
 {read("board.js")}
 {read("pizarra.js")}
 {app}
