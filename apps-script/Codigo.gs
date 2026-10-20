@@ -74,7 +74,13 @@ function preparar() {
 
   const sa = hoja_(HOJA_SALAS);
   sa.clear();
-  sa.getRange('A1').setFormula('=IFERROR(QUERY(' + HOJA + '!A1:AB,"select A, count(B), count(J), avg(J), max(J), min(AA), max(AB) where A is not null group by A order by max(AB) desc label count(B) \'Participantes\', count(J) \'Terminaron\', avg(J) \'Promedio\', max(J) \'Mejor puntaje\', min(AA) \'Inicio\', max(AB) \'Última actividad\'",1),"Aún no hay datos")');
+  // En hojas con configuración regional en español los argumentos se separan con «;»
+  const q = '"select A, count(B), count(J), avg(J), max(J), min(AA), max(AB) where A is not null group by A order by max(AB) desc label count(B) \'Participantes\', count(J) \'Terminaron\', avg(J) \'Promedio\', max(J) \'Mejor puntaje\', min(AA) \'Inicio\', max(AB) \'Última actividad\'"';
+  const f = sep => '=IFERROR(QUERY(' + HOJA + '!A1:AB' + sep + q + sep + '1)' + sep + '"Aún no hay datos")';
+  const a1 = sa.getRange('A1');
+  a1.setFormula(f(','));
+  SpreadsheetApp.flush();
+  if (/^#(ERROR|NAME|N\/A)/.test(a1.getDisplayValue())) { a1.setFormula(f(';')); SpreadsheetApp.flush(); }
   sa.getRange('D:D').setNumberFormat('0.0');
   sa.getRange('F:G').setNumberFormat('dd/MM/yyyy HH:mm');
   sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
