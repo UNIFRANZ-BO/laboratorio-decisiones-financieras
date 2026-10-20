@@ -60,41 +60,56 @@ function onOpen() {
 
 function preparar() {
   const ss = SpreadsheetApp.getActive();
-  const sh = hoja_(HOJA);
-  sh.getRange(1, 1, 1, COLS.length).setValues([COLS]).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
-  sh.setFrozenRows(1);
-  sh.setColumnWidths(1, COLS.length, 120);
-  sh.setColumnWidths(22, 5, 280);
-
-  const cfg = hoja_(HOJA_CFG);
-  if (cfg.getLastRow() < 2) cfg.getRange(1, 1, CFG_DEF.length, 3).setValues(CFG_DEF);
-  else CFG_DEF.slice(1).forEach(r => { if (!filaCfg_(cfg, r[0])) cfg.appendRow(r); });
-  cfg.getRange(1, 1, 1, 3).setFontWeight('bold').setBackground('#1E1428').setFontColor('#FFFFFF');
-  cfg.setColumnWidth(1, 220); cfg.setColumnWidth(2, 160); cfg.setColumnWidth(3, 560); cfg.setFrozenRows(1);
-  const reg = filaCfg_(cfg, 'Registro abierto');
-  cfg.getRange(reg, 2).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['SÍ', 'NO'], true).build());
-
-  const sa = hoja_(HOJA_SALAS);
-  sa.clear();
-  // Separador de argumentos según la configuración regional de la hoja:
-  // español (es_BO, es_ES…) y otros idiomas con coma decimal usan «;», inglés usa «,».
-  const q = '"select A, count(B), count(J), avg(J), max(J), min(AA), max(AB) where A is not null group by A order by max(AB) desc label count(B) \'Participantes\', count(J) \'Terminaron\', avg(J) \'Promedio\', max(J) \'Mejor puntaje\', min(AA) \'Inicio\', max(AB) \'Última actividad\'"';
-  const f = sep => '=IFERROR(QUERY(' + HOJA + '!A1:AB' + sep + q + sep + '1)' + sep + '"Aún no hay datos")';
-  const sep = /^(en|ja|zh|ko|th|he|hi)/i.test(ss.getSpreadsheetLocale() || '') ? ',' : ';';
-  const a1 = sa.getRange('A1');
-  a1.setFormula(f(sep));
-  SpreadsheetApp.flush();
-  if (/^#(ERROR|NAME)/.test(a1.getDisplayValue())) { a1.setFormula(f(sep === ';' ? ',' : ';')); SpreadsheetApp.flush(); }
-  sa.getRange('D:D').setNumberFormat('0.0');
-  sa.getRange('F:G').setNumberFormat('dd/MM/yyyy HH:mm');
-  sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
-  sa.setFrozenRows(1); sa.setColumnWidths(1, 7, 140);
-
-
-  ['Sheet1', 'Hoja 1', 'Hoja1'].forEach(n => { const h = ss.getSheetByName(n); if (h && h.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(h); });
-  ss.setActiveSheet(sa);
-  try { SpreadsheetApp.getUi().alert('Hojas listas: Ranking, Salas y CONFIG.'); } catch (e) {}
-  return 'ok';
+  const fallos = [];
+  // Cada paso es independiente: si Google falla en uno, los demás siguen y el registro dice cuál fue.
+  const paso = (nombre, fn) => {
+    try { fn(); console.log('✓ ' + nombre); }
+    catch (e) { fallos.push(nombre); console.error('✗ ' + nombre + ': ' + (e && e.message)); }
+  };
+  paso('Encabezados de Ranking', () => {
+    const sh = hoja_(HOJA);
+    sh.getRange(1, 1, 1, COLS.length).setValues([COLS]).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
+    sh.setFrozenRows(1);
+  });
+  paso('Anchos de columnas de Ranking', () => {
+    const sh = hoja_(HOJA);
+    sh.setColumnWidths(1, COLS.length, 120);
+    sh.setColumnWidths(22, 5, 280);
+  });
+  paso('Hoja CONFIG', () => {
+    const cfg = hoja_(HOJA_CFG);
+    if (cfg.getLastRow() < 2) cfg.getRange(1, 1, CFG_DEF.length, 3).setValues(CFG_DEF);
+    else CFG_DEF.slice(1).forEach(r => { if (!filaCfg_(cfg, r[0])) cfg.appendRow(r); });
+    cfg.getRange(1, 1, 1, 3).setFontWeight('bold').setBackground('#1E1428').setFontColor('#FFFFFF');
+    cfg.setColumnWidth(1, 220); cfg.setColumnWidth(2, 160); cfg.setColumnWidth(3, 560); cfg.setFrozenRows(1);
+  });
+  paso('Lista SÍ/NO de CONFIG', () => {
+    const cfg = hoja_(HOJA_CFG);
+    const reg = filaCfg_(cfg, 'Registro abierto');
+    if (reg) cfg.getRange(reg, 2).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['SÍ', 'NO'], true).build());
+  });
+  paso('Fórmula de la hoja Salas', () => {
+    const sa = hoja_(HOJA_SALAS);
+    // Separador según la configuración regional: español (es_BO…) usa «;», inglés usa «,».
+    const q = '"select A, count(B), count(J), avg(J), max(J), min(AA), max(AB) where A is not null group by A order by max(AB) desc label count(B) \'Participantes\', count(J) \'Terminaron\', avg(J) \'Promedio\', max(J) \'Mejor puntaje\', min(AA) \'Inicio\', max(AB) \'Última actividad\'"';
+    const loc = String(ss.getSpreadsheetLocale() || 'es');
+    const sep = /^(en|ja|zh|ko|th|he|hi)/i.test(loc) ? ',' : ';';
+    sa.getRange('A1').setFormula('=IFERROR(QUERY(' + HOJA + '!A1:AB' + sep + q + sep + '1)' + sep + '"Aún no hay datos")');
+  });
+  paso('Formato de la hoja Salas', () => {
+    const sa = hoja_(HOJA_SALAS);
+    sa.getRange('D:D').setNumberFormat('0.0');
+    sa.getRange('F:G').setNumberFormat('dd/MM/yyyy HH:mm');
+    sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
+    sa.setFrozenRows(1); sa.setColumnWidths(1, 7, 140);
+  });
+  paso('Quitar hoja vacía inicial', () => {
+    ['Sheet1', 'Hoja 1', 'Hoja1'].forEach(n => { const h = ss.getSheetByName(n); if (h && h.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(h); });
+  });
+  const msg = fallos.length ? '⚠️ Listo, salvo: ' + fallos.join(', ') + '. Revisa el registro de ejecución.' : '✅ Hojas listas: Ranking, Salas y CONFIG.';
+  console.log(msg);
+  try { SpreadsheetApp.getUi().alert(msg); } catch (e) {}
+  return msg;
 }
 
 function proteger_() {
