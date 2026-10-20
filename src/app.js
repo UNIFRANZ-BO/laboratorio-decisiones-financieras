@@ -761,5 +761,6 @@ function restart(){
   $('snd-btn').textContent=Snd.on?'🔊':'🔇';
   const q=new URLSearchParams(location.search);
   if(q.get('proyector')){startProjector(q.get('proyector'));return}
+  if(q.has('docente')){$('teacher-link').style.display='';openTeacher()}
   initHome();
 })();

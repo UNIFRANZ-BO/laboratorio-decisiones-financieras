@@ -24,7 +24,7 @@
 > **Sin internet:** comparte `index.html` tal cual. El juego funciona completo; solo se omiten el ranking y el QR.
 
 ## 2. El día del taller (equipos de 3 a 5)
-1. En la pantalla de inicio pulsa **🎛️ Soy docente: proyectar ranking**, elige un código (por ejemplo `ABCD`) y pulsa **Proyectar**.
+1. En la laptop del proyector abre `…/laboratorio-decisiones-financieras/?docente`: se abre el modo docente. Elige un código (por ejemplo `ABCD`) y pulsa **Proyectar**. Los estudiantes no ven esta opción en su enlace. También puedes ir directo con `?proyector=ABCD`.
 2. El proyector muestra un QR. Cada equipo lo escanea, elige **Jugar en equipo**, se pone un nombre y una mascota. El código de sala ya viene escrito.
 3. En el proyector ves en vivo a cada equipo: en qué fase está y su puntaje al terminar. Con **🙈 Ocultar puntajes** mantienes el suspenso.
 4. Cuando todos terminen, pulsa **🥁 Revelar podio**.

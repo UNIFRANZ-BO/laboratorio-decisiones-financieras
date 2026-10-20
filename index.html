@@ -789,7 +789,7 @@ input,textarea{font-family:inherit}
       </button>
       <div class="home-foot">
         <span class="sala-chip" id="home-sala" style="display:none"></span>
-        <button class="btn-link" onclick="openTeacher()">🎛️ Soy docente: proyectar ranking</button>
+        <button class="btn-link" id="teacher-link" onclick="openTeacher()" style="display:none">🎛️ Soy docente: proyectar ranking</button>
       </div>
     </div>
   </div>
@@ -2536,6 +2536,7 @@ function restart(){
   $('snd-btn').textContent=Snd.on?'🔊':'🔇';
   const q=new URLSearchParams(location.search);
   if(q.get('proyector')){startProjector(q.get('proyector'));return}
+  if(q.has('docente')){$('teacher-link').style.display='';openTeacher()}
   initHome();
 })();
 
