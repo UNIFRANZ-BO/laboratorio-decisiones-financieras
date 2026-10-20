@@ -827,8 +827,8 @@ input,textarea{font-family:inherit}
       <div class="members" id="members"></div>
     </div>
     <div class="field">
-      <label for="in-sala">Código de sala <small>(lo da el docente para el ranking en vivo)</small></label>
-      <input class="inp" id="in-sala" maxlength="6" autocomplete="off" placeholder="Ej: ABCD" style="text-transform:uppercase;font-family:var(--fm);letter-spacing:4px" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+      <label for="in-sala">Código de sala <small id="sala-req">(lo da el docente para el ranking en vivo)</small></label>
+      <input class="inp" id="in-sala" maxlength="6" autocomplete="off" placeholder="Ej: ABCD" style="text-transform:uppercase;font-family:var(--fm);letter-spacing:4px" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');validateSetup()">
     </div>
   </div>
 </section>
@@ -1921,7 +1921,13 @@ function randomName(){$('in-name').value=rnd(TEAM_NAMES);validateSetup();Snd.cli
 function addMember(){const i=$('in-member');const v=i.value.trim();if(!v||S.members.length>=6)return;S.members.push(v);i.value='';renderMembers();Snd.click()}
 function delMember(k){S.members.splice(k,1);renderMembers()}
 function renderMembers(){$('members').innerHTML=S.members.map((m,k)=>`<span class="member">${esc(m)}<button onclick="delMember(${k})">✕</button></span>`).join('')}
-function validateSetup(){const ok=$('in-name').value.trim().length>=2;AB.ok(ok,P('Escriban el nombre del equipo','Escribe tu nombre'))}
+const salaReq=()=>S.mode==='team'&&!!CONFIG.API_URL;
+function validateSetup(){
+  const nm=$('in-name').value.trim().length>=2,sl=$('in-sala').value.trim().length>=3,need=salaReq();
+  $('sala-req').innerHTML=need?'<b style="color:var(--gold)">obligatorio</b> · está grande en el proyector':'(lo da el docente para el ranking en vivo)';
+  $('in-sala').style.borderColor=need&&!sl?'rgba(255,194,61,.6)':'';
+  AB.ok(nm&&(!need||sl),!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):'Escriban el código de sala que muestra el proyector');
+}
 async function startGame(){
   S.name=$('in-name').value.trim().slice(0,28);S.sala=$('in-sala').value.trim().toUpperCase();
   if($('in-member').value.trim())addMember();

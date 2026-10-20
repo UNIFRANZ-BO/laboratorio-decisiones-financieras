@@ -91,8 +91,8 @@
       <div class="members" id="members"></div>
     </div>
     <div class="field">
-      <label for="in-sala">Código de sala <small>(lo da el docente para el ranking en vivo)</small></label>
-      <input class="inp" id="in-sala" maxlength="6" autocomplete="off" placeholder="Ej: ABCD" style="text-transform:uppercase;font-family:var(--fm);letter-spacing:4px" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+      <label for="in-sala">Código de sala <small id="sala-req">(lo da el docente para el ranking en vivo)</small></label>
+      <input class="inp" id="in-sala" maxlength="6" autocomplete="off" placeholder="Ej: ABCD" style="text-transform:uppercase;font-family:var(--fm);letter-spacing:4px" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');validateSetup()">
     </div>
   </div>
 </section>
