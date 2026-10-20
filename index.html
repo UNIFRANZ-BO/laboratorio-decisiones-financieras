@@ -963,6 +963,103 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
 .crit{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 @media(max-width:760px){.hire-bar{position:relative;top:auto}}
 
+/* ═════════════ v3.2 ═════════════ */
+.ms-audio{width:100%;margin:10px 0 8px;border-color:rgba(34,225,195,.45);color:var(--teal)}
+.ind-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.ind{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:.78rem;text-align:left;transition:.2s}
+.ind:hover{border-color:var(--c);background:rgba(255,255,255,.09)}
+.ind span{flex:1}.ind b{font-family:var(--fm);color:var(--c)}.ind i{font-style:normal;opacity:.7}
+
+/* Prioridades */
+.prio{display:flex;flex-direction:column;gap:8px}
+.prow{display:grid;grid-template-columns:40px 40px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:16px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid var(--line);border-left:4px solid var(--c);animation:msgIn .3s both}
+.prow:nth-child(-n+3){box-shadow:0 0 0 1px rgba(255,194,61,.35);background:linear-gradient(90deg,rgba(255,194,61,.14),rgba(255,255,255,.02))}
+.prow .pn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-family:var(--fd);font-weight:800;background:rgba(0,0,0,.3)}
+.prow:nth-child(1) .pn{background:var(--grad);color:#1A0A00}
+.prow .pi{font-size:1.6rem;text-align:center}
+.prow .pt b{display:block;font-size:.9rem}.prow .pt small{font-size:.72rem;color:var(--ink3)}
+.prow .pb{display:flex;flex-direction:column;gap:4px}
+.prow .pb button{width:40px;height:30px;border-radius:9px;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:.8rem}
+.prow .pb button:disabled{opacity:.25}
+
+/* Guía de organigramas */
+.guia-card{max-width:760px!important;max-height:92vh;overflow:auto}
+.org-tipos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.org-tipos{grid-template-columns:1fr}}
+.org-t{padding:12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.org-t.sug{border-color:var(--o1);box-shadow:0 0 22px -8px rgba(255,138,0,.8)}
+.org-t svg{width:100%;height:90px;background:rgba(0,0,0,.25);border-radius:10px;padding:6px}
+.org-t svg rect,.org-t svg circle{fill:rgba(255,194,61,.18);stroke:#FFC23D;stroke-width:1.5}
+.org-t svg path{fill:none;stroke:#9D7BFF;stroke-width:1.5}
+.org-t b{font-size:.92rem}.org-t b em{font-style:normal;font-size:.62rem;padding:2px 7px;border-radius:99px;background:var(--o1);color:#1A0A00;margin-left:4px;vertical-align:2px}
+.org-t p{font-size:.78rem;color:var(--ink3);margin:0}
+.org-t .btn-ghost{min-height:38px;font-size:.8rem;margin-top:auto}
+.org-pasos{padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.86rem;color:var(--ink2)}
+.org-ej{margin-top:12px;padding:12px;border-radius:14px;background:rgba(255,138,0,.1);border-left:3px solid var(--o1);font-size:.86rem;color:var(--ink2)}
+
+/* Caja de 6 meses */
+.caja-top{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.caja-top div{padding:10px;border-radius:14px;background:rgba(0,0,0,.25);text-align:center}
+.caja-top small{display:block;font-size:.68rem;color:var(--ink3)}.caja-top b{font-family:var(--fd);font-size:1.15rem}
+.caja-chart{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;height:240px;margin-bottom:12px}
+.cj-m{display:grid;grid-template-rows:1fr 2px .6fr auto auto;align-items:end;text-align:center}
+.cj-top,.cj-bot{position:relative;height:100%}
+.cj-top i,.cj-bot i{position:absolute;left:12%;right:12%;border-radius:8px;height:0;animation:cjGrow .7s cubic-bezier(.2,.9,.2,1) forwards}
+.cj-top i{bottom:0;background:linear-gradient(to top,#22E1C3,#B8F34A)}
+.cj-bot i{top:0;background:linear-gradient(to bottom,#FF4757,#FF8A00)}
+@keyframes cjGrow{to{height:var(--h)}}
+.cj-zero{background:rgba(255,255,255,.4)}
+.cj-m b{font-family:var(--fm);font-size:.72rem;margin-top:4px}.cj-m small{font-size:.62rem;color:var(--ink3)}
+.caja-msg{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.06);font-size:.9rem;color:var(--ink2);margin-bottom:6px}
+
+/* Micropausa y quiz */
+.micro-card,.quiz-card{max-width:520px!important}
+.micro-card h3,.quiz-q{font-family:var(--fd);font-size:1.25rem;line-height:1.25;margin:4px 0 12px}
+.micro-opts{display:flex;flex-direction:column;gap:8px}
+.mopt{text-align:left;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);background:rgba(255,255,255,.05);font-weight:700;font-size:.9rem;transition:.2s}
+.mopt:hover:not(:disabled){border-color:var(--line2)}
+.mopt.ok{border-color:rgba(184,243,74,.6);background:rgba(184,243,74,.1)}
+.mopt.no{opacity:.55}
+.mopt.pick.no{opacity:1;border-color:rgba(255,71,87,.6);background:rgba(255,71,87,.1)}
+.micro-f{min-height:1.4em;margin-top:10px;font-size:.88rem;color:var(--ink2)}
+
+/* Crisis en vivo */
+.live-card{max-width:560px!important;border-color:rgba(255,71,87,.6)!important;box-shadow:0 0 60px -10px rgba(255,71,87,.7)}
+.live-card .ev-ic{font-size:2.8rem;margin:8px 0}
+.live-card h3{font-family:var(--fd);font-size:1.4rem}
+#m-live.on{animation:flashBg 1s ease-out}
+@keyframes flashBg{0%{background:rgba(255,71,87,.6)}100%{background:rgba(6,3,12,.8)}}
+
+/* Comodín y contraoferta */
+.comodin{width:100%;margin:12px 0 0;border-color:rgba(157,123,255,.5);color:#D9CCFF}
+.contra-btn{border-color:rgba(34,225,195,.5)!important;background:rgba(34,225,195,.07)!important}
+.contra{display:flex;flex-direction:column;gap:8px;padding:4px}
+.contra span{font-size:.84rem;color:var(--ink2)}
+.contra input{accent-color:#FF8A00;width:100%}
+.co-row{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:var(--ink3)}
+.co-row b{font-family:var(--fd);font-size:1.4rem;color:var(--gold)}
+
+/* Resultados */
+.planvs{padding:12px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--line);font-size:.82rem;display:flex;flex-direction:column;gap:4px}
+.planvs div{display:flex;justify-content:space-between;gap:6px}.planvs span{font-family:var(--fm);color:var(--gold)}
+.planvs small{color:var(--ink3);margin-top:4px}
+.boards-row{grid-template-columns:1fr 1fr}
+.just.opc{border-style:dashed;opacity:.9}
+
+/* Certificado (PDF horizontal, fuera de pantalla) */
+.cert{width:1123px;height:794px;background:#fff;padding:26px;font-family:var(--fb)}
+.cert-in{width:100%;height:100%;border:10px solid #FF8A00;border-image:linear-gradient(120deg,#FFC23D,#FF8A00,#FF5E3A,#FF3D7F) 1;padding:44px 70px;text-align:center;color:#1d1626;position:relative}
+.ce-k{font-family:var(--fm);font-size:13px;letter-spacing:3px;color:#c2410c}
+.ce-h{font-family:var(--fd);font-weight:800;font-size:64px;letter-spacing:-2px;margin:14px 0 0;color:#1d1626}
+.ce-s{font-size:18px;color:#6b6475;margin-top:2px}
+.ce-n{font-family:var(--fd);font-weight:800;font-size:46px;margin:20px 0 4px;color:#FF5E3A}
+.ce-m{font-size:15px;color:#6b6475}
+.ce-t{font-size:18px;line-height:1.6;max-width:820px;margin:18px auto 14px;color:#3b3346}
+.ce-l span{display:inline-block;margin:4px;padding:5px 12px;border-radius:99px;background:#FFF3E6;font-size:13px;font-weight:700;color:#7a3b0c}
+.ce-f{position:absolute;left:70px;right:70px;bottom:40px;width:calc(100% - 140px);font-size:13px;color:#6b6475}
+.ce-f td{vertical-align:bottom;text-align:left}
+.ce-line{width:260px;height:1.5px;background:#1d1626;margin-bottom:6px}
+
 </style>
 </head>
 <body>
@@ -1002,11 +1099,11 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
         <span class="ln l2"><span>DECISIONES</span></span>
         <span class="ln l3"><span>FINANCIERAS</span></span>
       </h1>
-      <p class="home-sub">Dirige un negocio real de Cochabamba con <strong>Bs 100.000</strong> y un equipo de <strong>5 personas</strong>… y descubre cómo esas mismas decisiones manejan <strong>tu propio dinero</strong>.</p>
+      <p class="home-sub">Elige uno de <strong>15 negocios reales de Cochabamba</strong>, administra <strong>Bs 100.000</strong> y contrata a tu propio equipo… y descubre cómo esas mismas decisiones manejan <strong>tu propio dinero</strong>.</p>
       <div class="stats">
         <div class="stat"><b data-count="100000" data-prefix="Bs ">Bs 0</b><small>de capital</small></div>
-        <div class="stat"><b data-count="9">0</b><small>negocios cochabambinos</small></div>
-        <div class="stat"><b data-count="9">0</b><small>decisiones clave</small></div>
+        <div class="stat"><b data-count="15">0</b><small>negocios cochabambinos</small></div>
+        <div class="stat"><b data-count="37">0</b><small>perfiles para contratar</small></div>
       </div>
     </div>
     <div class="modes">
@@ -1096,34 +1193,23 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
     <div class="ms-right glass">
       <span class="lbl">Así arranca su empresa</span>
       <svg id="ms-radar" viewBox="-75 0 570 400" class="ms-radar"></svg>
+      <button class="btn-ghost ms-audio" onclick="explicarIndicadores()">🔊 ¿Cómo arranca mi empresa? Escuchar</button>
+      <div class="ind-list" id="ind-list"></div>
       <div class="ms-reto"><b>🎯 Reto financiero</b><span id="ms-reto"></span></div>
     </div>
   </div>
 </section>
 
-<!-- ============ FASE 2: BOCETO ============ -->
-<section id="ph-draw1" class="ph">
-  <div class="wrap">
+<!-- ============ FASE 2: PRIORIDADES ============ -->
+<section id="ph-prio" class="ph">
+  <div class="wrap-s">
     <div class="ph-head">
-      <span class="tag">Fase 2 · Pizarra estratégica</span>
-      <h2 class="h2">Antes de gastar… <span class="gt">¡dibujen su plan!</span></h2>
-      <p class="lead">Usen fichas, flechas y notas para mostrar <strong>dónde pondrían más dinero y por qué</strong>.</p>
+      <span class="tag">Fase 2 · Plan</span>
+      <h2 class="h2">¿Qué es <span class="gt">lo más importante</span>?</h2>
+      <p class="lead">Ordenen las partidas de su negocio de la <strong>más</strong> a la <strong>menos</strong> importante. Al final compararemos su plan con lo que realmente hicieron.</p>
     </div>
-    <div class="draw-card">
-      <div class="draw-open" id="dopen-d1" onclick="openBoard('d1')">
-        <div class="cta"><span class="big">✏️</span><b>Abrir pizarra</b><span>Pantalla completa · funciona con el dedo</span></div>
-      </div>
-      <div class="glass tips">
-        <span class="lbl">Pistas para su boceto</span>
-        <ul style="display:flex;flex-direction:column;gap:10px">
-          <li><i>🧩</i><span>Toquen <b>Fichas</b> y usen la <b>plantilla</b> con las 5 áreas del negocio.</span></li>
-          <li><i>🥇</i><span>Marquen su prioridad 1, 2 y 3. ¿Qué área es vital para <span class="bz-name">este negocio</span>?</span></li>
-          <li><i>🛡️</i><span>¿Guardarán algo para emergencias? ¿Cuánto?</span></li>
-          <li><i>👆</i><span>Con dos dedos acercan, alejan y mueven la pizarra.</span></li>
-        </ul>
-        <div class="team-hint team-only">💬 Una persona dibuja, el resto opina. ¡Roten el celular!</div>
-      </div>
-    </div>
+    <div class="prio" id="prio"></div>
+    <div class="team-hint team-only" style="margin-top:12px">💬 Debatan: ¿sin qué partida su negocio simplemente no funciona?</div>
   </div>
 </section>
 
@@ -1134,6 +1220,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       <span class="tag">Fase 3 · Gestión financiera</span>
       <h2 class="h2">Repartan sus <span class="gt">Bs 100.000</span></h2>
       <p class="lead">Repartan <strong>exactamente</strong> Bs 100.000 entre las partidas de su negocio. Incluyan <strong>sueldos del equipo</strong> y un <strong>fondo de emergencia</strong>.</p>
+      <button class="btn-ghost" style="margin-top:10px" onclick="explicarPartidas()">🔊 Explícame las partidas</button>
     </div>
     <div class="cap-layout">
       <div>
@@ -1160,7 +1247,8 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
     <div class="ph-head">
       <span class="tag">Fase 4 · Estructura</span>
       <h2 class="h2">Diseñen su <span class="gt">organigrama</span></h2>
-      <p class="lead">¿Quién lidera? ¿Quién reporta a quién? Usen la plantilla y conecten cajas con flechas.</p>
+      <p class="lead">¿Quién lidera? ¿Quién reporta a quién? Primero revisen la guía y elijan el tipo de organigrama.</p>
+      <button class="btn" style="margin-top:12px" onclick="openGuia()">📘 Guía: tipos de organigrama</button>
     </div>
     <div class="draw-card">
       <div class="draw-open" id="dopen-d2" onclick="openBoard('d2')">
@@ -1169,7 +1257,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       <div class="glass tips">
         <span class="lbl">Pistas para su organigrama</span>
         <ul style="display:flex;flex-direction:column;gap:10px">
-          <li><i>✨</i><span>En <b>Fichas → Plantilla</b> aparece un organigrama listo para editar.</span></li>
+          <li><i>📘</i><span>En la <b>Guía</b> eligen el tipo (vertical, horizontal, plano o matricial) y aparece como plantilla.</span></li>
           <li><i>➡️</i><span>Con <b>Flecha</b>, arrastren de una caja a otra: quedan conectadas.</span></li>
           <li><i>🗒️</i><span>Con <b>Nota</b> escriban nombres o responsabilidades.</span></li>
           <li><i>✋</i><span>Con <b>Mover</b> reacomodan todo. Doble toque para editar el texto.</span></li>
@@ -1202,6 +1290,23 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
   </div>
 </section>
 
+<!-- ============ CAJA 6 MESES ============ -->
+<section id="ph-caja" class="ph">
+  <div class="wrap-s">
+    <div class="ph-head">
+      <span class="tag">Fase 5 · Proyección de caja</span>
+      <h2 class="h2">Sus primeros <span class="gt">6 meses</span></h2>
+      <p class="lead">Ganar no es lo mismo que <strong>tener efectivo</strong>. Así se mueve el dinero de su empresa mes a mes con las decisiones que tomaron.</p>
+    </div>
+    <div class="glass box caja">
+      <div class="caja-top"><div><small>Caja inicial</small><b id="cj-ini">Bs 0</b></div><div><small>Sueldos por mes</small><b id="cj-pay">Bs 0</b></div><div><small>Caja al mes 6</small><b id="cj-fin">Bs 0</b></div></div>
+      <div class="caja-chart" id="cj-chart"></div>
+      <div class="caja-msg" id="cj-msg"></div>
+      <p class="cap-leg">Proyección simplificada: las ventas crecen mes a mes mientras llegan los clientes; los sueldos y los insumos se pagan cada mes.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FASE 6: CRISIS ============ -->
 <section id="ph-crisis" class="ph">
   <div class="ev-wrap">
@@ -1215,6 +1320,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       <div class="warn-res" id="cr-warn" style="display:none">⚠️ No tienen fondo de emergencia: los golpes negativos serán <b>1,8 veces más fuertes</b>.</div>
     </div>
     <div class="opts" id="cr-opts"></div>
+    <button class="btn-ghost comodin" id="com-cr" onclick="usarComodin('crisis')">📞 Comodín: llamar a un estudiante de NGE</button>
     <div id="just-crisis"></div>
   </div>
 </section>
@@ -1251,6 +1357,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       </div>
     </div>
     <div class="opts" id="op-opts"></div>
+    <button class="btn-ghost comodin" id="com-op" onclick="usarComodin('opp')" style="display:none">📞 Comodín: llamar a un estudiante de NGE</button>
     <div id="just-opp"></div>
   </div>
 </section>
@@ -1299,6 +1406,8 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
     <div class="res-tab" id="t-reg"><div class="glass box"><div class="tl" id="timeline"></div></div></div>
     <div class="res-actions">
       <button class="btn" id="pdf-btn" onclick="makePDF()">📄 Descargar informe PDF</button>
+      <button class="btn-ghost" onclick="openQuiz()">🧠 Quiz final</button>
+      <button class="btn-ghost" onclick="makeCert()">🏅 Certificado</button>
       <button class="btn-ghost" onclick="shareCard()">📸 Tarjeta para historia</button>
       <button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button>
     </div>
@@ -1388,6 +1497,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       <div class="podium" id="podium"><div class="pod-wait" id="pod-wait"><div><div class="q">🏆</div><p class="lead">Cuando todos terminen, revelen el podio.</p></div></div></div>
       <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
         <button class="btn" onclick="revealPodium()">🥁 Revelar podio</button>
+        <button class="btn-ghost" onclick="openLanzar()">⚡ Crisis en vivo</button>
         <button class="btn-ghost" onclick="toggleScores()" id="hide-btn">🙈 Ocultar puntajes</button>
         <button class="btn-ghost" onclick="exitProjector()">← Salir</button>
       </div>
@@ -1465,6 +1575,50 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
   <p id="mm-q"></p>
   <div class="mm-you" id="mm-you"></div>
   <div class="row"><button class="btn" onclick="closeModal('m-malla')">Entendido</button></div>
+</div></div>
+
+<!-- Guía de organigramas -->
+<div class="modal" id="m-guia"><div class="card guia-card">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>📘 Tipos de organigrama</h3><button class="icon-btn" onclick="closeModal('m-guia')">✕</button></div>
+  <p>Un organigrama muestra <b>quién hace qué</b> y <b>quién reporta a quién</b>. Elijan el tipo que mejor encaja con su negocio:</p>
+  <div class="org-tipos" id="org-tipos"></div>
+  <span class="lbl" style="margin-top:12px">Cómo diseñarlo en 4 pasos</span>
+  <ol class="org-pasos" id="org-pasos"></ol>
+  <div class="org-ej" id="org-ej"></div>
+</div></div>
+
+<!-- Micropausa -->
+<div class="modal" id="m-micro"><div class="card micro-card">
+  <span class="tag">🪞 ¿Y en tu vida?</span>
+  <h3 id="mi-q"></h3>
+  <div class="micro-opts" id="mi-o"></div>
+  <p class="micro-f" id="mi-f"></p>
+  <div class="row"><button class="btn" id="mi-btn" disabled>Continuar →</button></div>
+</div></div>
+
+<!-- Crisis en vivo -->
+<div class="modal live" id="m-live"><div class="card live-card">
+  <span class="tag" style="background:var(--red);color:#fff;border-color:var(--red)">⚡ CRISIS EN VIVO · lanzada por el docente</span>
+  <div class="ev-ic" id="lv-ic"></div><h3 id="lv-t"></h3><p id="lv-d"></p>
+  <div class="timer" id="lv-timer"><span>⏱️</span><div class="tbar"><i id="lv-tbar"></i></div><b id="lv-tnum">30s</b></div>
+  <div class="opts" id="lv-o"></div>
+</div></div>
+
+<!-- Quiz -->
+<div class="modal" id="m-quiz"><div class="card quiz-card">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>🧠 Quiz final</h3><span class="tag" id="qz-n" style="margin:0">1/3</span></div>
+  <p id="qz-q" class="quiz-q"></p>
+  <div class="micro-opts" id="qz-o"></div>
+  <p class="micro-f" id="qz-f"></p>
+  <div class="row"><button class="btn" id="qz-btn" disabled>Siguiente →</button></div>
+</div></div>
+
+<!-- Selector de crisis en vivo (proyector) -->
+<div class="modal" id="m-lanzar"><div class="card">
+  <h3>⚡ Lanzar crisis en vivo</h3>
+  <p>Aparecerá al mismo tiempo en todos los celulares de la sala. Tendrán 30 segundos para decidir.</p>
+  <div class="opts" id="lz-o"></div>
+  <div class="row"><button class="btn-ghost" onclick="closeModal('m-lanzar')">Cancelar</button></div>
 </div></div>
 
 <!-- Pizarra pro -->
@@ -2185,7 +2339,9 @@ const LOGROS=[
   {id:'planilla',ic:'🧾',n:'Planilla sana',d:'La planilla cupo en el presupuesto de talento.',t:s=>s.hires.length>0&&s.payroll<=(s.capL.pla||0)},
   {id:'ganar',ic:'🤝',n:'Maestro ganar-ganar',d:'Las 3 negociaciones con la mejor práctica.',t:s=>s.negQ.filter(q=>q===2).length===3},
   {id:'rayo',ic:'⚡',n:'Decisión relámpago',d:'Resolvieron la crisis en menos de 25 s.',t:s=>s.crisisTime>0&&s.crisisTime<25},
-  {id:'visual',ic:'✏️',n:'Pensamiento visual',d:'Usaron las dos pizarras.',t:s=>s.boards.d1&&s.boards.d2},
+  {id:'visual',ic:'✏️',n:'Pensamiento visual',d:'Diseñaron su organigrama.',t:s=>s.boards.d2},
+  {id:'coherente',ic:'🧭',n:'Plan coherente',d:'2 o más de sus prioridades fueron sus mayores inversiones.',t:s=>s.prioMatch>=2},
+  {id:'caja',ic:'💸',n:'Caja viva',d:'Nunca se quedaron sin efectivo en 6 meses.',t:s=>s.cajaRes&&s.cajaRes.min>=-1500},
   {id:'estratega',ic:'🧭',n:'Estratega del rubro',d:'Capital muy cercano al recomendado para su negocio.',t:s=>s.benchDist<=30},
   {id:'cohete',ic:'🚀',n:'Crecimiento explosivo',d:'Crecimiento final de 80 o más.',t:s=>s.met.cre>=80},
   {id:'etica',ic:'⚖️',n:'Brújula ética',d:'Ninguna decisión “débil” en crisis y oportunidad.',t:s=>s.cQ>0&&s.oQ>0}
@@ -2602,6 +2758,114 @@ cer:{
    {lbl:'Seguir solo en bares',sub:'Nicho seguro.',fx:{rent:0,eq:0,cli:0,cre:-6,sos:2},q:0}]}
  ]}
 });
+
+/* ═══════════════════════════════════════
+   EXTRAS v3.2 — textos de voz compartidos, prioridades, guía de organigramas,
+   caja de 6 meses, micropausas, comodín, contraoferta, crisis en vivo, certificado y quiz
+   (Las funciones de texto también las usa herramientas/textos_voz.js para generar los MP3)
+═══════════════════════════════════════ */
+
+/* ---------- Textos de voz ---------- */
+const VOZ_IND={
+  intro:'Su empresa se mide con cinco indicadores, de cero a cien. Cada decisión que tomen moverá estos números.',
+  rent:'Rentabilidad: cuánto ganan por cada boliviano que invierten. No es cuánto venden, sino cuánto les queda después de pagar todo.',
+  eq:'Equipo: qué tan capaz, motivado y bien organizado está su personal. Un buen equipo hace que todo lo demás funcione.',
+  cli:'Clientes: cuántas personas los eligen y vuelven a comprarles. Sin clientes satisfechos no hay negocio.',
+  cre:'Crecimiento: su capacidad de expandirse, innovar y llegar a nuevos mercados.',
+  sos:'Sostenibilidad: qué tan preparados están para durar en el tiempo y resistir crisis. Aquí pesan mucho la reserva y las decisiones responsables.'
+};
+const vozIndicadores=()=>[VOZ_IND.intro,VOZ_IND.rent,VOZ_IND.eq,VOZ_IND.cli,VOZ_IND.cre,VOZ_IND.sos].join(' ');
+function vozPartidas(bizId){
+  const L=CAPLINES[bizId].filter(l=>l.id!=='pla'&&l.id!=='res');
+  return 'Estas son las partidas de su negocio. '+L.map(l=>l.name+': '+l.hint.toLowerCase()+'.').join(' ')+
+    ' Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis.';
+}
+const CIERRE=[
+  '¡Impresionante! Su gestión fue de nivel profesional.',
+  '¡Muy bien! Tomaron decisiones sólidas y bien pensadas.',
+  'Buen trabajo. Hubo aciertos, y también decisiones que les costaron caro.',
+  'Su empresa sobrevivió con dificultades, y eso también enseña mucho.',
+  'Fue un reto duro, y está bien: así empiezan los grandes gerentes.'
+];
+const COMP_MATERIAS=c=>MALLA_MAP.filter(s=>s.c.includes(c)).slice(0,2).map(s=>s.s);
+const vozFuerte=c=>{const x=COMPS.find(z=>z.id===c);const m=COMP_MATERIAS(c);return`Su mayor fortaleza fue ${x.lbl.toLowerCase()}. En la carrera la llevarán al siguiente nivel con materias como ${m.join(' y ')}.`};
+const vozMejora=c=>{const x=COMPS.find(z=>z.id===c);const m=COMP_MATERIAS(c);return`Lo que más deben fortalecer es ${x.lbl.toLowerCase()}. Justamente para eso, Negocios y Gestión Empresarial tiene materias como ${m.join(' y ')}.`};
+const VOZ_CARRERA='Lo que vivieron hoy en una hora, en Negocios y Gestión Empresarial de UNIFRANZ lo dominarán en cuatro años: con proyectos integradores reales en cada semestre, inteligencia artificial y análisis de datos, dos menciones para especializarse y experiencias internacionales. Si hoy disfrutaron tomar decisiones, esta carrera es para ustedes. ¡Los esperamos!';
+function vozHint(ev){const b=ev.opts.reduce((x,o)=>o.q>x.q?o:x,ev.opts[0]);
+  return `¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ${b.sub.toLowerCase().replace(/\.$/,'')}. Y piensen en qué pasará en seis meses, no solo hoy.`}
+
+/* ---------- Micropausas «¿Y en tu vida?» ---------- */
+const MICRO={
+  capital:{q:'Te pagan Bs 1.000 en tu primer trabajo de medio tiempo. ¿Cuánto guardarías para emergencias?',o:[
+    {t:'Nada, ya veré después',f:'Sin reserva, cualquier imprevisto te obliga a endeudarte, igual que a tu empresa sin fondo de emergencia.'},
+    {t:'Entre Bs 100 y 200 (10–20 %)',f:'¡Exacto! Es lo que recomiendan los expertos: ahorrar una parte fija de cada ingreso.',ok:1},
+    {t:'Todo: no gasto nada',f:'Ahorrar todo tampoco es sano: también necesitas cubrir gastos e invertir en ti.'}]},
+  team:{q:'Quieres ganar más en el futuro. ¿En qué invertirías primero?',o:[
+    {t:'Un celular último modelo',f:'Es un gusto, no una inversión: pierde valor cada mes.'},
+    {t:'Un curso o una certificación',f:'¡Bien! Tu capital humano es tu mejor inversión, igual que contratar al personal correcto.',ok:1},
+    {t:'Ropa de marca',f:'Es un gusto válido, pero no aumenta lo que podrás ganar.'}]},
+  crisis:{q:'Se te rompe el celular y necesitas otro ya. ¿Qué haces?',o:[
+    {t:'Pido un préstamo rápido con interés alto',f:'Es la opción más cara: los préstamos rápidos pueden costarte el doble.'},
+    {t:'Uso mi fondo de emergencia',f:'¡Exacto! Para eso existe: resolver imprevistos sin deudas.',ok:1},
+    {t:'Compro el más caro en 24 cuotas',f:'Las cuotas largas parecen fáciles, pero terminas pagando mucho más.'}]},
+  neg:{q:'Vas a comprar una laptop de Bs 5.000. ¿Qué haces?',o:[
+    {t:'Pago lo que me piden',f:'Pierdes la oportunidad de ahorrar sin ganar más.'},
+    {t:'Comparo 3 tiendas y pido descuento por pagar al contado',f:'¡Así se negocia! Comparar y proponer te puede ahorrar cientos de bolivianos.',ok:1},
+    {t:'Pido que me la fíen',f:'Endeudarte sin un plan es riesgoso, aunque te la fíen.'}]},
+  opp:{q:'Un amigo te ofrece «duplicar tu dinero en un mes» con un negocio en internet. ¿Qué haces?',o:[
+    {t:'Invierto todos mis ahorros',f:'¡Cuidado! Las ganancias aseguradas y rápidas suelen ser estafas piramidales.'},
+    {t:'Investigo y desconfío de ganancias aseguradas',f:'¡Muy bien! Una oportunidad real se analiza con datos, como hicieron en su empresa.',ok:1},
+    {t:'Invierto una parte, por si acaso',f:'Es mejor que todo, pero si es una estafa igual pierdes. Primero investiga.'}]}
+};
+
+/* ---------- Quiz final ---------- */
+const QUIZ=[
+  {q:'¿Qué es la rentabilidad?',o:['Cuánto vendes en un mes','Cuánto ganas en relación con lo que inviertes','Cuántos clientes tienes'],a:1},
+  {q:'Una empresa puede tener ganancias y aun así quebrar si…',o:['No tiene efectivo para pagar sus cuentas','Tiene muchos clientes','Paga sus impuestos'],a:0},
+  {q:'¿Para qué sirve un fondo de emergencia?',o:['Para darse gustos','Para cubrir imprevistos sin endeudarse','Para pagar sueldos más altos'],a:1},
+  {q:'En una negociación «ganar-ganar»…',o:['Una parte cede todo','Ambas partes obtienen algo valioso','Gana quien grita más fuerte'],a:1},
+  {q:'La regla 50/30/20 recomienda destinar al ahorro e inversión…',o:['El 50 %','El 30 %','El 20 %'],a:2},
+  {q:'Contratar a alguien sin relación con tu negocio…',o:['Aumenta costos sin aportar','Siempre mejora el equipo','Reduce la planilla'],a:0},
+  {q:'Tener varios clientes y proveedores sirve para…',o:['Complicarse la vida','Reducir el riesgo','Pagar menos impuestos'],a:1},
+  {q:'¿Qué aprendes en Negocios y Gestión Empresarial?',o:['Solo contabilidad','A dirigir empresas con finanzas, datos, talento e innovación','Solo marketing'],a:1}
+];
+
+/* ---------- Crisis en vivo (las lanza el docente desde el proyector) ---------- */
+const LIVE=[
+  {id:'feriado',ic:'🎉',title:'¡Feriado largo de 4 días!',news:'Atención: el gobierno declara feriado largo de cuatro días. Miles de familias viajan y el consumo cambia de golpe.',
+   desc:'El gobierno declara feriado largo. La mitad de tus clientes se va de viaje, pero llegan turistas.',opts:[
+   {lbl:'Abrir con promociones especiales',sub:'Aprovechas a quienes se quedan y a los visitantes.',fx:{rent:4,eq:-2,cli:6,cre:4,sos:2},q:2},
+   {lbl:'Cerrar y dar descanso al equipo',sub:'Equipo feliz, ventas cero.',fx:{rent:-4,eq:6,cli:-2,cre:0,sos:0},q:1},
+   {lbl:'Abrir como un día normal',sub:'Sin plan, ventas flojas.',fx:{rent:-2,eq:-2,cli:0,cre:0,sos:0},q:0}]},
+  {id:'impuestos',ic:'🧾',title:'Fiscalización de Impuestos Nacionales',news:'Último momento: Impuestos Nacionales inicia operativos sorpresa de fiscalización en negocios de Cochabamba.',
+   desc:'Llegan fiscalizadores de Impuestos Nacionales. Revisarán facturas de los últimos 6 meses.',opts:[
+   {lbl:'Mostrar todo en orden y regularizar lo pendiente',sub:'Transparencia y cumplimiento.',fx:{rent:-2,eq:2,cli:2,cre:0,sos:8},q:2},
+   {lbl:'Pagarle a un «tramitador» para que lo arregle',sub:'Ilegal y arriesgado.',fx:{rent:-6,eq:-4,cli:-2,cre:0,sos:-12},q:0},
+   {lbl:'Cerrar el día para evitar la revisión',sub:'Solo postergas el problema.',fx:{rent:-4,eq:0,cli:-4,cre:0,sos:-4},q:0}]},
+  {id:'qr',ic:'📱',title:'Estafa con un QR falso a tu nombre',news:'Último momento: estafadores circulan códigos QR falsos usando el nombre de negocios conocidos de Cochabamba.',
+   desc:'Circulan QR falsos con el nombre de tu negocio. Algunos clientes pagaron a estafadores.',opts:[
+   {lbl:'Avisar a clientes y al banco, y mostrar el QR oficial',sub:'Proteges a tus clientes.',fx:{rent:-2,eq:2,cli:6,cre:0,sos:6},q:2},
+   {lbl:'Ignorarlo: no es tu culpa',sub:'Los clientes se sienten abandonados.',fx:{rent:0,eq:0,cli:-8,cre:0,sos:-4},q:0},
+   {lbl:'Dejar de cobrar con QR',sub:'Seguro, pero pierdes ventas.',fx:{rent:-4,eq:0,cli:-2,cre:-4,sos:2},q:1}]},
+  {id:'viral',ic:'🔥',title:'Un video viral critica tu servicio',news:'Atención: un video con miles de reproducciones critica a un negocio cochabambino. Las redes arden.',
+   desc:'Un video viral con 200 mil vistas critica tu atención. Los comentarios se multiplican.',opts:[
+   {lbl:'Responder con transparencia y una solución concreta',sub:'Conviertes la crítica en confianza.',fx:{rent:-2,eq:2,cli:6,cre:4,sos:4},q:2},
+   {lbl:'Borrar los comentarios negativos',sub:'La gente lo nota… y se enoja más.',fx:{rent:0,eq:0,cli:-8,cre:-2,sos:-4},q:0},
+   {lbl:'Pelear en redes con el autor',sub:'Más visibilidad… negativa.',fx:{rent:0,eq:-2,cli:-6,cre:2,sos:-4},q:0}]}
+];
+
+/* ---------- Guía de organigramas ---------- */
+const ORG_TIPOS=[
+  {id:'vertical',n:'Vertical (funcional)',ic:'🔽',cuando:'El más común: la gerencia arriba y cada área debajo. Ideal para la mayoría de las empresas.',
+   svg:'<rect x="70" y="6" width="60" height="22" rx="5"/><rect x="6" y="56" width="48" height="20" rx="5"/><rect x="76" y="56" width="48" height="20" rx="5"/><rect x="146" y="56" width="48" height="20" rx="5"/><path d="M100 28v14M30 42h140M30 42v14M100 42v14M170 42v14"/>'},
+  {id:'horizontal',n:'Horizontal',ic:'➡️',cuando:'Se lee de izquierda a derecha. Útil para mostrar procesos o en pantallas anchas.',
+   svg:'<rect x="6" y="34" width="50" height="22" rx="5"/><rect x="120" y="6" width="70" height="18" rx="5"/><rect x="120" y="36" width="70" height="18" rx="5"/><rect x="120" y="66" width="70" height="18" rx="5"/><path d="M56 45h30M86 15v60M86 15h34M86 45h34M86 75h34"/>'},
+  {id:'plano',n:'Plano (startup)',ic:'🟰',cuando:'Pocos niveles: todos reportan directo a quien dirige. Típico de startups y equipos pequeños.',
+   svg:'<rect x="70" y="6" width="60" height="22" rx="5"/><circle cx="25" cy="66" r="13"/><circle cx="75" cy="66" r="13"/><circle cx="125" cy="66" r="13"/><circle cx="175" cy="66" r="13"/><path d="M100 28L25 53M100 28L75 53M100 28L125 53M100 28L175 53"/>'},
+  {id:'matricial',n:'Matricial',ic:'🔲',cuando:'Las personas tienen un jefe de área y uno de proyecto. Común en constructoras y consultoras.',
+   svg:'<rect x="56" y="4" width="40" height="16" rx="4"/><rect x="104" y="4" width="40" height="16" rx="4"/><rect x="152" y="4" width="40" height="16" rx="4"/><rect x="2" y="34" width="44" height="16" rx="4"/><rect x="2" y="64" width="44" height="16" rx="4"/><circle cx="76" cy="42" r="6"/><circle cx="124" cy="42" r="6"/><circle cx="172" cy="42" r="6"/><circle cx="76" cy="72" r="6"/><circle cx="124" cy="72" r="6"/><circle cx="172" cy="72" r="6"/><path d="M76 20v46M124 20v46M172 20v46M46 42h120M46 72h120" stroke-dasharray="3 3"/>'}
+];
+const ORG_PASOS=['Escriban las <b>funciones</b> que su negocio necesita (no los nombres todavía).','Agrúpenlas en <b>áreas</b>: producción, ventas, atención, administración…','Definan <b>quién reporta a quién</b> con flechas.','Pongan <b>nombres o cargos</b> y revisen que nadie tenga dos jefes (salvo en el matricial).'];
 
 /* ═══════════════════════════════════════
    PIZARRA — vectorial, táctil, pantalla completa
@@ -3057,6 +3321,31 @@ const Pizarra=(()=>{
       return[g,...ds,...ps,...ds.map(d=>arrow(g,d)),...ds.map((d,i)=>arrow(d,ps[i],'#14A38B')),{type:'text',x:20,y:-40,text:'✍️ Doble toque en una caja para escribir · arrastren flechas entre cajas',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
     }
   };
+  /* Plantillas por tipo de organigrama */
+  const ORGT={
+    vertical:()=>TEMPLATES.d2(),
+    horizontal:()=>{
+      const g=box('g',0,325,170,90,'👑 Gerente General','#FFF0C2',{fs:18});
+      const ds=DEPTOS.map((d,i)=>box('d'+i,240,140+i*110,220,70,d.ic+' '+d.name,'#E9E4F7',{fs:15}));
+      const ps=DEPTOS.map((d,i)=>box('p'+i,520,147+i*110,160,56,'👤 Nombre…','#CFF5EE',{shape:'ellipse',fs:15}));
+      const side=(a,b,col)=>{const ax=a.x+a.width+4,ay=a.y+a.height/2,bx=b.x-4,by=b.y+b.height/2;return{type:'arrow',x:ax,y:ay,width:bx-ax,height:by-ay,points:[[0,0],[bx-ax,by-ay]],strokeColor:col,strokeWidth:2,start:{id:a.id},end:{id:b.id},endArrowhead:'arrow'}};
+      return[g,...ds,...ps,...ds.map(d=>side(g,d,'#7B61C9')),...ds.map((d,i)=>side(d,ps[i],'#14A38B'))];
+    },
+    plano:()=>{
+      const rel=CANDS.filter(c=>(c.fit[S.biz.id]||0)===2).slice(0,5);
+      const g=box('g',330,0,260,74,'🚀 Fundadores / Gerencia','#FFF0C2',{fs:20});
+      const ms=(rel.length?rel:CANDS.slice(0,5)).map((c,i)=>box('m'+i,i*190,190,170,70,c.av+' '+c.role,'#CFF5EE',{shape:'ellipse',fs:13}));
+      return[g,...ms,...ms.map(m=>arrow(g,m,'#14A38B')),{type:'text',x:0,y:300,text:'Todos reportan directo a la gerencia: pocas jerarquías, decisiones rápidas.',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
+    },
+    matricial:()=>{
+      const pr=['🏗️ Proyecto A','🏘️ Proyecto B','🏢 Proyecto C'].map((t,i)=>box('pr'+i,230+i*230,0,190,60,t,'#FFF0C2',{fs:17}));
+      const ar=['🏭 Producción','💼 Ventas','📊 Administración'].map((t,i)=>box('ar'+i,0,110+i*120,190,60,t,'#E9E4F7',{fs:17}));
+      const cells=[];ar.forEach((a,r)=>pr.forEach((p,c)=>cells.push(box('c'+r+c,p.x+30,a.y+4,130,52,'👤 …','#CFF5EE',{shape:'ellipse',fs:14}))));
+      const v=pr.map((p,c)=>({type:'line',x:p.x+95,y:p.y+62,width:0,height:ar[2].y+70-p.y-62,points:[[0,0],[0,ar[2].y+70-p.y-62]],strokeColor:'#E08A00',strokeStyle:'dashed',strokeWidth:2}));
+      const h=ar.map(a=>({type:'line',x:a.x+192,y:a.y+30,width:pr[2].x+190-a.x-192,height:0,points:[[0,0],[pr[2].x+190-a.x-192,0]],strokeColor:'#7B61C9',strokeStyle:'dashed',strokeWidth:2}));
+      return[...v,...h,...pr,...ar,...cells,{type:'text',x:0,y:470,text:'Cada persona responde a su jefe de área y a su jefe de proyecto.',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
+    }
+  };
   function fichas(k){
     if(k==='d1'){const BG={mkt:'#FFD6E8',ops:'#FFF0C2',rrhh:'#CFF5EE',inf:'#E4DCFF',res:'#E2F7C2'};return[
       {g:'Partidas de su negocio',items:CAPLINES[S.biz.id].map(l=>({t:l.icon+' '+l.name,bg:BG[l.area]}))},
@@ -3091,6 +3380,7 @@ const Pizarra=(()=>{
     if(!root)root=ReactDOM.createRoot($('xb-canvas'));
     root.render(el);
     $('xb-empty').style.display=st.elements.filter(e=>!e.isDeleted).length?'none':'flex';
+    if(conf.autoTemplate)setTimeout(()=>{if(api)template(conf.autoTemplate)},700);
   }
   async function close(fromPop){
     if(!fromPop&&history.state&&history.state.xb){history.back();return}
@@ -3119,10 +3409,11 @@ const Pizarra=(()=>{
     if(fit)setTimeout(()=>api.scrollToContent(nu,{fitToContent:true,animate:true}),60);
     else api.updateScene({appState:{selectedElementIds:Object.fromEntries(nu.filter(e=>!e.containerId).map(e=>[e.id,true]))}});
   }
-  function template(){
+  function template(tipo){
     if(!api)return;
+    if(key==='d2'&&!tipo){openGuia();return}
     if(api.getSceneElements().filter(e=>!e.isDeleted).length&&!confirm('¿Agregar la plantilla a lo que ya dibujaron?'))return;
-    addSkeleton(TEMPLATES[key](),true);Snd.ok();toast('✨ Plantilla lista: toquen una caja para cambiarla');
+    addSkeleton(key==='d2'?ORGT[tipo]():TEMPLATES[key](),true);Snd.ok();toast('✨ Plantilla lista: toquen una caja para cambiarla');
   }
   function buildFichas(k){
     const F=fichas(k);$('xb-fichas').innerHTML=F.map((g,gi)=>`<div class="bd-grp">${g.g}</div><div class="bd-stamps">`+g.items.map((it,ii)=>`<button class="bd-stamp" style="background:${it.bg}" onclick="Pizarra.ficha(${gi},${ii})">${esc(it.t)}</button>`).join('')+'</div>').join('');
@@ -3191,7 +3482,7 @@ const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
     this.stop(true);this.cb=cb||null;const tok=++this.tok;
     if(!this.on||!text){if(cb)setTimeout(cb,0);return}
     const n=$('narr');n.classList.toggle('news',who==='marcelo');
-    $('nr-av').textContent=who==='marcelo'?'🎙️':'👩🏽‍💼';$('nr-who').textContent=who==='marcelo'?'Marcelo · noticiero':'Sofía · tu mentora';
+    $('nr-av').textContent=who==='marcelo'?'🎙️':who==='dani'?'🎓':'👩🏽‍💼';$('nr-who').textContent=who==='marcelo'?'Marcelo · noticiero':who==='dani'?'Dani · estudiante de NGE':'Sofía · tu mentora';
     $('nr-txt').textContent=text;n.classList.add('on');
     const a=new Audio(VOZ_BASE+key+'.mp3');this.audio=a;
     a.onended=()=>{if(tok===this.tok)this.end()};
@@ -3294,7 +3585,7 @@ function newState(prev){return{
   crisis:null,cIdx:0,cOpt:null,timedOut:false,crisisT0:0,crisisTime:0,cRes:null,
   negs:[],negOpts:[null,null,null],negRes:[null,null,null],negRound:0,
   opp:null,oIdx:0,oppOpt:null,oppShown:false,oRes:null,
-  justif:{cap:'',team:'',crisis:'',neg:'',opp:''},boards:{d1:false,d2:false},
+  justif:{cap:'',team:'',crisis:'',neg:'',opp:''},boards:{d1:false,d2:false},prio:null,prioMatch:0,micro:{},comodin:null,cajaDone:false,cajaRes:null,cajaFx:null,cmin:0,ctry:0,quiz:null,liveRes:null,orgTipo:null,joinT:0,lastLive:0,
   score:0,tier:'',tierIdx:4,perfil:'',finished:false,phase:'home',class:null,pdfUrl:''}}
 let S=newState();
 
@@ -3319,11 +3610,11 @@ const P=(team,solo)=>S.mode==='solo'?solo:team;
 /* ═══════════════════════════════════════
    NAVEGACIÓN
 ═══════════════════════════════════════ */
-const STEPS=['select','draw1','capital','draw2','team','crisis','neg','opp','results'];
-const LABELS={setup:'Preparación',select:'Fase 1 de 8 · Negocio',mision:'Fase 1 de 8 · Misión',draw1:'Fase 2 de 8 · Pizarra',capital:'Fase 3 de 8 · Capital',draw2:'Fase 4 de 8 · Organigrama',team:'Fase 5 de 8 · Contratación',crisis:'Fase 6 de 8 · Crisis',neg:'Fase 7 de 8 · Negociación',opp:'Fase 8 de 8 · Oportunidad',results:'Resultados',transfer:'Tus finanzas personales'};
-const PROG={setup:2,select:8,mision:10,draw1:18,capital:30,draw2:42,team:52,crisis:64,neg:76,opp:88,results:100,transfer:100};
-const SPL={select:['1','Elige tu negocio'],draw1:['2','Pizarra estratégica'],capital:['3','Capital'],draw2:['4','Organigrama'],team:['5','Contratación'],neg:['7','Negociación'],opp:['8','Oportunidad'],results:['🏁','Resultados']};
-const INIT={setup:initSetup,select:initSelect,mision:initMision,draw1:()=>initDraw('d1'),capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{}};
+const STEPS=['select','prio','capital','draw2','team','crisis','neg','opp','results'];
+const LABELS={setup:'Preparación',select:'Fase 1 de 8 · Negocio',mision:'Fase 1 de 8 · Misión',prio:'Fase 2 de 8 · Plan',caja:'Fase 5 de 8 · Caja',capital:'Fase 3 de 8 · Capital',draw2:'Fase 4 de 8 · Organigrama',team:'Fase 5 de 8 · Contratación',crisis:'Fase 6 de 8 · Crisis',neg:'Fase 7 de 8 · Negociación',opp:'Fase 8 de 8 · Oportunidad',results:'Resultados',transfer:'Tus finanzas personales'};
+const PROG={setup:2,select:8,mision:10,prio:18,caja:58,capital:30,draw2:42,team:52,crisis:64,neg:76,opp:88,results:100,transfer:100};
+const SPL={select:['1','Elige tu negocio'],prio:['2','Su plan'],caja:['💸','Caja de 6 meses'],capital:['3','Capital'],draw2:['4','Organigrama'],team:['5','Contratación'],neg:['7','Negociación'],opp:['8','Oportunidad'],results:['🏁','Resultados']};
+const INIT={setup:initSetup,select:initSelect,mision:initMision,prio:initPrio,caja:initCaja,capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{}};
 let skipT=null;
 function splash(ph){const s=SPL[ph];if(!s)return;$('sp-n').textContent=s[0];$('sp-t').textContent=s[1];const el=$('splash');el.classList.remove('on');void el.offsetWidth;el.classList.add('on');Snd.whoosh();setTimeout(()=>el.classList.remove('on'),1100)}
 function go(ph){
@@ -3332,7 +3623,7 @@ function go(ph){
   if(ph==='home')FX.start();else FX.stop();
   const showHud=!['home','proj'].includes(ph);$('hud').classList.toggle('on',showHud);
   if(showHud){
-    const i=STEPS.indexOf(ph==='mision'?'select':ph);
+    const i=STEPS.indexOf(ph==='mision'?'select':ph==='caja'?'team':ph);
     $('hud-steps').innerHTML=STEPS.map((s,k)=>`<span class="${ph==='transfer'||k<i?'done':k===i?'now':''}"></span>`).join('');
     $('hud-label').textContent=LABELS[ph]+(S.biz&&!['setup','select'].includes(ph)?'  ·  '+S.biz.em+' '+S.biz.name:'');
     $('hud-name').textContent=S.name||'—';$('hud-av').textContent=S.av;
@@ -3395,7 +3686,7 @@ const BIENVENIDA='¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. B
 async function startGame(){
   S.name=$('in-name').value.trim().slice(0,28);S.sala=$('in-sala').value.trim().toUpperCase();
   if($('in-member').value.trim())addMember();
-  Live.push('Preparación');
+  Live.push('Preparación');startLivePoll();
   Voz.play('bienvenida',BIENVENIDA,'sofia');
   const cd=$('countdown');cd.classList.add('on');AB.reset();
   for(const n of[3,2,1]){$('cd-n').innerHTML=`<div class="n">${n}</div>`;Snd.beep();vib(40);await sleep(850)}
@@ -3453,8 +3744,8 @@ function initMision(){
   radarSVG($('ms-radar'),metAxes(),[{v:metVals(b.base),col:'#FF8A00',fill:'rgba(255,138,0,.22)',dots:true,glow:true}],{anim:true});
   const txt=ev.intro;const el=$('ms-text');el.innerHTML='<span class="cur"></span>';let i=0;clearInterval(typeT);
   typeT=setInterval(()=>{i+=2;el.innerHTML=esc(txt.slice(0,i))+'<span class="cur"></span>';if(i>=txt.length){clearInterval(typeT);el.textContent=txt}},38);
-  Voz.play('intro_'+b.id,txt,'sofia');
-  AB.set('Aceptar la misión 🚀',()=>{Voz.stop(true);clearInterval(typeT);S.hist=[{k:'Inicio',m:{...b.base}}];go('draw1')},{back:()=>{Voz.stop(true);go('select')}});
+  Voz.play('intro_'+b.id,txt,'sofia');renderIndList();
+  AB.set('Aceptar la misión 🚀',()=>{Voz.stop(true);clearInterval(typeT);S.hist=[{k:'Inicio',m:{...b.base}}];go('prio')},{back:()=>{Voz.stop(true);go('select')}});
 }
 
 /* ═══════════════════════════════════════
@@ -3462,7 +3753,7 @@ function initMision(){
 ═══════════════════════════════════════ */
 function initDraw(k){
   refreshThumb(k);
-  const next=k==='d1'?'capital':'team',back=k==='d1'?'mision':'capital';
+  const next='team',back='capital';
   AB.set('Continuar →',()=>go(next),{back:()=>go(back)});
   updDrawAB(k);
 }
@@ -3472,9 +3763,9 @@ function updDrawAB(k){
   let s=8;AB.ok(false,P('Abran la pizarra y dibujen su plan ✏️','Abre la pizarra y dibuja tu plan ✏️'));AB.label(`Omitir pizarra (${s}s)`);
   skipT=setInterval(()=>{s--;if(s<=0){clearInterval(skipT);AB.ok(true);AB.label('Continuar sin dibujar →')}else AB.label(`Omitir pizarra (${s}s)`)},1000);
 }
-function openBoard(k){
+function openBoard(k,tipo){
   Snd.whoosh();
-  Pizarra.open(k,{...BOARDS[k],onClose:(png,used,n)=>{
+  Pizarra.open(k,{...BOARDS[k],autoTemplate:tipo||null,onClose:(png,used,n)=>{
     S.boards[k]=used;refreshThumb(k);if(S.phase===(k==='d1'?'draw1':'draw2'))updDrawAB(k);
     if(used){Snd.ok();toast(`✏️ Pizarra guardada · ${n} elemento${n!==1?'s':''}`)}
     Live.push();
@@ -3495,10 +3786,10 @@ const JUST_MIN=45;
 const JQ={cap:['¿Por qué repartieron el capital así?','¿Por qué repartiste el capital así?'],team:['¿Por qué contrataron a estas personas?','¿Por qué contrataste a estas personas?'],crisis:['¿Por qué eligieron esta opción ante la crisis?','¿Por qué elegiste esta opción ante la crisis?'],neg:['¿Qué estrategia siguieron en las 3 negociaciones?','¿Qué estrategia seguiste en las 3 negociaciones?'],opp:['¿Por qué tomaron esta decisión ante la oportunidad?','¿Por qué tomaste esta decisión ante la oportunidad?']};
 const STARTERS2={...STARTERS,team:['Contratamos a … porque nuestro negocio necesita …','No contratamos a … porque …','La planilla nos alcanza porque …']};
 let onJust=()=>{};
-function renderJust(key,boxId,cb){
+function renderJust(key,boxId,cb,opcional){
   onJust=cb;
-  $(boxId).innerHTML=`<div class="just">
-    <div class="just-h"><span style="font-size:1.3rem">✍️</span><b>Justificación obligatoria</b></div>
+  $(boxId).innerHTML=`<div class="just${opcional?' opc':''}">
+    <div class="just-h"><span style="font-size:1.3rem">✍️</span><b>${opcional?'Justificación (opcional)':'Justificación obligatoria'}</b></div>
     <p class="just-q">${P(JQ[key][0],JQ[key][1])} ${S.mode==='team'?'<br>💬 <i>Debatan un minuto y escriban su razonamiento.</i>':''}</p>
     <div class="starters">${STARTERS2[key].map(s=>`<button class="starter" onclick="useStarter('${key}',this)">${s}</button>`).join('')}</div>
     <div class="ta-wrap"><textarea class="ta" id="ta-${key}" placeholder="Escriban aquí…" oninput="justInput('${key}')">${esc(S.justif[key])}</textarea>
@@ -3551,7 +3842,7 @@ function initCapital(){
       </div>
     </div>`}).join('');
   renderJust('cap','just-cap',capAB);
-  AB.set('Organizar el equipo →',()=>{S.hist=S.hist.filter(h=>h.k==='Inicio');S.hist.push({k:'Capital',m:projMet()});go('draw2')},{back:()=>go('draw1')});
+  AB.set('Organizar el equipo →',()=>{S.hist=S.hist.filter(h=>h.k==='Inicio');S.hist.push({k:'Capital',m:projMet()});micro('capital',()=>go('draw2'))},{back:()=>go('prio')});
   capDone=totalCap()===TOTAL;prevBM=null;updCap();
 }
 function capStep(id,d,e){
@@ -3618,8 +3909,8 @@ function initTeam(){
   $('cands').innerHTML=pool.map(c=>`<button class="cand" id="cd-${c.id}" onclick="toggleHire('${c.id}')"><span class="ca">${c.av}</span><span class="cn">${c.name}</span><span class="cr">${c.role}</span><span class="cs">${fmt(c.sal)}/mes</span><span class="cd">${DEPTOS.find(d=>d.id===c.dept).ic} ${DEPTOS.find(d=>d.id===c.dept).name}</span></button>`).join('');
   $('cand-count').textContent=pool.length;
   document.querySelectorAll('.cand').forEach(tilt);
-  renderJust('team','just-team',teamAB);updTeam();
-  AB.set('Enfrentar los desafíos →',()=>{resolveAll();S.hist.push({k:'Equipo',m:{...S.met}});go('crisis')},{back:()=>go('draw2')});teamAB();
+  renderJust('team','just-team',teamAB,true);updTeam();
+  AB.set('Ver la caja de 6 meses →',()=>{resolveAll();S.hist=S.hist.filter(h=>!['Equipo','Caja'].includes(h.k));S.hist.push({k:'Equipo',m:{...S.met}});S.cajaDone=false;S.cajaRes=null;go('caja')},{back:()=>go('draw2')});teamAB();
 }
 function toggleHire(id){
   const i=S.hires.indexOf(id);
@@ -3641,7 +3932,7 @@ function updTeam(){
   const T={};DEPTOS.forEach(d=>T[d.id]=0);H.forEach(c=>T[c.dept]++);
   $('hb-depts').innerHTML=DEPTOS.map(d=>`<span class="hb-dep${T[d.id]?'':' zero'}">${d.ic} ${T[d.id]}</span>`).join('');
 }
-function teamAB(){const n=S.hires.length;AB.ok(n>=TEAM_MIN&&justOk('team'),n<TEAM_MIN?`Contraten al menos ${TEAM_MIN} personas`:justHint())}
+function teamAB(){const n=S.hires.length;AB.ok(n>=TEAM_MIN,`Contraten al menos ${TEAM_MIN} personas`)}
 function hireEval(){const e={key:0,useful:0,none:0};hired().forEach(c=>{const f=fitOf(c);f===2?e.key++:f===1?e.useful++:e.none++});return e}
 /* Ajustar la planilla sin volver a la fase de capital */
 function openPla(){renderPla();$('m-pla').classList.add('on');Snd.whoosh()}
@@ -3737,7 +4028,7 @@ function initCrisis(){
   if(!S.crisis){S.cIdx=rndI(ev.crises.length);S.crisis=ev.crises[S.cIdx];S.cOpt=null;S.timedOut=false;S.crisisTime=0}
   const c=S.crisis;$('cr-ic').textContent=c.ic;$('cr-t').textContent=c.title;$('cr-d').textContent=c.desc;$('cr-loc').textContent=c.loc;
   $('cr-warn').style.display=S.noRes?'':'none';
-  $('cr-opts').innerHTML=optCards(c.opts,'crisis');
+  $('cr-opts').innerHTML=optCards(c.opts,'crisis');$('com-cr').style.display=S.comodin?'none':'';
   renderJust('crisis','just-crisis',crAB);
   AB.set('Confirmar decisión →',confirmCrisis);crAB();
   const bk=$('breaking');bk.querySelector('.bk-band div').textContent=('🚨 ÚLTIMO MOMENTO · '+c.title.toUpperCase()+' · ').repeat(3);
@@ -3759,7 +4050,7 @@ function timeUp(){
 function crAB(){AB.ok(S.cOpt!==null&&justOk('crisis'),S.cOpt===null?P('Elijan una opción','Elige una opción'):justHint())}
 function confirmCrisis(){
   stopTimer();Voz.stop(true);const o=S.crisis.opts[S.cOpt];const r=evalOpt(o,1,S.noRes);S.cRes=r;const before=applyFx(r.fx);S.hist.push({k:'Crisis',m:{...S.met}});
-  showImpact(before,'Impacto de la crisis',r,S.crisis.opts,()=>go('neg'),S.noRes?'<div class="imp-note ko">⚠️ Sin fondo de emergencia: los golpes se multiplicaron ×1,8.</div>':'');
+  showImpact(before,'Impacto de la crisis',r,S.crisis.opts,()=>micro('crisis',()=>go('neg')),S.noRes?'<div class="imp-note ko">⚠️ Sin fondo de emergencia: los golpes se multiplicaron ×1,8.</div>':'');
 }
 
 /* ═══════════════════════════════════════
@@ -3780,22 +4071,26 @@ async function playRound(r){
   addMsg('sys','📍 '+n.loc);
   for(const m of n.msgs){await typing(750);addMsg('them',m);Snd.click()}
   await sleep(300);
-  f.innerHTML=`<span class="lbl" style="margin:0">${P('Elijan su respuesta','Elige tu respuesta')}</span>`+n.opts.map((o,i)=>`<button class="reply" style="animation-delay:${i*.08}s" onclick="answer(${r},${i})"><b>${'ABC'[i]}. ${o.lbl}</b><span>${o.sub}</span></button>`).join('');
+  f.innerHTML=`<span class="lbl" style="margin:0">${P('Elijan su respuesta','Elige tu respuesta')}</span>`+n.opts.map((o,i)=>`<button class="reply" style="animation-delay:${i*.08}s" onclick="answer(${r},${i})"><b>${'ABC'[i]}. ${o.lbl}</b><span>${o.sub}</span></button>`).join('')+
+    (r===0?`<button class="reply contra-btn" onclick="contraUI(0)"><b>✍️ Hacer nuestra propia contraoferta</b><span>Decidan cuánto ceder… si se pasan de exigentes, pueden perder el trato.</span></button>`:'')+comodinBtn();
   chatBusy=false;setTimeout(()=>f.scrollIntoView({behavior:'smooth',block:'center'}),120);
 }
 function addMsg(who,html){const d=document.createElement('div');d.className='msg '+who;d.innerHTML=html;$('chat-b').appendChild(d);d.scrollIntoView({block:'nearest',behavior:'smooth'})}
 async function typing(ms){const t=document.createElement('div');t.className='typing';t.innerHTML='<i></i><i></i><i></i>';$('chat-b').appendChild(t);await sleep(ms);t.remove()}
 const NEG_REPLY=['Mmm… está bien, si así lo quieren.','Trato hecho.','Bueno, lo vamos a pensar.'];
 async function answer(r,i){
-  if(chatBusy)return;chatBusy=true;const n=S.negs[r],o=n.opts[i];S.negOpts[r]=i;Snd.whoosh();vib(15);
-  const res=evalOpt(o,NEG_WEIGHT);S.negRes[r]=res;
+  if(chatBusy)return;chatBusy=true;const n=S.negs[r],o=n.opts[i];Snd.whoosh();vib(15);
   $('chat-f').innerHTML='';addMsg('me',esc(o.lbl));
   await typing(950);addMsg('them',o.r||NEG_REPLY[o.q===2?1:o.q===1?0:2]);
+  finishRound(r,i,evalOpt(o,NEG_WEIGHT));
+}
+async function finishRound(r,pick,res){
+  S.negOpts[r]=pick;S.negRes[r]=res;
   if(res.note){await sleep(300);addMsg('sys',(res.ok?'✅ ':'⚠️ ')+esc(res.note))}
   const deltas=Object.entries(res.fx).filter(([,v])=>v);const rc=$('chat-b').getBoundingClientRect();
   deltas.forEach(([k,v],j)=>setTimeout(()=>{const mt=METS.find(x=>x.id===k);floatFx(`${v>0?'+':''}${v} ${mt.ic}`,rc.left+rc.width*(.2+j*.15),rc.bottom-40,v>0?'#B8F34A':'#FF8A94')},j*120));
   deltas.reduce((a,[,v])=>a+v,0)>=0?Snd.coin():Snd.bad();
-  await sleep(500);addMsg('sys',o.q===2?'🤝 Trato ganar-ganar':o.q===1?'✓ Trato cerrado':'😬 Trato cerrado… ¿a qué costo?');
+  await sleep(500);addMsg('sys',res.q===2?'🤝 Trato ganar-ganar':res.q===1?'✓ Trato cerrado':'😬 Trato cerrado… ¿a qué costo?');
   renderRounds();
   if(r<2){$('chat-f').innerHTML=`<button class="btn" onclick="S.negRound=${r+1};playRound(${r+1});window.scrollTo({top:$('rounds').offsetTop-80,behavior:'smooth'})">Siguiente ronda: ${S.negs[r+1].badge} →</button>`;chatBusy=false;setTimeout(()=>$('chat-f').scrollIntoView({behavior:'smooth',block:'center'}),100)}
   else{S.negRound=3;chatBusy=false;$('chat-f').innerHTML=`<div class="msg sys" style="align-self:center">✅ ${P('¡Completaron las 3 negociaciones!','¡Completaste las 3 negociaciones!')}</div>`;
@@ -3807,7 +4102,7 @@ function confirmNeg(){
   const before=applyFx(fx);S.hist.push({k:'Negociación',m:{...S.met}});
   const qs=S.negRes.map(r=>r.q);const avgQ=Math.round(qs.reduce((a,b)=>a+b,0)/3);
   const summary=S.negs.map((n,i)=>`<div style="font-size:.8rem;margin:3px 0">${n.ic} <b>${n.badge}:</b> ${QTXT[S.negRes[i].q]}</div>`).join('');
-  showImpact(before,'Impacto de las negociaciones',{q:avgQ,note:null},[{q:2,lbl:''}],()=>go('opp'),summary);
+  showImpact(before,'Impacto de las negociaciones',{q:avgQ,note:null},[{q:2,lbl:''}],()=>micro('neg',()=>go('opp')),summary);
 }
 
 /* ═══════════════════════════════════════
@@ -3819,17 +4114,17 @@ function initOpp(){
   const o=S.opp;$('op-ic').textContent=o.ic;$('op-t').textContent=o.title;$('op-d').textContent=o.desc;$('op-loc').textContent=o.loc;
   $('scard').classList.toggle('rev',S.oppShown);
   $('op-opts').innerHTML=S.oppShown?optCards(o.opts,'opp'):'';$('just-opp').innerHTML='';
-  if(S.oppShown)renderJust('opp','just-opp',oppAB);
+  $('com-op').style.display='none';if(S.oppShown){renderJust('opp','just-opp',oppAB,true);$('com-op').style.display=S.comodin?'none':''}
   AB.set('Ver resultados 🏁',confirmOpp,{disabled:true,hint:P('Toquen la carta para revelarla','Toca la carta para revelarla')});if(S.oppShown)oppAB();
 }
 function revealOpp(){
   if(S.oppShown)return;S.oppShown=true;$('scard').classList.add('rev');Snd.whoosh();vib(30);
   Voz.play('opp_'+S.biz.id+'_'+S.oIdx,S.opp.news,'marcelo');
   setTimeout(()=>{Snd.ok();const r=$('scard').getBoundingClientRect();Confetti.burst(80,r.left+r.width/2,r.top+r.height/2);
-    $('op-opts').innerHTML=optCards(S.opp.opts,'opp');renderJust('opp','just-opp',oppAB);oppAB()},700);
+    $('op-opts').innerHTML=optCards(S.opp.opts,'opp');renderJust('opp','just-opp',oppAB,true);oppAB();$('com-op').style.display=S.comodin?'none':''},700);
 }
-function oppAB(){AB.ok(S.oppOpt!==null&&justOk('opp'),S.oppOpt===null?P('Elijan una opción','Elige una opción'):justHint())}
-function confirmOpp(){Voz.stop(true);const o=S.opp.opts[S.oppOpt];const r=evalOpt(o,1);S.oRes=r;const before=applyFx(r.fx);S.hist.push({k:'Oportunidad',m:{...S.met}});showImpact(before,'Impacto de la oportunidad',r,S.opp.opts,()=>go('results'))}
+function oppAB(){AB.ok(S.oppOpt!==null,P('Elijan una opción','Elige una opción'))}
+function confirmOpp(){Voz.stop(true);const o=S.opp.opts[S.oppOpt];const r=evalOpt(o,1);S.oRes=r;const before=applyFx(r.fx);S.hist.push({k:'Oportunidad',m:{...S.met}});showImpact(before,'Impacto de la oportunidad',r,S.opp.opts,()=>micro('opp',()=>go('results')))}
 
 /* ═══════════════════════════════════════
    TABLERO EN VIVO
@@ -3849,12 +4144,12 @@ function computeAll(){
   const avg=avgOf(S.met);S.score=avg;const ti=TIERS.findIndex(([t])=>avg>=t);S.tierIdx=ti;S.tier=TIERS[ti][1];S.finished=true;S.perfil=perfil().name;
   S.hireEval=hireEval();
   S.benchDist=AREAS.reduce((a,x)=>a+Math.abs(S.cap[x.id]/1000-BENCH[S.biz.id][x.id]),0);
-  S.negQ=S.negRes.map(r=>r?r.q:0);S.cQ=S.cRes?S.cRes.q:0;S.oQ=S.oRes?S.oRes.q:0;
+  S.prioMatch=prioMatch();S.negQ=S.negRes.map(r=>r?r.q:0);S.cQ=S.cRes?S.cRes.q:0;S.oQ=S.oRes?S.oRes.q:0;
   const resP=S.cap.res/1000,mx=Math.max(...Object.values(S.cap))/1000,payOk=S.payroll<=(S.capL.pla||0),T={};DEPTOS.forEach(d=>T[d.id]=0);hired().forEach(c=>{if(fitOf(c)>0)T[c.dept]++});
   const cover=DEPTOS.filter(d=>T[d.id]).length,e=S.hireEval;
   S.comps={
     fin:cl(40+(mx<=55?10:-10)+(resP>=10&&resP<=25?15:resP>=5?6:resP>25?8:-18)+(payOk?14:-14)+(S.met.rent-50)/3,5,98),
-    est:cl(92-S.benchDist*.9+S.oQ*6+(S.boards.d1?4:0)+(S.boards.d2?4:0),5,98),
+    est:cl(88-S.benchDist*.9+S.oQ*6+S.prioMatch*4+(S.boards.d2?4:0),5,98),
     tal:cl(30+e.key*12+e.useful*5-e.none*12+cover*3+(payOk?8:-10)-S.critMiss.length*12,5,98),
     neg:cl(26+S.negQ.reduce((a,b)=>a+b,0)*11,5,98),
     rie:cl(28+S.cQ*20+(resP>=10?14:resP>0?5:-12)+(S.timedOut?-14:S.crisisTime&&S.crisisTime<25?6:0),5,98),
@@ -3877,8 +4172,8 @@ function initResults(){
   const sent=$('sent-msg');
   if(Live.enabled()){sent.style.display='';sent.innerHTML='📡 Enviando resultado al ranking de la sala <b>'+esc(S.sala)+'</b>…';Live.push('Terminó',()=>{sent.innerHTML='✅ Resultado en el ranking de la sala <b>'+esc(S.sala)+'</b>';fetchClass()})}
   else sent.style.display='none';
-  const C=['¡Impresionante! Su gestión fue de nivel profesional. Imaginen lo que lograrán con cuatro años de formación en Negocios y Gestión Empresarial.','¡Muy bien! Tomaron decisiones sólidas. En la carrera aprenderán a convertir esa intuición en método.','Buen trabajo. Hubo aciertos y también decisiones costosas; justamente eso se aprende en Negocios y Gestión Empresarial.','Su empresa sobrevivió con dificultades. Lo importante es que hoy descubrieron por qué cada decisión importa.','Fue un reto duro, y está bien: así empiezan los grandes gerentes. Revisen su tablero y descubran qué materias les ayudarían.'];
-  setTimeout(()=>Voz.play('cierre_'+S.tierIdx,C[S.tierIdx],'sofia'),2200);
+  const cs=COMPS.slice().sort((x,y)=>S.comps[y.id]-S.comps[x.id]);const fu=cs[0].id,me=cs[cs.length-1].id;
+  setTimeout(()=>vozSeq([{key:'cierre_'+S.tierIdx,text:CIERRE[S.tierIdx],who:'sofia'},{key:'fuerte_'+fu,text:vozFuerte(fu),who:'sofia'},{key:'mejora_'+me,text:vozMejora(me),who:'sofia'},{key:'carrera',text:VOZ_CARRERA,who:'sofia'}]),2200);
   AB.set('💡 ¿Y mis finanzas personales? →',()=>{Voz.stop(true);go('transfer')});
 }
 function renderDashTab(c){
@@ -3896,7 +4191,8 @@ function renderDashTab(c){
     H.map(c=>{const f=fitOf(c);return`<div class="te"><span class="ta">${c.av}</span><span class="tn">${c.name} · ${c.role}<small>${fmt(c.sal)}/mes</small></span><span class="tv ${f===2?'k':f===1?'u':'n'}">${f===2?'⭐ Clave':f===1?'Útil':'✗ No aporta'}</span></div>`}).join('')+
     `</div><div class="crit">${(CRIT[S.biz.id]||[]).map(g=>{const ok=!S.critMiss.includes(g.l);return`<span class="chip ${ok?'g':'r'}">${ok?'✓':'✗'} ${g.l}</span>`}).join('')}</div>`+(()=>{const miss=CANDS.filter(c=>fitOf(c)===2&&!S.hires.includes(c.id));return miss.length?`<p class="cap-leg" style="margin-top:8px">💡 Perfiles clave que no contrataron: ${miss.map(c=>c.av+' '+c.role).join(' · ')}</p>`:''})();
   $('fin-mets').innerHTML=metBars(S.met);
-  $('res-boards').innerHTML=['d1','d2'].map(k=>{const i=Pizarra.info(k);return`<figure>${i.png?`<img src="${i.png}" alt="">`:'<span>Sin dibujo</span>'}<figcaption>${k==='d1'?'✏️ Boceto':'🏗️ Organigrama'}</figcaption></figure>`}).join('');
+  const i2=Pizarra.info('d2');const L=CAPLINES[S.biz.id];
+  $('res-boards').innerHTML=`<figure>${i2.png?`<img src="${i2.png}" alt="">`:'<span>Sin organigrama</span>'}<figcaption>🏗️ Organigrama</figcaption></figure><div class="planvs"><b>🧭 Su plan vs. lo que hicieron</b>${(S.prio||[]).slice(0,3).map((id,k)=>{const l=L.find(x=>x.id===id);return`<div>${k+1}. ${l.icon} ${l.name} <span>${fmt(S.capL[id]||0)}</span></div>`}).join('')}<small>${S.prioMatch}/3 de sus prioridades quedaron entre sus 3 mayores inversiones.</small></div>`;
 }
 async function fetchClass(){
   try{const r=await fetch(`${CONFIG.API_URL}?action=ranking&sala=${encodeURIComponent(S.sala)}&t=${Date.now()}`);const j=await r.json();if(!j.ok)return;
@@ -3919,11 +4215,15 @@ function renderDecisions(){
     ${best&&res&&res.q<2?`<p class="imp-best">💡 Mejor práctica: <b>«${esc(best.lbl)}»</b></p>`:''}
     ${just?`<div class="tl-j">“${esc(just)}”</div>`:''}</div>`;
   const B=BENCH[S.biz.id];const worst=AREAS.slice().sort((a,b)=>Math.abs(S.cap[b.id]/1000-B[b.id])-Math.abs(S.cap[a.id]/1000-B[a.id]))[0];
-  let h=card('💰','Fase 3 · Capital','Distribución de Bs 100.000',null,null,null,S.justif.cap,`<div class="dfx">${lines().map(l=>`<span class="chip">${l.icon} ${l.name}: ${fmt(S.capL[l.id])}</span>`).join('')}</div><p class="dch">Distancia al reparto recomendado: <b>${Math.round(S.benchDist)} puntos</b>. La mayor diferencia fue en <b>${worst.icon} ${worst.name}</b> (${Math.round(S.cap[worst.id]/1000)} % vs. ${B[worst.id]} % recomendado).</p>`);
+  let h=card('🧭','Fase 2 · Plan','Sus 3 prioridades',null,null,null,'',`<p class="dch">${(S.prio||[]).slice(0,3).map((id,k)=>{const l=CAPLINES[S.biz.id].find(x=>x.id===id);return`${k+1}. ${l.icon} ${l.name}`}).join(' · ')}</p><p class="dch">Coherencia plan-ejecución: <b>${S.prioMatch}/3</b>. ${S.prioMatch>=2?'Hicieron lo que planearon. 👏':'Lo que priorizaron no coincidió con dónde pusieron el dinero.'}</p>`);
+  h+=card('💰','Fase 3 · Capital','Distribución de Bs 100.000',null,null,null,S.justif.cap,`<div class="dfx">${lines().map(l=>`<span class="chip">${l.icon} ${l.name}: ${fmt(S.capL[l.id])}</span>`).join('')}</div><p class="dch">Distancia al reparto recomendado: <b>${Math.round(S.benchDist)} puntos</b>. La mayor diferencia fue en <b>${worst.icon} ${worst.name}</b> (${Math.round(S.cap[worst.id]/1000)} % vs. ${B[worst.id]} % recomendado).</p>`);
+  if(S.cajaRes)h+=card('💸','Fase 5 · Caja de 6 meses',S.cajaRes.min<-1500?`Se quedaron sin caja en el mes ${S.cajaRes.minM}`:'La caja aguantó los 6 meses',null,null,null,'',`<p class="dch">Caja inicial ${fmt(S.cajaRes.ini)} → mes 6: <b>${fmt(S.cajaRes.fin)}</b>. ${S.cajaRes.min<-1500?'Les faltó reserva o la planilla fue muy grande para sus ventas.':'Su reserva y su planilla estuvieron bien calibradas.'}</p>`);
   h+=card('👥','Fase 5 · Contratación',`${S.hires.length} personas contratadas`,null,null,null,S.justif.team,`<p class="dch">${S.critMiss.length?`⚠️ Les faltó: <b>${S.critMiss.join(', ')}</b>. `:'✅ Cubrieron todas las funciones críticas del rubro. '}${S.hireEval.key} clave · ${S.hireEval.useful} útiles · ${S.hireEval.none} sin relación con el rubro. Planilla: <b>${fmt(S.payroll)}/mes</b> de ${fmt(S.capL.pla||0)} presupuestados.</p>`);
   h+=card(S.crisis.ic,'Fase 6 · Crisis',S.crisis.title,S.crisis.opts[S.cOpt].lbl,S.cRes,bestOf(S.crisis.opts),S.justif.crisis,S.timedOut?'<div class="imp-note ko">⏰ Se les acabó el tiempo antes de decidir.</div>':S.crisisTime?`<p class="dch">Tiempo de decisión: <b>${S.crisisTime} s</b></p>`:'');
-  S.negs.forEach((n,i)=>h+=card(n.ic,`Fase 7 · Negociación ${i+1}/3 · ${n.badge}`,`${n.who}: ${n.title}`,n.opts[S.negOpts[i]].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:''));
+  S.negs.forEach((n,i)=>h+=card(n.ic,`Fase 7 · Negociación ${i+1}/3 · ${n.badge}`,`${n.who}: ${n.title}`,S.negRes[i].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:''));
   h+=card(S.opp.ic,'Fase 8 · Oportunidad',S.opp.title,S.opp.opts[S.oppOpt].lbl,S.oRes,bestOf(S.opp.opts),S.justif.opp);
+  if(S.liveRes)h+=card('⚡','Crisis en vivo (lanzada por el docente)',S.liveRes.title,S.liveRes.lbl,S.liveRes,null,'');
+  h+=card('🪞','Micropausas «¿Y en tu vida?»',`${microOk()} de ${Object.keys(S.micro||{}).length} respuestas ideales`,null,null,null,'',`<div class="dfx">${Object.entries(S.micro||{}).map(([k,i])=>`<span class="chip ${MICRO[k].o[i].ok?'g':''}">${MICRO[k].o[i].ok?'✓':'•'} ${MICRO[k].o[i].t}</span>`).join('')}</div>`);
   $('dec-cards').innerHTML=h;
 }
 function renderFeedback(){
@@ -3956,12 +4256,13 @@ function openSubj(i){
 function renderTimeline(){
   const it=[];
   it.push({i:'🏢',s:'Fase 1',d:`Negocio: ${S.biz.em} ${S.biz.name}`,x:S.biz.barrio});
-  it.push({i:'✏️',s:'Fase 2',d:'Pizarra de boceto',x:S.boards.d1?'✅ Planificaron visualmente antes de invertir.':'⚪ Omitieron la planificación visual.'});
+  it.push({i:'🧭',s:'Fase 2',d:'Plan de prioridades',x:(S.prio||[]).slice(0,3).map((id,k)=>(k+1)+'. '+CAPLINES[S.biz.id].find(l=>l.id===id).name).join(' · ')});
   it.push({i:'💰',s:'Fase 3',d:'Distribución del capital',tags:lines().map(l=>`${l.icon} ${l.name}: ${fmt(S.capL[l.id])}`),j:S.justif.cap});
   it.push({i:'🏗️',s:'Fase 4',d:'Organigrama',x:S.boards.d2?'✅ Diseñaron su estructura.':'⚪ Omitieron el organigrama.'});
   it.push({i:'👥',s:'Fase 5',d:`Contratación: ${S.hires.length} personas · ${fmt(S.payroll)}/mes`,tags:hired().map(c=>`${c.av} ${c.name} (${c.role})`),j:S.justif.team});
+  if(S.cajaRes)it.push({i:'💸',s:'Fase 5',d:'Caja de 6 meses',x:`Inicial ${fmt(S.cajaRes.ini)} → mes 6 ${fmt(S.cajaRes.fin)}${S.cajaRes.min<-1500?' · sin caja en el mes '+S.cajaRes.minM:''}`});
   it.push({i:'🚨',s:'Fase 6',d:`Crisis: ${S.crisis.title}`,x:`Opción: «${S.crisis.opts[S.cOpt].lbl}»${S.timedOut?' · ⏰ fuera de tiempo':''}`,j:S.justif.crisis});
-  it.push({i:'🤝',s:'Fase 7',d:'Negociaciones (3 rondas)',x:S.negs.map((n,i)=>`${n.who}: «${n.opts[S.negOpts[i]].lbl}»`).join(' · '),j:S.justif.neg});
+  it.push({i:'🤝',s:'Fase 7',d:'Negociaciones (3 rondas)',x:S.negs.map((n,i)=>`${n.who}: «${S.negRes[i].lbl}»`).join(' · '),j:S.justif.neg});
   it.push({i:'✦',s:'Fase 8',d:`Oportunidad: ${S.opp.title}`,x:`Opción: «${S.opp.opts[S.oppOpt].lbl}»`,j:S.justif.opp});
   it.push({i:'🏁',s:'Resultado',d:`Puntaje ${S.score}/100 · ${S.tier}`,x:METS.map(x=>`${x.ic} ${Math.round(S.met[x.id])}`).join(' · ')});
   $('timeline').innerHTML=it.map((t,k)=>`<div class="tl-i"><div class="tl-l"><div class="tl-dot">${t.i}</div>${k<it.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-b"><span class="tl-s">${t.s}</span><div class="tl-d">${esc(t.d)}</div>${t.x?`<div class="tl-x">${esc(t.x)}</div>`:''}${t.tags?`<div class="tl-tags">${t.tags.map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div>`:''}${t.j?`<div class="tl-j">“${esc(t.j)}”</div>`:''}</div></div>`).join('');
@@ -4041,13 +4342,16 @@ function reportHTML(){
     <div class="quote">“${esc(S.justif.team)}”</div>${foot(3)}</div>`;
   const p4=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🧠 Eventos y decisiones bajo presión</h2>
     ${ev(S.crisis.ic,'Crisis: '+S.crisis.title,S.crisis.opts[S.cOpt].lbl,S.cRes,bestOf(S.crisis.opts),S.justif.crisis,S.timedOut?'<p>⏰ Se les acabó el tiempo antes de decidir.</p>':S.crisisTime?`<p>Tiempo de decisión: ${S.crisisTime} s</p>`:'')}
-    ${S.negs.map((n,i)=>ev(n.ic,`Negociación con ${n.who} (${n.badge}): ${n.title}`,n.opts[S.negOpts[i]].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:'')).join('')}
+    ${S.negs.map((n,i)=>ev(n.ic,`Negociación con ${n.who} (${n.badge}): ${n.title}`,S.negRes[i].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:'')).join('')}
     ${ev(S.opp.ic,'Oportunidad: '+S.opp.title,S.opp.opts[S.oppOpt].lbl,S.oRes,bestOf(S.opp.opts),S.justif.opp)}
     ${foot(4)}</div>`;
   const i1=Pizarra.info('d1'),i2=Pizarra.info('d2');
-  const p5=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">✏️ Pizarras del equipo</h2>
-    <h3>Boceto de recursos</h3>${i1.png?`<img src="${i1.png}" style="width:100%;max-height:420px;object-fit:contain;border:1px solid #eee;border-radius:10px">`:'<p>No usaron la pizarra de boceto.</p>'}
-    <h3>Organigrama</h3>${i2.png?`<img src="${i2.png}" style="width:100%;max-height:420px;object-fit:contain;border:1px solid #eee;border-radius:10px">`:'<p>No usaron la pizarra de organigrama.</p>'}
+  const L5=CAPLINES[S.biz.id];
+  const p5=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🧭 Plan, caja y estructura</h2>
+    <h3>Plan de prioridades vs. inversión real</h3><table><tr><th>Prioridad</th><th>Partida</th><th>Invirtieron</th></tr>${(S.prio||[]).map((id,k)=>{const l=L5.find(x=>x.id===id);return`<tr><td>${k+1}</td><td>${l.icon} ${l.name}</td><td>${fmt(S.capL[id]||0)}</td></tr>`}).join('')}</table><p>Coherencia: ${S.prioMatch}/3 de sus prioridades quedaron entre sus 3 mayores inversiones.</p>
+    ${S.cajaRes?`<h3>Caja de 6 meses</h3><table><tr><th></th>${S.cajaRes.ms.map((m,k)=>`<th>Mes ${k+1}</th>`).join('')}</tr><tr><td>Caja</td>${S.cajaRes.ms.map(m=>`<td style="color:${m.cash<0?'#a3172a':'#3c6b00'}">${fmt(m.cash)}</td>`).join('')}</tr></table>`:''}
+    <h3>Organigrama${S.orgTipo?' ('+ORG_TIPOS.find(t=>t.id===S.orgTipo).n.toLowerCase()+')':''}</h3>${i2.png?`<img src="${i2.png}" style="width:100%;max-height:380px;object-fit:contain;border:1px solid #eee;border-radius:10px">`:'<p>No usaron la pizarra de organigrama.</p>'}
+    <h3>¿Y en su vida? · micropausas y quiz</h3><p>${Object.entries(S.micro||{}).map(([k,i])=>`${MICRO[k].o[i].ok?'✅':'•'} ${MICRO[k].q} → <b>${MICRO[k].o[i].t}</b>`).join('<br>')}${S.quiz?`<br>🧠 Quiz final: <b>${S.quiz.ok}/3</b> correctas`:''}</p>
     ${foot(5)}</div>`;
   const p6=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🔄 De la empresa a su vida · 🎓 Su ruta en NGE</h2>
     <h3>Perfil financiero personal: ${esc(pf.name)}</h3><p>${esc(pf.d)}</p>
@@ -4158,7 +4462,7 @@ const Live={pending:null,busy:false,cb:[],warned:false,
     met:S.finished?Object.fromEntries(METS.map(m=>[m.id,Math.round(S.met[m.id])])):null,
     capital:S.biz?lines().map(l=>`${l.name}: ${S.capL[l.id]||0}`).join(' | '):'',
     equipo:S.hires.length?hired().map(c=>`${c.name} (${c.role})${S.biz?' ['+(['no aporta','útil','clave'][fitOf(c)])+']':''}`).join(' | ')+` · planilla ${S.payroll}`:'',
-    decisiones:S.finished?[`Crisis: ${S.crisis.opts[S.cOpt].lbl}${S.timedOut?' (fuera de tiempo)':''}`,...S.negs.map((n,i)=>`${n.badge}: ${n.opts[S.negOpts[i]].lbl}`),`Oportunidad: ${S.opp.opts[S.oppOpt].lbl}`,`Logros: ${(S.logros||[]).join(', ')}`].join(' | '):'',
+    decisiones:S.finished?[`Crisis: ${S.crisis.opts[S.cOpt].lbl}${S.timedOut?' (fuera de tiempo)':''}`,...S.negs.map((n,i)=>`${n.badge}: ${S.negRes[i].lbl}`),`Oportunidad: ${S.opp.opts[S.oppOpt].lbl}`,`Logros: ${(S.logros||[]).join(', ')}`,`Caja mes 6: ${S.cajaRes?Math.round(S.cajaRes.fin):'-'}`,`Micro: ${microOk()}/${Object.keys(S.micro||{}).length}`,`Quiz: ${S.quiz?S.quiz.ok+'/3':'-'}`].join(' | '):'',
     pizarras:`Boceto ${S.boards.d1?'sí':'no'} · Organigrama ${S.boards.d2?'sí':'no'}`,justif:S.finished?S.justif:null}},
   push(fase,cb){if(!this.enabled()||!S.name)return;this.pending=this.payload(fase);if(cb)this.cb.push(cb);this.flush()},
   async flush(){
@@ -4235,6 +4539,205 @@ function restart(){
   if(q.has('docente')){$('teacher-link').style.display='';openTeacher()}
   initHome();
 })();
+
+/* ═══════════════════════════════════════
+   LÓGICA DE LOS EXTRAS v3.2 (usa funciones globales de app.js en tiempo de ejecución)
+═══════════════════════════════════════ */
+/* Voz en secuencia (⏭ salta al siguiente clip) */
+function vozSeq(items){let i=0;const next=()=>{if(i>=items.length)return;const it=items[i++];Voz.play(it.key,it.text,it.who,next)};next()}
+function explicarIndicadores(){Snd.click();vozSeq([{key:'indicadores',text:vozIndicadores(),who:'sofia'}])}
+function explicarIndicador(id){Snd.click();Voz.play('ind_'+id,VOZ_IND[id],'sofia')}
+function explicarPartidas(){Snd.click();Voz.play('partidas_'+S.biz.id,vozPartidas(S.biz.id),'sofia')}
+function renderIndList(){
+  $('ind-list').innerHTML=METS.map(m=>`<button class="ind" onclick="explicarIndicador('${m.id}')" style="--c:${m.col}"><span>${m.ic} ${m.lbl}</span><b>${Math.round(clamp(S.biz.base[m.id]))}</b><i>🔊</i></button>`).join('');
+}
+
+/* ---------- Fase 2: prioridades ---------- */
+function initPrio(){
+  const ids=CAPLINES[S.biz.id].map(l=>l.id);
+  if(!S.prio||S.prio.length!==ids.length||!S.prio.every(id=>ids.includes(id)))S.prio=ids.slice();
+  renderPrio();
+  AB.set('Repartir el capital →',()=>{Voz.stop(true);go('capital')},{back:()=>go('mision')});
+}
+function renderPrio(){
+  const L=CAPLINES[S.biz.id];
+  $('prio').innerHTML=S.prio.map((id,i)=>{const l=L.find(x=>x.id===id);const a=AREAS.find(x=>x.id===l.area);return`<div class="prow" style="--c:${a.col}">
+    <span class="pn">${i+1}</span><span class="pi">${l.icon}</span><span class="pt"><b>${l.name}</b><small>${l.hint}</small></span>
+    <span class="pb"><button onclick="movePrio(${i},-1)" ${i?'':'disabled'} aria-label="Subir">▲</button><button onclick="movePrio(${i},1)" ${i<S.prio.length-1?'':'disabled'} aria-label="Bajar">▼</button></span></div>`}).join('');
+}
+function movePrio(i,d){const j=i+d;if(j<0||j>=S.prio.length)return;[S.prio[i],S.prio[j]]=[S.prio[j],S.prio[i]];Snd.click();vib(10);renderPrio()}
+function prioMatch(){
+  if(!S.prio)return 0;const top=CAPLINES[S.biz.id].map(l=>l.id).sort((a,b)=>(S.capL[b]||0)-(S.capL[a]||0)).slice(0,3);
+  return S.prio.slice(0,3).filter(id=>top.includes(id)).length;
+}
+
+/* ---------- Guía de organigramas ---------- */
+const ORG_SUGERIDO={tec:'plano',sol:'plano',cer:'plano',art:'plano',con:'matricial',imp:'horizontal',agr:'horizontal'};
+function openGuia(){
+  const sug=ORG_SUGERIDO[S.biz.id]||'vertical';
+  $('org-tipos').innerHTML=ORG_TIPOS.map(t=>`<div class="org-t${t.id===sug?' sug':''}"><svg viewBox="0 0 200 90">${t.svg}</svg><b>${t.ic} ${t.n}${t.id===sug?' <em>sugerido</em>':''}</b><p>${t.cuando}</p><button class="btn-ghost" onclick="usarTipoOrg('${t.id}')">Usar esta plantilla</button></div>`).join('');
+  $('org-pasos').innerHTML=ORG_PASOS.map(p=>`<li>${p}</li>`).join('');
+  const crit=(CRIT[S.biz.id]||[]).map(g=>g.l);
+  $('org-ej').innerHTML=`💡 <b>Para ${esc(S.biz.name)}</b>: les sugerimos un organigrama <b>${ORG_TIPOS.find(t=>t.id===sug).n.toLowerCase()}</b>. No olviden las funciones clave del rubro: <b>${crit.join('</b> y <b>')}</b>.`;
+  $('m-guia').classList.add('on');Snd.whoosh();
+}
+function usarTipoOrg(t){S.orgTipo=t;closeModal('m-guia');Snd.ok();
+  if($('xb').classList.contains('on'))Pizarra.template(t);else openBoard('d2',t)}
+
+/* ---------- Caja de 6 meses ---------- */
+/* Las ventas tardan en llegar (rampa): los primeros meses consumen caja.
+   Ventas = costos mensuales × 1,2 × calidad de la gestión (clientes y rentabilidad). */
+const RAMP=[.6,.75,.88,1,1.05,1.1];
+function simCaja(){
+  const opsM=CAPLINES[S.biz.id].filter(l=>l.area==='ops').reduce((a,l)=>a+(S.capL[l.id]||0),0)*.3;
+  const ini=(S.capL.res||0)+Math.max(0,(S.capL.pla||0)-S.payroll);
+  const sueldosCubiertos=Math.min(S.payroll,(S.capL.pla||0)+12000);  // personal que el negocio puede aprovechar
+  const out=S.payroll+opsM+3000;
+  const q=cl(.92+((clamp(S.met.cli)+clamp(S.met.rent))/2-45)/120,.85,1.2);
+  const rev=(sueldosCubiertos+opsM+3000)*1.2*q;
+  let cash=ini,min=ini,minM=0;const ms=RAMP.map((r,i)=>{const inc=rev*r;cash+=inc-out;if(cash<min){min=cash;minM=i+1}return{inc,out,cash}});
+  return{ini,ms,min,minM,fin:cash};
+}
+function initCaja(){
+  const c=S.cajaRes||simCaja();S.cajaRes=c;
+  $('cj-ini').textContent=fmt(c.ini);$('cj-pay').textContent=fmt(S.payroll);$('cj-fin').textContent=fmt(c.fin);
+  $('cj-fin').style.color=c.fin<0?'#FF8A94':'var(--lime)';
+  const mx=Math.max(...c.ms.map(m=>Math.abs(m.cash)),c.ini,1);
+  $('cj-chart').innerHTML=c.ms.map((m,i)=>{const h=Math.abs(m.cash)/mx*100;return`<div class="cj-m"><div class="cj-top">${m.cash>=0?`<i class="pos" style="--h:${h}%;animation-delay:${i*.35}s"></i>`:''}</div><div class="cj-zero"></div><div class="cj-bot">${m.cash<0?`<i class="neg" style="--h:${h}%;animation-delay:${i*.35}s"></i>`:''}</div><b>${Math.round(m.cash/1000)}k</b><small>Mes ${i+1}</small></div>`}).join('');
+  let msg,fx={rent:0,eq:0,cli:0,cre:0,sos:0};
+  if(c.min<-1500){msg=`😬 <b>En el mes ${c.minM} se quedaron sin caja.</b> Tuvieron que pedir un préstamo de emergencia con intereses altos. Revisen: ¿planilla muy grande? ¿poca reserva?`;fx={rent:-4,eq:-2,cli:0,cre:0,sos:-6}}
+  else if(c.fin>=c.ini){msg='✅ <b>Su caja aguantó y creció.</b> Las ventas alcanzaron para pagar sueldos e insumos todos los meses.';fx={rent:2,eq:0,cli:0,cre:0,sos:3}}
+  else msg='⚠️ <b>La caja bajó, pero no se acabó.</b> Están vivos, aunque con poco margen para imprevistos.';
+  $('cj-msg').innerHTML=msg;
+  if(!S.cajaDone){S.cajaDone=true;S.cajaFx=fx;applyFx(fx);S.hist.push({k:'Caja',m:{...S.met}});setTimeout(()=>{c.min<-1500?Snd.bad():Snd.ok()},RAMP.length*350+300)}
+  AB.set('Enfrentar los desafíos →',()=>micro('team',()=>go('crisis')));
+}
+
+/* ---------- Micropausas ---------- */
+function micro(k,next){
+  const m=MICRO[k];if(!m||(S.micro&&S.micro[k]!=null)){next();return}
+  S.micro=S.micro||{};$('mi-q').textContent=m.q;$('mi-f').textContent='';$('mi-btn').disabled=true;
+  $('mi-o').innerHTML=m.o.map((o,i)=>`<button class="mopt" onclick="microPick('${k}',${i},this)">${o.t}</button>`).join('');
+  $('mi-btn').onclick=()=>{closeModal('m-micro');Snd.click();next()};
+  $('m-micro').classList.add('on');Snd.whoosh();
+}
+function microPick(k,i,el){
+  if(S.micro[k]!=null)return;const o=MICRO[k].o[i];S.micro[k]=i;
+  document.querySelectorAll('#mi-o .mopt').forEach((b,j)=>{b.classList.add(MICRO[k].o[j].ok?'ok':'no');b.disabled=true});el.classList.add('pick');
+  $('mi-f').innerHTML=(o.ok?'✅ ':'💡 ')+o.f;if(o.ok){Snd.ok();Confetti.burst(40,innerWidth/2,innerHeight*.4)}else Snd.click();$('mi-btn').disabled=false;
+}
+const microOk=()=>Object.entries(S.micro||{}).filter(([k,i])=>MICRO[k].o[i].ok).length;
+
+/* ---------- Comodín ---------- */
+function comodinEv(where){
+  if(where==='crisis')return{key:`hint_${S.biz.id}_c${S.cIdx}`,ev:S.crisis};
+  if(where==='opp')return{key:`hint_${S.biz.id}_o${S.oIdx}`,ev:S.opp};
+  const r=Math.min(S.negRound,2);return{key:`hint_${S.biz.id}_n${r}`,ev:S.negs[r]};
+}
+function usarComodin(where){
+  if(S.comodin){toast('📞 Ya usaron su comodín en esta partida');return}
+  S.comodin=where;const c=comodinEv(where);Snd.ok();vib(30);
+  Voz.play(c.key,vozHint(c.ev),'dani');
+  document.querySelectorAll('.comodin').forEach(b=>b.style.display='none');
+}
+const comodinBtn=()=>S.comodin?'':`<button class="btn-ghost comodin" onclick="usarComodin('neg')">📞 Comodín: llamar a un estudiante de NGE</button>`;
+
+/* ---------- Contraoferta (ronda con el cliente) ---------- */
+function contraUI(r){
+  if(chatBusy)return;const n=S.negs[r];S.cmin=S.cmin||35+rndI(31);S.ctry=S.ctry||0;
+  $('chat-f').innerHTML=`<div class="contra"><b>✍️ Su contraoferta</b><span>¿Qué parte de lo que pide <b>${esc(n.who)}</b> están dispuestos a ceder?</span>
+    <input type="range" min="0" max="100" step="5" value="50" id="co-v" oninput="$('co-l').textContent=this.value+' %'"><div class="co-row"><small>0 % · nada</small><b id="co-l">50 %</b><small>100 % · todo lo que pide</small></div>
+    <button class="btn" onclick="enviarContra(${r})">Enviar contraoferta</button><button class="btn-link" onclick="playRound(${r})">← Volver a las opciones</button></div>`;
+}
+async function enviarContra(r){
+  if(chatBusy)return;chatBusy=true;const n=S.negs[r],v=+$('co-v').value,m=S.cmin;Snd.whoosh();
+  $('chat-f').innerHTML='';addMsg('me',`Les propongo ceder el <b>${v} %</b> de lo que piden.`);await typing(1000);
+  if(v>=m){
+    const t=(v-m)/Math.max(1,100-m);const fx={};Object.keys(n.opts[1].fx).forEach(k=>fx[k]=Math.round((n.opts[1].fx[k]*(1-t)+n.opts[0].fx[k]*t)*NEG_WEIGHT));
+    const q=v-m<=15?2:v-m<=35?1:0;
+    addMsg('them',q===2?'Mmm… es justo. ¡Trato hecho! 🤝':q===1?'Bueno, acepto. 👍':'¡Perfecto! Aceptamos encantados 😁');
+    finishRound(r,'c',{fx,q,ok:true,lbl:`Contraoferta: ceder ${v} %`,note:`Ofrecieron ceder ${v} %; lo mínimo que ${n.who} aceptaba era ${m} %. ${q===2?'¡Negociaron casi al límite!':'Cedieron más de lo necesario.'}`});
+  }else if(++S.ctry<2){
+    addMsg('them','Eso es muy poco… Mejoren su oferta o no hay trato 😤');chatBusy=false;contraUI(r);
+  }else{
+    addMsg('them','Así no llegamos a nada. Buscaré otra opción. 👋');
+    const res=evalOpt(n.opts[2],NEG_WEIGHT);res.lbl='Contraoferta rechazada (sin acuerdo)';res.note=`No hubo acuerdo: ofrecieron ${v} % y lo mínimo aceptable era ${m} %.`;res.ok=false;
+    finishRound(r,'c',res);
+  }
+}
+
+/* ---------- Crisis en vivo ---------- */
+let liveT=null,liveTimer=null;
+function startLivePoll(){clearInterval(liveT);S.joinT=Date.now();liveT=setInterval(pollLive,10000)}
+async function pollLive(){
+  if(!Live.enabled()||['home','setup','results','transfer','proj'].includes(S.phase)||S.finished)return;
+  if(document.querySelector('.modal.on,#impact.on,#breaking.on,#xb.on'))return;
+  try{const r=await fetch(`${CONFIG.API_URL}?action=evento&sala=${encodeURIComponent(S.sala)}&t=${Date.now()}`);const j=await r.json();
+    if(j.ok&&j.ev&&j.ev.id>S.joinT&&j.ev.id!==S.lastLive){S.lastLive=j.ev.id;showLive(j.ev.tipo)}}catch(e){}
+}
+function showLive(tipo){
+  const ev=LIVE.find(x=>x.id===tipo);if(!ev)return;S.liveEv=ev;
+  $('lv-ic').textContent=ev.ic;$('lv-t').textContent=ev.title;$('lv-d').textContent=ev.desc;
+  $('lv-o').innerHTML=ev.opts.map((o,i)=>`<button class="opt" onclick="pickLive(${i})"><span class="let">${'ABC'[i]}</span><span><div class="ol">${o.lbl}</div><div class="os">${o.sub}</div></span></button>`).join('');
+  $('m-live').classList.add('on');Snd.alarm();vib([200,100,200]);Voz.play('live_'+ev.id,ev.news,'marcelo');
+  let s=30;const T=()=>{$('lv-tnum').textContent=s+'s';$('lv-tbar').style.width=(s/30*100)+'%'};T();clearInterval(liveTimer);
+  liveTimer=setInterval(()=>{s--;T();if(s<=0){clearInterval(liveTimer);pickLive(-1)}},1000);
+}
+function pickLive(i){
+  clearInterval(liveTimer);Voz.stop(true);const ev=S.liveEv;closeModal('m-live');
+  const res=i<0?{fx:{rent:0,eq:-2,cli:0,cre:0,sos:-3},q:0,lbl:'Sin decisión (se acabó el tiempo)'}:evalOpt(ev.opts[i],1,S.noRes);
+  applyFx(res.fx);S.liveRes={title:ev.title,...res};
+  const d=Object.entries(res.fx).filter(([,v])=>v).map(([k,v])=>`${v>0?'+':''}${v} ${METS.find(m=>m.id===k).ic}`).join(' ');
+  toast(`⚡ ${ev.title}: ${QTXT[res.q]} · ${d}`,4500);if(res.q===2)Snd.ok();else Snd.bad();
+}
+function openLanzar(){$('lz-o').innerHTML=LIVE.map(e=>`<button class="opt" onclick="lanzarLive('${e.id}')"><span class="let">${e.ic}</span><span><div class="ol">${e.title}</div><div class="os">${e.desc}</div></span></button>`).join('');$('m-lanzar').classList.add('on')}
+async function lanzarLive(id){
+  closeModal('m-lanzar');
+  try{const r=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'evento',sala:pjCode,tipo:id})});const j=await r.json();
+    if(j.ok){toast('⚡ Crisis enviada a todos los equipos de la sala '+pjCode,4000);Snd.alarm()}else toast('⚠️ No se pudo enviar: actualiza el Apps Script ('+(j.error||'')+')',5000)}
+  catch(e){toast('⚠️ Sin conexión con el Apps Script',4000)}
+}
+
+/* ---------- Quiz final ---------- */
+let QZ=null;
+function openQuiz(){const pool=QUIZ.slice().sort(()=>Math.random()-.5).slice(0,3);QZ={pool,i:0,ok:0};showQ();$('m-quiz').classList.add('on');Snd.whoosh()}
+function showQ(){
+  const q=QZ.pool[QZ.i];$('qz-n').textContent=(QZ.i+1)+'/3';$('qz-q').textContent=q.q;$('qz-f').textContent='';$('qz-btn').disabled=true;
+  $('qz-btn').textContent=QZ.i<2?'Siguiente →':'Ver resultado';
+  $('qz-o').dataset.done='';$('qz-o').innerHTML=q.o.map((o,i)=>`<button class="mopt" onclick="pickQ(${i},this)">${o}</button>`).join('');
+  $('qz-btn').onclick=()=>{if(QZ.i<2){QZ.i++;showQ()}else{closeModal('m-quiz');S.quiz={ok:QZ.ok,n:3};toast(`🧠 Quiz: ${QZ.ok}/3 correctas`,3500);if(QZ.ok===3){Confetti.burst(160);Snd.fanfare()}Live.push('Terminó')}};
+}
+function pickQ(i,el){
+  const q=QZ.pool[QZ.i];if(el.parentElement.dataset.done==='1')return;el.parentElement.dataset.done='1';
+  document.querySelectorAll('#qz-o .mopt').forEach((b,j)=>{b.classList.add(j===q.a?'ok':'no');b.disabled=true});el.classList.add('pick');
+  if(i===q.a){QZ.ok++;Snd.ok();$('qz-f').textContent='✅ ¡Correcto!'}else{Snd.bad();$('qz-f').textContent='💡 La respuesta correcta era: '+q.o[q.a]}
+  $('qz-btn').disabled=false;
+}
+
+/* ---------- Certificado «Gerente por un día» ---------- */
+async function makeCert(){
+  const st=$('pdf-status');st.innerHTML='⏳ Preparando su certificado…';
+  try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')}
+  catch(e){st.innerHTML='📴 Sin conexión: no se pudo generar el certificado.';return}
+  try{await document.fonts.ready}catch(e){}
+  const d=new Date().toLocaleDateString('es-BO',{day:'numeric',month:'long',year:'numeric'});
+  const lg=LOGROS.filter(l=>S.logros.includes(l.id));
+  const root=$('pdf-root');root.innerHTML=`<div class="cert"><div class="cert-in">
+    <p class="ce-k">UNIFRANZ · NEGOCIOS Y GESTIÓN EMPRESARIAL</p>
+    <p class="ce-h">Certificado</p><p class="ce-s">de «Gerente por un día» otorgado a</p>
+    <div class="ce-n">${S.av} ${esc(S.name)}</div>${S.members.length?`<p class="ce-m">${esc(S.members.join(' · '))}</p>`:''}
+    <p class="ce-t">por dirigir <b>${S.biz.em} ${esc(S.biz.name)}</b> en el Laboratorio de Decisiones Financieras, alcanzando <b>${S.score} puntos</b> y el nivel <b>${esc(S.tier)}</b>.</p>
+    <div class="ce-l">${lg.map(l=>`<span>${l.ic} ${l.n}</span>`).join('')}</div>
+    <table class="ce-f"><tr><td><div class="ce-line"></div>Negocios y Gestión Empresarial<br>UNIFRANZ · Cochabamba</td><td style="text-align:right">${d}</td></tr></table>
+  </div></div>`;
+  await sleep(200);
+  const c=await html2canvas(root.firstElementChild,{scale:1.6,backgroundColor:'#ffffff'});
+  const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'pt',format:'a4',orientation:'landscape'});
+  pdf.addImage(c.toDataURL('image/jpeg',.9),'JPEG',0,0,841.89,595.28);
+  const fname=`Certificado NGE - ${S.name.replace(/[\\/:*?"<>|]/g,'')}.pdf`;pdf.save(fname);root.innerHTML='';
+  st.innerHTML='🏅 Certificado descargado.';Snd.fanfare();Confetti.burst(120);
+  if(Live.enabled()){try{await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'pdf',sala:S.sala,id:S.id,nombre:S.name,filename:fname,b64:pdf.output('datauristring').split(',')[1]})});st.innerHTML='🏅 Certificado descargado y guardado en la carpeta Drive del grupo.'}catch(e){}}
+}
 
 </script>
 </body>

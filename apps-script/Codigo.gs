@@ -17,6 +17,9 @@
  * Informes PDF: la app envía el PDF de cada grupo y se guarda en Drive →
  *   «Laboratorio NGE – Informes» / Sala XXXX / Nombre del grupo / informe.pdf
  *
+ * Crisis en vivo: el proyector envía {action:'evento', sala, tipo} y los celulares la consultan
+ *   cada 10 s con ?action=evento&sala=XXXX (se guarda en las propiedades del script).
+ *
  * Hojas:
  *  · Ranking  — una fila por equipo o jugador (se crea y actualiza sola).
  *  · Salas    — resumen automático por sala (fórmula, no editar).
@@ -142,6 +145,11 @@ function json_(obj) {
 /* GET ?action=ranking&sala=ABCD → lista de participantes de la sala */
 function doGet(e) {
   const p = (e && e.parameter) || {};
+  if (p.action === 'evento') {
+    const sala = limpiaSala_(p.sala);
+    const v = sala ? PropertiesService.getScriptProperties().getProperty('ev_' + sala) : null;
+    return json_({ ok: true, ev: v ? JSON.parse(v) : null });
+  }
   if (p.action === 'ranking') {
     const sala = limpiaSala_(p.sala);
     if (!sala) return json_({ ok: false, error: 'Falta sala' });
@@ -155,6 +163,13 @@ function doPost(e) {
   let d;
   try { d = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'JSON inválido' }); }
   if (d.action === 'pdf') return guardarPdf_(d);
+  if (d.action === 'evento') {
+    const sala = limpiaSala_(d.sala), tipo = String(d.tipo || '').replace(/[^a-z]/g, '').slice(0, 20);
+    if (!sala || !tipo) return json_({ ok: false, error: 'Faltan datos' });
+    const ev = { id: Date.now(), tipo: tipo };
+    PropertiesService.getScriptProperties().setProperty('ev_' + sala, JSON.stringify(ev));
+    return json_({ ok: true, ev: ev });
+  }
   if (d.action !== 'upsert') return json_({ ok: false, error: 'Acción desconocida' });
   const sala = limpiaSala_(d.sala);
   const id = String(d.id || '').slice(0, 40);

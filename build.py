@@ -30,6 +30,7 @@ html = f"""<!DOCTYPE html>
 {read("styles.css")}
 {read("board.css")}
 {read("styles3.css")}
+{read("styles4.css")}
 </style>
 </head>
 <body>
@@ -39,9 +40,11 @@ html = f"""<!DOCTYPE html>
 {read("data.js")}
 {read("eventos.js")}
 {read("rubros.js")}
+{read("extras.js")}
 {read("board.js")}
 {read("pizarra.js")}
 {app}
+{read("extras2.js")}
 </script>
 </body>
 </html>

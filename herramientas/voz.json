@@ -5,9 +5,44 @@
   "text": "¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. Bienvenidos al Laboratorio de Decisiones Financieras de UNIFRANZ. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?"
  },
  {
+  "key": "indicadores",
+  "voz": "sofia",
+  "text": "Su empresa se mide con cinco indicadores, de cero a cien. Cada decisión que tomen moverá estos números. Rentabilidad: cuánto ganan por cada boliviano que invierten. No es cuánto venden, sino cuánto les queda después de pagar todo. Equipo: qué tan capaz, motivado y bien organizado está su personal. Un buen equipo hace que todo lo demás funcione. Clientes: cuántas personas los eligen y vuelven a comprarles. Sin clientes satisfechos no hay negocio. Crecimiento: su capacidad de expandirse, innovar y llegar a nuevos mercados. Sostenibilidad: qué tan preparados están para durar en el tiempo y resistir crisis. Aquí pesan mucho la reserva y las decisiones responsables."
+ },
+ {
+  "key": "ind_rent",
+  "voz": "sofia",
+  "text": "Rentabilidad: cuánto ganan por cada boliviano que invierten. No es cuánto venden, sino cuánto les queda después de pagar todo."
+ },
+ {
+  "key": "ind_eq",
+  "voz": "sofia",
+  "text": "Equipo: qué tan capaz, motivado y bien organizado está su personal. Un buen equipo hace que todo lo demás funcione."
+ },
+ {
+  "key": "ind_cli",
+  "voz": "sofia",
+  "text": "Clientes: cuántas personas los eligen y vuelven a comprarles. Sin clientes satisfechos no hay negocio."
+ },
+ {
+  "key": "ind_cre",
+  "voz": "sofia",
+  "text": "Crecimiento: su capacidad de expandirse, innovar y llegar a nuevos mercados."
+ },
+ {
+  "key": "ind_sos",
+  "voz": "sofia",
+  "text": "Sostenibilidad: qué tan preparados están para durar en el tiempo y resistir crisis. Aquí pesan mucho la reserva y las decisiones responsables."
+ },
+ {
   "key": "intro_chi",
   "voz": "sofia",
   "text": "Ustedes dirigen la Chicharronería El Pairumani, un clásico familiar de la zona norte. Los domingos se llena, pero los costos del cerdo, el gas y el personal cambian cada semana. Su reto: crecer sin perder el sabor ni la caja."
+ },
+ {
+  "key": "partidas_chi",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Carne e insumos: costo de cada plato. Cocina y equipos: freidoras, gas, campana. Redes y promociones: atraer clientes nuevos. Delivery y empaques: vender fuera del local. Capacitación en atención: servicio y fidelización. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_chi_0",
@@ -15,9 +50,19 @@
   "text": "Último momento: escasez de cerdo en el trópico dispara el precio un treinta por ciento. Los restaurantes de Cochabamba ya sienten el golpe."
  },
  {
+  "key": "hint_chi_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: negocias volumen con un productor, pero necesitas liquidez ahora. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_chi_1",
   "voz": "marcelo",
   "text": "Último momento: la Intendencia Municipal intensifica inspecciones sanitarias en restaurantes de la zona norte. Hay locales clausurados."
+ },
+ {
+  "key": "hint_chi_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: pierdes ventas del fin de semana, pero cumples con todo. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_chi_0",
@@ -25,9 +70,34 @@
   "text": "Atención: se acerca Urkupiña y Quillacollo espera a más de un millón de visitantes. Los negocios gastronómicos se preparan."
  },
  {
+  "key": "hint_chi_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: menos riesgo, presencia segura. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_chi_1",
   "voz": "marcelo",
   "text": "Atención: un influencer gastronómico con cien mil seguidores recorre Cochabamba buscando el mejor chicharrón."
+ },
+ {
+  "key": "hint_chi_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: inviertes en una buena primera impresión. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_chi_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: cuidas la caja sin perder el pedido. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_chi_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: negocias un volumen que sí puedes vender. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_chi_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ajustas el precio en la app para cubrir la comisión. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_tra",
@@ -35,9 +105,19 @@
   "text": "Ustedes dirigen Cocha Express, transporte de pasajeros y encomiendas desde la Terminal de Cochabamba. Cada día salen buses a La Paz, Oruro y Santa Cruz. Su reto: llegar siempre, aunque el camino se complique."
  },
  {
+  "key": "partidas_tra",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Combustible y llantas: el costo de cada viaje. Mantenimiento de buses: que no se queden en ruta. Renovación de flota: buses más nuevos y seguros. Venta de pasajes y marca: boletería, app y publicidad. Capacitación de choferes: seguridad vial. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_tra_0",
   "voz": "marcelo",
   "text": "Último momento: los transportistas anuncian un bloqueo de setenta y dos horas en la carretera al occidente. Cientos de pasajeros quedan varados."
+ },
+ {
+  "key": "hint_tra_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: pierdes ingresos, pero cuidas la confianza. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_tra_1",
@@ -45,9 +125,19 @@
   "text": "Último momento: largas filas de camiones y buses en los surtidores por escasez de diésel en el país."
  },
  {
+  "key": "hint_tra_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: menos salidas, pero llenas. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_tra_0",
   "voz": "marcelo",
   "text": "Atención: Oruro espera a medio millón de visitantes para el Carnaval. Las empresas de transporte compiten por los pasajeros."
+ },
+ {
+  "key": "hint_tra_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: creces sin abandonar a tus clientes. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_tra_1",
@@ -55,9 +145,34 @@
   "text": "Atención: las compras por internet crecen y las encomiendas entre ciudades se duplican en Bolivia."
  },
  {
+  "key": "hint_tra_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: requiere sistema y personal. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_tra_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: te proteges si el combustible sube. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_tra_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: equilibras ahorro y liquidez. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_tra_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: nuevos clientes, menos margen por boleto. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_can",
   "voz": "sofia",
   "text": "Ustedes dirigen la Tienda Doña Rosario, un puesto de abarrotes en La Cancha, el mercado más grande de Bolivia. Venden mucho, pero ganan centavos por producto. Su reto: que la caja crezca sin perder a la clientela de siempre."
+ },
+ {
+  "key": "partidas_can",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Mercadería: lo que vendes cada día. Refrigeración y estantes: lácteos, embutidos, orden. Promociones y QR: atraer y cobrar fácil. Reparto a domicilio: pedidos por whatsapp. Control de inventario: saber qué falta y qué sobra. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_can_0",
@@ -65,9 +180,19 @@
   "text": "Último momento: falta aceite y azúcar en los mercados de Cochabamba y los precios se disparan por la especulación."
  },
  {
+  "key": "hint_can_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ganas menos, pero la gente lo recordará. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_can_1",
   "voz": "marcelo",
   "text": "Último momento: fuertes lluvias inundan pasillos de La Cancha. Comerciantes reportan pérdidas de mercadería."
+ },
+ {
+  "key": "hint_can_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: vuelves a vender mañana mismo. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_can_0",
@@ -75,9 +200,34 @@
   "text": "Atención: cada vez más familias cochabambinas compran sus abarrotes por WhatsApp desde la casa."
  },
  {
+  "key": "hint_can_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: nuevo canal, requiere organización. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_can_1",
   "voz": "marcelo",
   "text": "Atención: la Alcaldía lanza un programa de capacitación y créditos para comerciantes de mercados."
+ },
+ {
+  "key": "hint_can_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: puedes vender lácteos y embutidos. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_can_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: apoyas con reglas claras. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_can_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: negocias ambos beneficios. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_can_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: más ventas, menos manejo de efectivo. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_art",
@@ -85,9 +235,19 @@
   "text": "Ustedes dirigen Llajta Manos, un taller de cerámica y textiles de Quillacollo que ya exporta a Europa. Cada pieza es única, pero producirlas toma tiempo. Su reto: crecer en el mundo sin perder la identidad."
  },
  {
+  "key": "partidas_art",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Arcilla, lana y tintes: materia prima. Hornos y telares: capacidad de producción. Tienda en línea y fotos: vender al mundo. Envíos y aduana: exportar sin trabas. Diseño y capacitación: nuevas colecciones. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_art_0",
   "voz": "marcelo",
   "text": "Último momento: paro en el puerto de Arica retiene contenedores bolivianos. Exportadores temen perder pedidos."
+ },
+ {
+  "key": "hint_art_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: transparencia antes que excusas. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_art_1",
@@ -95,9 +255,19 @@
   "text": "Último momento: copias industriales de artesanía boliviana aparecen en tiendas en línea a mitad de precio."
  },
  {
+  "key": "hint_art_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: diferencias lo auténtico. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_art_0",
   "voz": "marcelo",
   "text": "Atención: Bolivia es invitada de honor en una feria internacional de artesanía en Europa."
+ },
+ {
+  "key": "hint_art_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: alta inversión, contactos de alto valor. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_art_1",
@@ -105,9 +275,34 @@
   "text": "Atención: el turismo vivencial crece en el valle de Cochabamba. Los visitantes quieren aprender de los artesanos."
  },
  {
+  "key": "hint_art_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: nuevo ingreso y vitrina para tus piezas. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_art_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: cumples lo que realmente puedes producir. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_art_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: apoyas a los productores y cuidas tu caja. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_art_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: inversión en imagen para vender afuera. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_tec",
   "voz": "sofia",
   "text": "Ustedes dirigen KobolDev, una startup de la incubadora de UNIFRANZ que crea software para negocios de Cochabamba. Tienen talento y muchas ideas, pero cada mes la plata se va en sueldos y servidores. Su reto: crecer rápido sin quedarse sin caja."
+ },
+ {
+  "key": "partidas_tec",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Servidores y nube: que el sistema nunca caiga. Equipos y software: laptops y licencias. Marketing digital: clientes que llegan solos. Ventas B2B y eventos: visitar empresas. Cursos y certificaciones: talento actualizado. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_tec_0",
@@ -115,9 +310,19 @@
   "text": "Último momento: un ataque informático secuestra los datos de varias empresas bolivianas y pide rescate en criptomonedas."
  },
  {
+  "key": "hint_tec_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: lento, pero no financias delincuentes. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_tec_1",
   "voz": "marcelo",
   "text": "Último momento: empresas extranjeras contratan programadores bolivianos de forma remota pagando en dólares."
+ },
+ {
+  "key": "hint_tec_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: compartes futuro en lugar de sueldo. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_tec_0",
@@ -125,9 +330,34 @@
   "text": "Atención: una aceleradora internacional busca startups latinoamericanas. El premio: inversión y mentoría en Silicon Valley."
  },
  {
+  "key": "hint_tec_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: equilibras concurso y clientes. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_tec_1",
   "voz": "marcelo",
   "text": "Atención: la Alcaldía de Cochabamba licita una aplicación para digitalizar trámites ciudadanos."
+ },
+ {
+  "key": "hint_tec_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: compartes el contrato y el riesgo. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_tec_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: defines alcance y precio de cada extra. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_tec_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: reduces consumo con trabajo técnico. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_tec_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: valoras tu empresa y ganas experiencia. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_imp",
@@ -135,9 +365,19 @@
   "text": "Ustedes dirigen Andes Global, una importadora de maquinaria en la Zona Franca. Venden equipos a constructoras y fábricas, pero compran en dólares y cobran en bolivianos. Su reto: sobrevivir al tipo de cambio y crecer con contratos grandes."
  },
  {
+  "key": "partidas_imp",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Fletes y aduana: traer la mercadería. Almacén y montacargas: guardar y mover equipos. Stock de repuestos: vender rápido. Ferias y catálogo: llegar a constructoras. Capacitación técnica: servicio postventa. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_imp_0",
   "voz": "marcelo",
   "text": "Último momento: los bancos limitan la venta de dólares y el tipo de cambio paralelo se dispara. Los importadores no pueden pagar a sus proveedores."
+ },
+ {
+  "key": "hint_imp_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: pides plazo y pago en reales o yuanes. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_imp_1",
@@ -145,9 +385,19 @@
   "text": "Último momento: paro portuario en Arica. Contenedores con destino a Bolivia acumulan semanas de retraso."
  },
  {
+  "key": "hint_imp_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ruta alterna, más trámites. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_imp_0",
   "voz": "marcelo",
   "text": "Atención: el Gobierno Municipal licita maquinaria pesada por más de dos millones de bolivianos."
+ },
+ {
+  "key": "hint_imp_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ofreces más valor, no solo precio. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_imp_1",
@@ -155,9 +405,34 @@
   "text": "Atención: fabricantes brasileños buscan representantes exclusivos en Bolivia."
  },
  {
+  "key": "hint_imp_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: creces a un ritmo realista. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_imp_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: vendes cuidando la caja. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_imp_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: el banco garantiza a ambos; tiene costo. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_imp_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ética primero; buscas una agencia formal. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_fin",
   "voz": "sofia",
   "text": "Ustedes dirigen la Cooperativa Señor de Mayo, en Punata. Guardan los ahorros y prestan dinero a familias y productores del Valle Alto. Su mayor activo no es el dinero: es la confianza. Su reto: cuidarla."
+ },
+ {
+  "key": "partidas_fin",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Sistema y ciberseguridad: proteger el dinero de los socios. Agencias y cajeros: estar cerca del socio. Campañas de ahorro: nuevos socios. Gestión de cobranza: que la mora no crezca. Capacitación de asesores: créditos bien evaluados. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_fin_0",
@@ -165,9 +440,19 @@
   "text": "Último momento: un audio viral en redes asegura que una cooperativa del Valle Alto estaría en quiebra. Ahorristas hacen fila."
  },
  {
+  "key": "hint_fin_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: transparencia y liquidez. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_fin_1",
   "voz": "marcelo",
   "text": "Último momento: la sequía golpea al Valle Alto. Agricultores pierden cosechas y temen no poder pagar sus créditos."
+ },
+ {
+  "key": "hint_fin_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ayudas al socio y cuidas la cartera. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_fin_0",
@@ -175,9 +460,34 @@
   "text": "Atención: el uso de pagos con código QR se dispara en Bolivia. Las entidades financieras corren a digitalizarse."
  },
  {
+  "key": "hint_fin_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: inversión fuerte, futuro digital. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_fin_1",
   "voz": "marcelo",
   "text": "Atención: una aseguradora busca cooperativas para ofrecer microseguros contra sequía y helada."
+ },
+ {
+  "key": "hint_fin_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: proteges al socio y tu cartera. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_fin_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: todos responden por todos. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_fin_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: estabilidad para ambos. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_fin_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: cubres costos y ganas visibilidad. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_may",
@@ -185,9 +495,19 @@
   "text": "Ustedes dirigen El Mayorista, una distribuidora de consumo masivo en la Avenida Oquendo. Sus camiones abastecen a cientos de tiendas, mercados y restaurantes. Ganan poco por producto y mucho por volumen. Su reto: que la mercadería nunca deje de moverse."
  },
  {
+  "key": "partidas_may",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Flota y combustible: llegar a cada tienda. Almacén: espacio y orden. Stock de productos: nunca quedarse sin. Preventa y app de pedidos: pedidos más rápidos. Capacitación de preventistas: vender mejor. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_may_0",
   "voz": "marcelo",
   "text": "Último momento: la escasez de diésel paraliza camiones de distribución en Cochabamba. Tiendas de barrio reportan desabastecimiento."
+ },
+ {
+  "key": "hint_may_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: planificas para usar menos combustible. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_may_1",
@@ -195,9 +515,19 @@
   "text": "Último momento: productos de contrabando inundan los mercados a precios más bajos que los de fábrica."
  },
  {
+  "key": "hint_may_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: lo que el contrabando no da. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_may_0",
   "voz": "marcelo",
   "text": "Atención: crecen las plataformas para que las tiendas de barrio hagan sus pedidos desde el celular."
+ },
+ {
+  "key": "hint_may_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: digitalizas tu red comercial. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_may_1",
@@ -205,9 +535,34 @@
   "text": "Atención: marcas nacionales buscan distribuidores para el Trópico de Cochabamba, un mercado en crecimiento."
  },
  {
+  "key": "hint_may_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: compartes margen, reduces riesgo. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_may_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: incentivas que paguen antes. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_may_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: flexibilidad sin perder categoría. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_may_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ganan certeza ellos y tú. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_hot",
   "voz": "sofia",
   "text": "Ustedes dirigen el Hostal Cordillera, en el centro histórico de Cochabamba. Reciben mochileros, familias y turistas extranjeros. En temporada alta no hay cama libre; en temporada baja, el silencio. Su reto: llenar el hostal todo el año."
+ },
+ {
+  "key": "partidas_hot",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Habitaciones y mantenimiento: confort y reseñas. Lavandería y amenities: cada huésped, todo limpio. Plataformas y redes: reservas en línea. Experiencias y tours: ingreso extra por huésped. Capacitación en servicio: huéspedes que vuelven. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_hot_0",
@@ -215,9 +570,19 @@
   "text": "Último momento: los conflictos sociales y bloqueos provocan cancelaciones masivas de turistas en Bolivia."
  },
  {
+  "key": "hint_hot_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: cambias de público mientras pasa la crisis. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_hot_1",
   "voz": "marcelo",
   "text": "Último momento: SEMAPA anuncia corte de agua de cuarenta y ocho horas en el centro de Cochabamba."
+ },
+ {
+  "key": "hint_hot_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: costoso, pero el huésped ni lo nota. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_hot_0",
@@ -225,9 +590,34 @@
   "text": "Atención: el turismo de aventura crece en Cochabamba. El Parque Tunari y Torotoro atraen a miles de visitantes."
  },
  {
+  "key": "hint_hot_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: más ingreso por huésped. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_hot_1",
   "voz": "marcelo",
   "text": "Atención: la Feria Internacional de Cochabamba y las festividades de agosto llenan los hoteles de la ciudad."
+ },
+ {
+  "key": "hint_hot_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: maximizas la temporada. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_hot_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: das valor en lugar de solo bajar precio. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_hot_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: estabilidad de costos. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_hot_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: web propia, redes y fidelización. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_lac",
@@ -235,9 +625,19 @@
   "text": "Ustedes dirigen Lácteos Valle Lechero, una planta en Punata que transforma la leche de trescientas familias productoras en yogurt y quesos. Todo depende de la cadena de frío y de pagar puntual a los productores. Su reto: crecer sin cortar la leche, ni la confianza."
  },
  {
+  "key": "partidas_lac",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Compra de leche: pago a 300 productores. Cámaras de frío y planta: sin frío, no hay producto. Envases y etiquetas: presentación y vida útil. Marca y degustaciones: ganar góndola. Laboratorio y registros: calidad y registro sanitario. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_lac_0",
   "voz": "marcelo",
   "text": "Último momento: un corte eléctrico de doce horas afecta al Valle Alto. Las plantas lecheras temen perder su producción."
+ },
+ {
+  "key": "hint_lac_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: caro, pero salvas toda la producción. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_lac_1",
@@ -245,9 +645,19 @@
   "text": "Último momento: productores lecheros del Valle Alto exigen mejor precio y anuncian suspensión de entregas."
  },
  {
+  "key": "hint_lac_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: les das liquidez, no solo precio. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_lac_0",
   "voz": "marcelo",
   "text": "Atención: crece la demanda de quesos madurados gourmet en restaurantes y hoteles de Bolivia."
+ },
+ {
+  "key": "hint_lac_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: producto premium con mayor margen. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_lac_1",
@@ -255,9 +665,34 @@
   "text": "Atención: Perú abre cupos de importación para lácteos bolivianos."
  },
  {
+  "key": "hint_lac_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: nuevo mercado en dólares. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_lac_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: negocias plazo y costo de entrada. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_lac_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: inversión inicial, diferenciación y ahorro. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_lac_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: vendes tus facturas al banco para cobrar antes. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_agr",
   "voz": "sofia",
   "text": "Ustedes dirigen Trópico Fresh, una agroexportadora de Shinahota que envía banano y piña a Argentina y Chile. Cobran en dólares, pagan en bolivianos y dependen del clima y de las carreteras. Su reto: que la fruta llegue fresca, y que la plata vuelva."
+ },
+ {
+  "key": "partidas_agr",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Compra de fruta: pago a productores. Empacadora y cámaras: fruta fresca más tiempo. Fletes y exportación: llegar a la frontera. Ferias internacionales: nuevos compradores. Certificaciones: orgánico y buenas prácticas. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_agr_0",
@@ -265,9 +700,19 @@
   "text": "Último momento: lluvias torrenciales inundan cultivos en el Trópico de Cochabamba. Productores reportan grandes pérdidas."
  },
  {
+  "key": "hint_agr_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: transparencia antes que incumplir. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_agr_1",
   "voz": "marcelo",
   "text": "Último momento: un paro de transportistas cierra el paso fronterizo hacia Argentina. Camiones con fruta quedan varados."
+ },
+ {
+  "key": "hint_agr_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: vendes más barato, pero vendes. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_agr_0",
@@ -275,9 +720,34 @@
   "text": "Atención: Europa busca piña orgánica certificada de Sudamérica, y paga hasta el doble."
  },
  {
+  "key": "hint_agr_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: inversión de un año, precio doble. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_agr_1",
   "voz": "marcelo",
   "text": "Atención: la fruta deshidratada boliviana gana mercado como snack saludable."
+ },
+ {
+  "key": "hint_agr_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: conviertes el descarte en producto. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_agr_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: cedes algo a cambio de volumen. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_agr_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: estabilidad para todos. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_agr_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ahorro con flexibilidad. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_cli",
@@ -285,9 +755,19 @@
   "text": "Ustedes dirigen la Clínica Salud Cala Cala: consultorios, laboratorio y ecografía en la zona norte. Los equipos cuestan como una casa y cada paciente confía su salud a su equipo. Su reto: ser rentables sin dejar de cuidar a las personas."
  },
  {
+  "key": "partidas_cli",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Equipos médicos: ecógrafo, laboratorio. Reactivos e insumos: cada análisis cuesta. Infraestructura y bioseguridad: cumplir la norma. Convenios y marketing: pacientes y aseguradoras. Especialización médica: mejor diagnóstico. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_cli_0",
   "voz": "marcelo",
   "text": "Último momento: el SEDES declara alerta por brote de dengue en Cochabamba. Los centros de salud están desbordados."
+ },
+ {
+  "key": "hint_cli_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: atiendes a más, con orden. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_cli_1",
@@ -295,9 +775,19 @@
   "text": "Último momento: la falta de repuestos importados afecta a equipos médicos en clínicas de Cochabamba."
  },
  {
+  "key": "hint_cli_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: sigues atendiendo. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_cli_0",
   "voz": "marcelo",
   "text": "Atención: la telemedicina crece en Bolivia y los pacientes de provincias buscan consultas en línea."
+ },
+ {
+  "key": "hint_cli_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: profesional y segura. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_cli_1",
@@ -305,9 +795,34 @@
   "text": "Atención: los bancos ofrecen créditos productivos para equipamiento médico de alta tecnología."
  },
  {
+  "key": "hint_cli_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: compartes la inversión y los pacientes. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_cli_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: volumen con margen sano. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_cli_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: costo estable. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_cli_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: apoyas sin saturarte. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_con",
   "voz": "sofia",
   "text": "Ustedes dirigen Tunari Obras, una constructora de la zona sur que levanta viviendas y obras para el municipio. Cada proyecto mueve millones, pero el dinero entra por avance de obra y el cemento cambia de precio cada mes. Su reto: terminar las obras sin quedarse sin caja."
+ },
+ {
+  "key": "partidas_con",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Cemento, fierro y materiales: el costo de cada obra. Maquinaria y andamios: avanzar rápido y seguro. Garantías y licitaciones: poder postular. Marketing inmobiliario: vender departamentos. Seguridad industrial: cero accidentes. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_con_0",
@@ -315,9 +830,19 @@
   "text": "Último momento: escasez de cemento y fierro en el mercado nacional. Las obras se paralizan en varias ciudades."
  },
  {
+  "key": "hint_con_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: usas el tiempo en lo que sí se puede hacer. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_con_1",
   "voz": "marcelo",
   "text": "Último momento: un accidente laboral en una obra de la zona sur deja a un trabajador herido. El Ministerio de Trabajo inspeccionará."
+ },
+ {
+  "key": "hint_con_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: haces lo correcto. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_con_0",
@@ -325,9 +850,34 @@
   "text": "Atención: el Estado lanza un programa de vivienda social y busca constructoras locales en Cochabamba."
  },
  {
+  "key": "hint_con_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: más casas, menos costo. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_con_1",
   "voz": "marcelo",
   "text": "Atención: crece la demanda de departamentos en el sur de Cochabamba."
+ },
+ {
+  "key": "hint_con_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: los compradores financian la obra. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_con_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: lo que permite la ley de contrataciones. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_con_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: calzas pagos con cobros. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_con_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: ganan ambos si la obra avanza. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "intro_sol",
@@ -335,9 +885,19 @@
   "text": "Ustedes dirigen Sol del Valle, una empresa que instala paneles solares en casas, colegios y fábricas de Cochabamba. Venden ahorro para el futuro, pero los paneles se compran en dólares y el cliente quiere pagar en cuotas. Su reto: hacer crecer la energía limpia sin quemar la caja."
  },
  {
+  "key": "partidas_sol",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Paneles e inversores: equipos importados. Herramientas y vehículo: instalar en cualquier techo. Marketing y demostraciones: convencer del ahorro. Financiamiento a clientes: vender en cuotas. Certificaciones técnicas: cumplir la norma eléctrica. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
+ },
+ {
   "key": "crisis_sol_0",
   "voz": "marcelo",
   "text": "Último momento: el tipo de cambio paralelo encarece los equipos importados. Empresas de tecnología suspenden ventas."
+ },
+ {
+  "key": "hint_sol_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: pierdes en estos 30, cuidas la reputación. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "crisis_sol_1",
@@ -345,9 +905,19 @@
   "text": "Último momento: la autoridad eléctrica cambia los requisitos para conectar sistemas solares a la red."
  },
  {
+  "key": "hint_sol_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: te diferencias como empresa seria. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_sol_0",
   "voz": "marcelo",
   "text": "Atención: llegan más autos eléctricos a Bolivia y faltan estaciones de carga."
+ },
+ {
+  "key": "hint_sol_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: aprendes con riesgo bajo. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_sol_1",
@@ -355,9 +925,34 @@
   "text": "Atención: productores del Valle Alto buscan bombas solares para riego ante la sequía."
  },
  {
+  "key": "hint_sol_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: impacto social y ventas. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_sol_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: el banco financia, tú cobras al contado. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_sol_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: comparten contenedor y riesgo. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_sol_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: imagen y proyecto sostenible. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "intro_cer",
   "voz": "sofia",
   "text": "Ustedes dirigen Llajta Brew, una cervecería artesanal de Tiquipaya que usa maíz y frutas del valle. La gente ama su sabor, pero compiten con una industria gigante que controla bares y distribuidores. Su reto: hacerse un espacio sin que los aplasten."
+ },
+ {
+  "key": "partidas_cer",
+  "voz": "sofia",
+  "text": "Estas son las partidas de su negocio. Malta, lúpulo e insumos: ingredientes de cada lote. Tanques y embotelladora: capacidad y calidad. Marca y redes: que te reconozcan. Taproom y eventos: venta directa. Registros y permisos: vender sin problemas. Muy importante: en Sueldos del equipo reserven una parte importante, porque más adelante podrán contratar a personal especializado en su negocio. Un perfil técnico cuesta entre tres mil y nueve mil bolivianos al mes. Y el fondo de emergencia los protegerá cuando llegue una crisis."
  },
  {
   "key": "crisis_cer_0",
@@ -365,9 +960,19 @@
   "text": "Último momento: una gran cervecera ofrece refrigeradores gratis a bares de Cochabamba a cambio de exclusividad."
  },
  {
+  "key": "hint_cer_c0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: tu propio canal de venta. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "crisis_cer_1",
   "voz": "marcelo",
   "text": "Último momento: la autoridad sanitaria observa lotes de bebidas artesanales con registros desactualizados."
+ },
+ {
+  "key": "hint_cer_c1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: pierdes un lote, ganas confianza. Y piensen en qué pasará en seis meses, no solo hoy."
  },
  {
   "key": "opp_cer_0",
@@ -375,33 +980,143 @@
   "text": "Atención: se viene el festival de cerveza artesanal más grande de Bolivia, con jurado internacional."
  },
  {
+  "key": "hint_cer_o0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: vitrina nacional. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "opp_cer_1",
   "voz": "marcelo",
   "text": "Atención: supermercados nacionales abren espacio para productos artesanales locales."
  },
  {
+  "key": "hint_cer_o1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: volumen sin canibalizar los bares. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_cer_n0",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: tú pones el barril, él paga cada mes. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_cer_n1",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: identidad local y menos dependencia. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
+  "key": "hint_cer_n2",
+  "voz": "dani",
+  "text": "¡Hola! Soy Dani, estudiante de Negocios y Gestión Empresarial. Vimos casos así en clase. Mi consejo: busquen la opción que logre esto: socios con objetivos claros. Y piensen en qué pasará en seis meses, no solo hoy."
+ },
+ {
   "key": "cierre_0",
   "voz": "sofia",
-  "text": "¡Impresionante! Su gestión fue de nivel profesional. Imaginen lo que lograrán con cuatro años de formación en Negocios y Gestión Empresarial."
+  "text": "¡Impresionante! Su gestión fue de nivel profesional."
  },
  {
   "key": "cierre_1",
   "voz": "sofia",
-  "text": "¡Muy bien! Tomaron decisiones sólidas. En la carrera aprenderán a convertir esa intuición en método."
+  "text": "¡Muy bien! Tomaron decisiones sólidas y bien pensadas."
  },
  {
   "key": "cierre_2",
   "voz": "sofia",
-  "text": "Buen trabajo. Hubo aciertos y también decisiones costosas; justamente eso se aprende en Negocios y Gestión Empresarial."
+  "text": "Buen trabajo. Hubo aciertos, y también decisiones que les costaron caro."
  },
  {
   "key": "cierre_3",
   "voz": "sofia",
-  "text": "Su empresa sobrevivió con dificultades. Lo importante es que hoy descubrieron por qué cada decisión importa."
+  "text": "Su empresa sobrevivió con dificultades, y eso también enseña mucho."
  },
  {
   "key": "cierre_4",
   "voz": "sofia",
-  "text": "Fue un reto duro, y está bien: así empiezan los grandes gerentes. Revisen su tablero y descubran qué materias les ayudarían."
+  "text": "Fue un reto duro, y está bien: así empiezan los grandes gerentes."
+ },
+ {
+  "key": "fuerte_fin",
+  "voz": "sofia",
+  "text": "Su mayor fortaleza fue finanzas. En la carrera la llevarán al siguiente nivel con materias como Técnicas Básicas de Gestión Contable Financiera y Análisis del Entorno Económico y Financiero."
+ },
+ {
+  "key": "mejora_fin",
+  "voz": "sofia",
+  "text": "Lo que más deben fortalecer es finanzas. Justamente para eso, Negocios y Gestión Empresarial tiene materias como Técnicas Básicas de Gestión Contable Financiera y Análisis del Entorno Económico y Financiero."
+ },
+ {
+  "key": "fuerte_est",
+  "voz": "sofia",
+  "text": "Su mayor fortaleza fue estrategia. En la carrera la llevarán al siguiente nivel con materias como Fundamentos de Gestión Empresarial y Fundamentos de Emprendimiento e Innovación."
+ },
+ {
+  "key": "mejora_est",
+  "voz": "sofia",
+  "text": "Lo que más deben fortalecer es estrategia. Justamente para eso, Negocios y Gestión Empresarial tiene materias como Fundamentos de Gestión Empresarial y Fundamentos de Emprendimiento e Innovación."
+ },
+ {
+  "key": "fuerte_tal",
+  "voz": "sofia",
+  "text": "Su mayor fortaleza fue talento. En la carrera la llevarán al siguiente nivel con materias como Fundamentos de Gestión Empresarial y Liderazgo Organizacional."
+ },
+ {
+  "key": "mejora_tal",
+  "voz": "sofia",
+  "text": "Lo que más deben fortalecer es talento. Justamente para eso, Negocios y Gestión Empresarial tiene materias como Fundamentos de Gestión Empresarial y Liderazgo Organizacional."
+ },
+ {
+  "key": "fuerte_neg",
+  "voz": "sofia",
+  "text": "Su mayor fortaleza fue negociación. En la carrera la llevarán al siguiente nivel con materias como Electiva: Métodos Alternativos de Solución de Controversias y Liderazgo Transformacional."
+ },
+ {
+  "key": "mejora_neg",
+  "voz": "sofia",
+  "text": "Lo que más deben fortalecer es negociación. Justamente para eso, Negocios y Gestión Empresarial tiene materias como Electiva: Métodos Alternativos de Solución de Controversias y Liderazgo Transformacional."
+ },
+ {
+  "key": "fuerte_rie",
+  "voz": "sofia",
+  "text": "Su mayor fortaleza fue gestión de riesgos. En la carrera la llevarán al siguiente nivel con materias como Ética y Sostenibilidad Empresarial y Análisis del Entorno Económico y Financiero."
+ },
+ {
+  "key": "mejora_rie",
+  "voz": "sofia",
+  "text": "Lo que más deben fortalecer es gestión de riesgos. Justamente para eso, Negocios y Gestión Empresarial tiene materias como Ética y Sostenibilidad Empresarial y Análisis del Entorno Económico y Financiero."
+ },
+ {
+  "key": "fuerte_mer",
+  "voz": "sofia",
+  "text": "Su mayor fortaleza fue mercado y clientes. En la carrera la llevarán al siguiente nivel con materias como Fundamentos de Emprendimiento e Innovación y Fundamentos de Marketing Digital."
+ },
+ {
+  "key": "mejora_mer",
+  "voz": "sofia",
+  "text": "Lo que más deben fortalecer es mercado y clientes. Justamente para eso, Negocios y Gestión Empresarial tiene materias como Fundamentos de Emprendimiento e Innovación y Fundamentos de Marketing Digital."
+ },
+ {
+  "key": "carrera",
+  "voz": "sofia",
+  "text": "Lo que vivieron hoy en una hora, en Negocios y Gestión Empresarial de UNIFRANZ lo dominarán en cuatro años: con proyectos integradores reales en cada semestre, inteligencia artificial y análisis de datos, dos menciones para especializarse y experiencias internacionales. Si hoy disfrutaron tomar decisiones, esta carrera es para ustedes. ¡Los esperamos!"
+ },
+ {
+  "key": "live_feriado",
+  "voz": "marcelo",
+  "text": "Atención: el gobierno declara feriado largo de cuatro días. Miles de familias viajan y el consumo cambia de golpe."
+ },
+ {
+  "key": "live_impuestos",
+  "voz": "marcelo",
+  "text": "Último momento: Impuestos Nacionales inicia operativos sorpresa de fiscalización en negocios de Cochabamba."
+ },
+ {
+  "key": "live_qr",
+  "voz": "marcelo",
+  "text": "Último momento: estafadores circulan códigos QR falsos usando el nombre de negocios conocidos de Cochabamba."
+ },
+ {
+  "key": "live_viral",
+  "voz": "marcelo",
+  "text": "Atención: un video con miles de reproducciones critica a un negocio cochabambino. Las redes arden."
  }
 ]

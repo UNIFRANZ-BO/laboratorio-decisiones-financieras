@@ -58,6 +58,18 @@ La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedi
 
 > **Para activar el guardado en Drive:** pega el nuevo `apps-script/Codigo.gs`, ejecuta una vez la función **autorizarDrive** (acepta el permiso de Drive), luego **preparar**, y publica **Gestionar implementaciones → ✏️ → Nueva versión**. El menú 🏆 Laboratorio suma **📁 Abrir carpeta de informes**.
 
+## Novedades v3.2
+- **Fase 2 · Plan**: en lugar del boceto, ordenan las 7 partidas de su rubro por importancia. Al final se compara su plan con lo que invirtieron (coherencia plan-ejecución).
+- **Audios explicativos**: en la misión, «¿Cómo arranca mi empresa?» explica los 5 indicadores (y cada uno se puede tocar). En el capital, «Explícame las partidas» explica las partidas del rubro y por qué reservar para sueldos. El cierre combina su nivel, su mayor fortaleza, lo que deben mejorar con materias de la malla y una invitación a la carrera.
+- **📘 Guía de organigramas**: vertical, horizontal, plano y matricial, con cuándo usar cada uno, 4 pasos y un tipo sugerido para su rubro. Cada tipo se carga como plantilla en la pizarra.
+- **💸 Caja de 6 meses**: después de contratar ven mes a mes si el efectivo alcanza. Si se quedan sin caja, se descuenta de rentabilidad y sostenibilidad.
+- **🪞 Micropausas «¿Y en tu vida?»**: 5 preguntas rápidas de finanzas personales repartidas en el juego.
+- **📞 Comodín**: una vez por partida, Dani (estudiante de NGE) da un consejo en audio en la crisis, una negociación o la oportunidad.
+- **✍️ Contraoferta**: en la negociación con el cliente pueden proponer cuánto ceder; si piden muy poco, pueden perder el trato.
+- **⚡ Crisis en vivo**: desde el proyector, «⚡ Crisis en vivo» lanza un imprevisto que aparece en todos los celulares de la sala (30 segundos para decidir). Requiere el Apps Script actualizado.
+- **🧠 Quiz final** (3 preguntas) y **🏅 Certificado «Gerente por un día»** en PDF (también se guarda en la carpeta Drive del grupo).
+- **Justificaciones**: obligatorias solo en capital, crisis y negociación; en contratación y oportunidad son opcionales.
+
 ## Novedades v3.1
 - **15 negocios**: se suman 6 de dificultad experta (★★★★): 🥛 Lácteos Valle Lechero, 🍌 Agroexportadora Trópico Fresh, 🏥 Clínica Salud Cala Cala, 🏗️ Constructora Tunari Obras, ☀️ Energía solar Sol del Valle y 🍺 Cervecería Llajta Brew. Hay un filtro por dificultad en la selección.
 - **Capital por partidas del rubro**: 7 frascos propios de cada negocio (por ejemplo, la clínica: equipos médicos, reactivos, bioseguridad…), siempre con **Sueldos del equipo (planilla)** y **Fondo de emergencia**.

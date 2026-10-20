@@ -12,6 +12,7 @@ OUT = ROOT / "voz"
 VOCES = {
     "sofia": dict(voice="es-BO-SofiaNeural", rate="+6%", pitch="+0Hz"),
     "marcelo": dict(voice="es-BO-MarceloNeural", rate="+10%", pitch="+2Hz"),
+    "dani": dict(voice="es-MX-DaliaNeural", rate="+8%", pitch="+4Hz"),
 }
 
 async def main():

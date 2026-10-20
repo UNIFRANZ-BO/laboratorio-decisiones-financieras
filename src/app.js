@@ -50,7 +50,7 @@ const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
     this.stop(true);this.cb=cb||null;const tok=++this.tok;
     if(!this.on||!text){if(cb)setTimeout(cb,0);return}
     const n=$('narr');n.classList.toggle('news',who==='marcelo');
-    $('nr-av').textContent=who==='marcelo'?'🎙️':'👩🏽‍💼';$('nr-who').textContent=who==='marcelo'?'Marcelo · noticiero':'Sofía · tu mentora';
+    $('nr-av').textContent=who==='marcelo'?'🎙️':who==='dani'?'🎓':'👩🏽‍💼';$('nr-who').textContent=who==='marcelo'?'Marcelo · noticiero':who==='dani'?'Dani · estudiante de NGE':'Sofía · tu mentora';
     $('nr-txt').textContent=text;n.classList.add('on');
     const a=new Audio(VOZ_BASE+key+'.mp3');this.audio=a;
     a.onended=()=>{if(tok===this.tok)this.end()};
@@ -153,7 +153,7 @@ function newState(prev){return{
   crisis:null,cIdx:0,cOpt:null,timedOut:false,crisisT0:0,crisisTime:0,cRes:null,
   negs:[],negOpts:[null,null,null],negRes:[null,null,null],negRound:0,
   opp:null,oIdx:0,oppOpt:null,oppShown:false,oRes:null,
-  justif:{cap:'',team:'',crisis:'',neg:'',opp:''},boards:{d1:false,d2:false},
+  justif:{cap:'',team:'',crisis:'',neg:'',opp:''},boards:{d1:false,d2:false},prio:null,prioMatch:0,micro:{},comodin:null,cajaDone:false,cajaRes:null,cajaFx:null,cmin:0,ctry:0,quiz:null,liveRes:null,orgTipo:null,joinT:0,lastLive:0,
   score:0,tier:'',tierIdx:4,perfil:'',finished:false,phase:'home',class:null,pdfUrl:''}}
 let S=newState();
 
@@ -178,11 +178,11 @@ const P=(team,solo)=>S.mode==='solo'?solo:team;
 /* ═══════════════════════════════════════
    NAVEGACIÓN
 ═══════════════════════════════════════ */
-const STEPS=['select','draw1','capital','draw2','team','crisis','neg','opp','results'];
-const LABELS={setup:'Preparación',select:'Fase 1 de 8 · Negocio',mision:'Fase 1 de 8 · Misión',draw1:'Fase 2 de 8 · Pizarra',capital:'Fase 3 de 8 · Capital',draw2:'Fase 4 de 8 · Organigrama',team:'Fase 5 de 8 · Contratación',crisis:'Fase 6 de 8 · Crisis',neg:'Fase 7 de 8 · Negociación',opp:'Fase 8 de 8 · Oportunidad',results:'Resultados',transfer:'Tus finanzas personales'};
-const PROG={setup:2,select:8,mision:10,draw1:18,capital:30,draw2:42,team:52,crisis:64,neg:76,opp:88,results:100,transfer:100};
-const SPL={select:['1','Elige tu negocio'],draw1:['2','Pizarra estratégica'],capital:['3','Capital'],draw2:['4','Organigrama'],team:['5','Contratación'],neg:['7','Negociación'],opp:['8','Oportunidad'],results:['🏁','Resultados']};
-const INIT={setup:initSetup,select:initSelect,mision:initMision,draw1:()=>initDraw('d1'),capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{}};
+const STEPS=['select','prio','capital','draw2','team','crisis','neg','opp','results'];
+const LABELS={setup:'Preparación',select:'Fase 1 de 8 · Negocio',mision:'Fase 1 de 8 · Misión',prio:'Fase 2 de 8 · Plan',caja:'Fase 5 de 8 · Caja',capital:'Fase 3 de 8 · Capital',draw2:'Fase 4 de 8 · Organigrama',team:'Fase 5 de 8 · Contratación',crisis:'Fase 6 de 8 · Crisis',neg:'Fase 7 de 8 · Negociación',opp:'Fase 8 de 8 · Oportunidad',results:'Resultados',transfer:'Tus finanzas personales'};
+const PROG={setup:2,select:8,mision:10,prio:18,caja:58,capital:30,draw2:42,team:52,crisis:64,neg:76,opp:88,results:100,transfer:100};
+const SPL={select:['1','Elige tu negocio'],prio:['2','Su plan'],caja:['💸','Caja de 6 meses'],capital:['3','Capital'],draw2:['4','Organigrama'],team:['5','Contratación'],neg:['7','Negociación'],opp:['8','Oportunidad'],results:['🏁','Resultados']};
+const INIT={setup:initSetup,select:initSelect,mision:initMision,prio:initPrio,caja:initCaja,capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{}};
 let skipT=null;
 function splash(ph){const s=SPL[ph];if(!s)return;$('sp-n').textContent=s[0];$('sp-t').textContent=s[1];const el=$('splash');el.classList.remove('on');void el.offsetWidth;el.classList.add('on');Snd.whoosh();setTimeout(()=>el.classList.remove('on'),1100)}
 function go(ph){
@@ -191,7 +191,7 @@ function go(ph){
   if(ph==='home')FX.start();else FX.stop();
   const showHud=!['home','proj'].includes(ph);$('hud').classList.toggle('on',showHud);
   if(showHud){
-    const i=STEPS.indexOf(ph==='mision'?'select':ph);
+    const i=STEPS.indexOf(ph==='mision'?'select':ph==='caja'?'team':ph);
     $('hud-steps').innerHTML=STEPS.map((s,k)=>`<span class="${ph==='transfer'||k<i?'done':k===i?'now':''}"></span>`).join('');
     $('hud-label').textContent=LABELS[ph]+(S.biz&&!['setup','select'].includes(ph)?'  ·  '+S.biz.em+' '+S.biz.name:'');
     $('hud-name').textContent=S.name||'—';$('hud-av').textContent=S.av;
@@ -254,7 +254,7 @@ const BIENVENIDA='¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. B
 async function startGame(){
   S.name=$('in-name').value.trim().slice(0,28);S.sala=$('in-sala').value.trim().toUpperCase();
   if($('in-member').value.trim())addMember();
-  Live.push('Preparación');
+  Live.push('Preparación');startLivePoll();
   Voz.play('bienvenida',BIENVENIDA,'sofia');
   const cd=$('countdown');cd.classList.add('on');AB.reset();
   for(const n of[3,2,1]){$('cd-n').innerHTML=`<div class="n">${n}</div>`;Snd.beep();vib(40);await sleep(850)}
@@ -312,8 +312,8 @@ function initMision(){
   radarSVG($('ms-radar'),metAxes(),[{v:metVals(b.base),col:'#FF8A00',fill:'rgba(255,138,0,.22)',dots:true,glow:true}],{anim:true});
   const txt=ev.intro;const el=$('ms-text');el.innerHTML='<span class="cur"></span>';let i=0;clearInterval(typeT);
   typeT=setInterval(()=>{i+=2;el.innerHTML=esc(txt.slice(0,i))+'<span class="cur"></span>';if(i>=txt.length){clearInterval(typeT);el.textContent=txt}},38);
-  Voz.play('intro_'+b.id,txt,'sofia');
-  AB.set('Aceptar la misión 🚀',()=>{Voz.stop(true);clearInterval(typeT);S.hist=[{k:'Inicio',m:{...b.base}}];go('draw1')},{back:()=>{Voz.stop(true);go('select')}});
+  Voz.play('intro_'+b.id,txt,'sofia');renderIndList();
+  AB.set('Aceptar la misión 🚀',()=>{Voz.stop(true);clearInterval(typeT);S.hist=[{k:'Inicio',m:{...b.base}}];go('prio')},{back:()=>{Voz.stop(true);go('select')}});
 }
 
 /* ═══════════════════════════════════════
@@ -321,7 +321,7 @@ function initMision(){
 ═══════════════════════════════════════ */
 function initDraw(k){
   refreshThumb(k);
-  const next=k==='d1'?'capital':'team',back=k==='d1'?'mision':'capital';
+  const next='team',back='capital';
   AB.set('Continuar →',()=>go(next),{back:()=>go(back)});
   updDrawAB(k);
 }
@@ -331,9 +331,9 @@ function updDrawAB(k){
   let s=8;AB.ok(false,P('Abran la pizarra y dibujen su plan ✏️','Abre la pizarra y dibuja tu plan ✏️'));AB.label(`Omitir pizarra (${s}s)`);
   skipT=setInterval(()=>{s--;if(s<=0){clearInterval(skipT);AB.ok(true);AB.label('Continuar sin dibujar →')}else AB.label(`Omitir pizarra (${s}s)`)},1000);
 }
-function openBoard(k){
+function openBoard(k,tipo){
   Snd.whoosh();
-  Pizarra.open(k,{...BOARDS[k],onClose:(png,used,n)=>{
+  Pizarra.open(k,{...BOARDS[k],autoTemplate:tipo||null,onClose:(png,used,n)=>{
     S.boards[k]=used;refreshThumb(k);if(S.phase===(k==='d1'?'draw1':'draw2'))updDrawAB(k);
     if(used){Snd.ok();toast(`✏️ Pizarra guardada · ${n} elemento${n!==1?'s':''}`)}
     Live.push();
@@ -354,10 +354,10 @@ const JUST_MIN=45;
 const JQ={cap:['¿Por qué repartieron el capital así?','¿Por qué repartiste el capital así?'],team:['¿Por qué contrataron a estas personas?','¿Por qué contrataste a estas personas?'],crisis:['¿Por qué eligieron esta opción ante la crisis?','¿Por qué elegiste esta opción ante la crisis?'],neg:['¿Qué estrategia siguieron en las 3 negociaciones?','¿Qué estrategia seguiste en las 3 negociaciones?'],opp:['¿Por qué tomaron esta decisión ante la oportunidad?','¿Por qué tomaste esta decisión ante la oportunidad?']};
 const STARTERS2={...STARTERS,team:['Contratamos a … porque nuestro negocio necesita …','No contratamos a … porque …','La planilla nos alcanza porque …']};
 let onJust=()=>{};
-function renderJust(key,boxId,cb){
+function renderJust(key,boxId,cb,opcional){
   onJust=cb;
-  $(boxId).innerHTML=`<div class="just">
-    <div class="just-h"><span style="font-size:1.3rem">✍️</span><b>Justificación obligatoria</b></div>
+  $(boxId).innerHTML=`<div class="just${opcional?' opc':''}">
+    <div class="just-h"><span style="font-size:1.3rem">✍️</span><b>${opcional?'Justificación (opcional)':'Justificación obligatoria'}</b></div>
     <p class="just-q">${P(JQ[key][0],JQ[key][1])} ${S.mode==='team'?'<br>💬 <i>Debatan un minuto y escriban su razonamiento.</i>':''}</p>
     <div class="starters">${STARTERS2[key].map(s=>`<button class="starter" onclick="useStarter('${key}',this)">${s}</button>`).join('')}</div>
     <div class="ta-wrap"><textarea class="ta" id="ta-${key}" placeholder="Escriban aquí…" oninput="justInput('${key}')">${esc(S.justif[key])}</textarea>
@@ -410,7 +410,7 @@ function initCapital(){
       </div>
     </div>`}).join('');
   renderJust('cap','just-cap',capAB);
-  AB.set('Organizar el equipo →',()=>{S.hist=S.hist.filter(h=>h.k==='Inicio');S.hist.push({k:'Capital',m:projMet()});go('draw2')},{back:()=>go('draw1')});
+  AB.set('Organizar el equipo →',()=>{S.hist=S.hist.filter(h=>h.k==='Inicio');S.hist.push({k:'Capital',m:projMet()});micro('capital',()=>go('draw2'))},{back:()=>go('prio')});
   capDone=totalCap()===TOTAL;prevBM=null;updCap();
 }
 function capStep(id,d,e){
@@ -477,8 +477,8 @@ function initTeam(){
   $('cands').innerHTML=pool.map(c=>`<button class="cand" id="cd-${c.id}" onclick="toggleHire('${c.id}')"><span class="ca">${c.av}</span><span class="cn">${c.name}</span><span class="cr">${c.role}</span><span class="cs">${fmt(c.sal)}/mes</span><span class="cd">${DEPTOS.find(d=>d.id===c.dept).ic} ${DEPTOS.find(d=>d.id===c.dept).name}</span></button>`).join('');
   $('cand-count').textContent=pool.length;
   document.querySelectorAll('.cand').forEach(tilt);
-  renderJust('team','just-team',teamAB);updTeam();
-  AB.set('Enfrentar los desafíos →',()=>{resolveAll();S.hist.push({k:'Equipo',m:{...S.met}});go('crisis')},{back:()=>go('draw2')});teamAB();
+  renderJust('team','just-team',teamAB,true);updTeam();
+  AB.set('Ver la caja de 6 meses →',()=>{resolveAll();S.hist=S.hist.filter(h=>!['Equipo','Caja'].includes(h.k));S.hist.push({k:'Equipo',m:{...S.met}});S.cajaDone=false;S.cajaRes=null;go('caja')},{back:()=>go('draw2')});teamAB();
 }
 function toggleHire(id){
   const i=S.hires.indexOf(id);
@@ -500,7 +500,7 @@ function updTeam(){
   const T={};DEPTOS.forEach(d=>T[d.id]=0);H.forEach(c=>T[c.dept]++);
   $('hb-depts').innerHTML=DEPTOS.map(d=>`<span class="hb-dep${T[d.id]?'':' zero'}">${d.ic} ${T[d.id]}</span>`).join('');
 }
-function teamAB(){const n=S.hires.length;AB.ok(n>=TEAM_MIN&&justOk('team'),n<TEAM_MIN?`Contraten al menos ${TEAM_MIN} personas`:justHint())}
+function teamAB(){const n=S.hires.length;AB.ok(n>=TEAM_MIN,`Contraten al menos ${TEAM_MIN} personas`)}
 function hireEval(){const e={key:0,useful:0,none:0};hired().forEach(c=>{const f=fitOf(c);f===2?e.key++:f===1?e.useful++:e.none++});return e}
 /* Ajustar la planilla sin volver a la fase de capital */
 function openPla(){renderPla();$('m-pla').classList.add('on');Snd.whoosh()}
@@ -596,7 +596,7 @@ function initCrisis(){
   if(!S.crisis){S.cIdx=rndI(ev.crises.length);S.crisis=ev.crises[S.cIdx];S.cOpt=null;S.timedOut=false;S.crisisTime=0}
   const c=S.crisis;$('cr-ic').textContent=c.ic;$('cr-t').textContent=c.title;$('cr-d').textContent=c.desc;$('cr-loc').textContent=c.loc;
   $('cr-warn').style.display=S.noRes?'':'none';
-  $('cr-opts').innerHTML=optCards(c.opts,'crisis');
+  $('cr-opts').innerHTML=optCards(c.opts,'crisis');$('com-cr').style.display=S.comodin?'none':'';
   renderJust('crisis','just-crisis',crAB);
   AB.set('Confirmar decisión →',confirmCrisis);crAB();
   const bk=$('breaking');bk.querySelector('.bk-band div').textContent=('🚨 ÚLTIMO MOMENTO · '+c.title.toUpperCase()+' · ').repeat(3);
@@ -618,7 +618,7 @@ function timeUp(){
 function crAB(){AB.ok(S.cOpt!==null&&justOk('crisis'),S.cOpt===null?P('Elijan una opción','Elige una opción'):justHint())}
 function confirmCrisis(){
   stopTimer();Voz.stop(true);const o=S.crisis.opts[S.cOpt];const r=evalOpt(o,1,S.noRes);S.cRes=r;const before=applyFx(r.fx);S.hist.push({k:'Crisis',m:{...S.met}});
-  showImpact(before,'Impacto de la crisis',r,S.crisis.opts,()=>go('neg'),S.noRes?'<div class="imp-note ko">⚠️ Sin fondo de emergencia: los golpes se multiplicaron ×1,8.</div>':'');
+  showImpact(before,'Impacto de la crisis',r,S.crisis.opts,()=>micro('crisis',()=>go('neg')),S.noRes?'<div class="imp-note ko">⚠️ Sin fondo de emergencia: los golpes se multiplicaron ×1,8.</div>':'');
 }
 
 /* ═══════════════════════════════════════
@@ -639,22 +639,26 @@ async function playRound(r){
   addMsg('sys','📍 '+n.loc);
   for(const m of n.msgs){await typing(750);addMsg('them',m);Snd.click()}
   await sleep(300);
-  f.innerHTML=`<span class="lbl" style="margin:0">${P('Elijan su respuesta','Elige tu respuesta')}</span>`+n.opts.map((o,i)=>`<button class="reply" style="animation-delay:${i*.08}s" onclick="answer(${r},${i})"><b>${'ABC'[i]}. ${o.lbl}</b><span>${o.sub}</span></button>`).join('');
+  f.innerHTML=`<span class="lbl" style="margin:0">${P('Elijan su respuesta','Elige tu respuesta')}</span>`+n.opts.map((o,i)=>`<button class="reply" style="animation-delay:${i*.08}s" onclick="answer(${r},${i})"><b>${'ABC'[i]}. ${o.lbl}</b><span>${o.sub}</span></button>`).join('')+
+    (r===0?`<button class="reply contra-btn" onclick="contraUI(0)"><b>✍️ Hacer nuestra propia contraoferta</b><span>Decidan cuánto ceder… si se pasan de exigentes, pueden perder el trato.</span></button>`:'')+comodinBtn();
   chatBusy=false;setTimeout(()=>f.scrollIntoView({behavior:'smooth',block:'center'}),120);
 }
 function addMsg(who,html){const d=document.createElement('div');d.className='msg '+who;d.innerHTML=html;$('chat-b').appendChild(d);d.scrollIntoView({block:'nearest',behavior:'smooth'})}
 async function typing(ms){const t=document.createElement('div');t.className='typing';t.innerHTML='<i></i><i></i><i></i>';$('chat-b').appendChild(t);await sleep(ms);t.remove()}
 const NEG_REPLY=['Mmm… está bien, si así lo quieren.','Trato hecho.','Bueno, lo vamos a pensar.'];
 async function answer(r,i){
-  if(chatBusy)return;chatBusy=true;const n=S.negs[r],o=n.opts[i];S.negOpts[r]=i;Snd.whoosh();vib(15);
-  const res=evalOpt(o,NEG_WEIGHT);S.negRes[r]=res;
+  if(chatBusy)return;chatBusy=true;const n=S.negs[r],o=n.opts[i];Snd.whoosh();vib(15);
   $('chat-f').innerHTML='';addMsg('me',esc(o.lbl));
   await typing(950);addMsg('them',o.r||NEG_REPLY[o.q===2?1:o.q===1?0:2]);
+  finishRound(r,i,evalOpt(o,NEG_WEIGHT));
+}
+async function finishRound(r,pick,res){
+  S.negOpts[r]=pick;S.negRes[r]=res;
   if(res.note){await sleep(300);addMsg('sys',(res.ok?'✅ ':'⚠️ ')+esc(res.note))}
   const deltas=Object.entries(res.fx).filter(([,v])=>v);const rc=$('chat-b').getBoundingClientRect();
   deltas.forEach(([k,v],j)=>setTimeout(()=>{const mt=METS.find(x=>x.id===k);floatFx(`${v>0?'+':''}${v} ${mt.ic}`,rc.left+rc.width*(.2+j*.15),rc.bottom-40,v>0?'#B8F34A':'#FF8A94')},j*120));
   deltas.reduce((a,[,v])=>a+v,0)>=0?Snd.coin():Snd.bad();
-  await sleep(500);addMsg('sys',o.q===2?'🤝 Trato ganar-ganar':o.q===1?'✓ Trato cerrado':'😬 Trato cerrado… ¿a qué costo?');
+  await sleep(500);addMsg('sys',res.q===2?'🤝 Trato ganar-ganar':res.q===1?'✓ Trato cerrado':'😬 Trato cerrado… ¿a qué costo?');
   renderRounds();
   if(r<2){$('chat-f').innerHTML=`<button class="btn" onclick="S.negRound=${r+1};playRound(${r+1});window.scrollTo({top:$('rounds').offsetTop-80,behavior:'smooth'})">Siguiente ronda: ${S.negs[r+1].badge} →</button>`;chatBusy=false;setTimeout(()=>$('chat-f').scrollIntoView({behavior:'smooth',block:'center'}),100)}
   else{S.negRound=3;chatBusy=false;$('chat-f').innerHTML=`<div class="msg sys" style="align-self:center">✅ ${P('¡Completaron las 3 negociaciones!','¡Completaste las 3 negociaciones!')}</div>`;
@@ -666,7 +670,7 @@ function confirmNeg(){
   const before=applyFx(fx);S.hist.push({k:'Negociación',m:{...S.met}});
   const qs=S.negRes.map(r=>r.q);const avgQ=Math.round(qs.reduce((a,b)=>a+b,0)/3);
   const summary=S.negs.map((n,i)=>`<div style="font-size:.8rem;margin:3px 0">${n.ic} <b>${n.badge}:</b> ${QTXT[S.negRes[i].q]}</div>`).join('');
-  showImpact(before,'Impacto de las negociaciones',{q:avgQ,note:null},[{q:2,lbl:''}],()=>go('opp'),summary);
+  showImpact(before,'Impacto de las negociaciones',{q:avgQ,note:null},[{q:2,lbl:''}],()=>micro('neg',()=>go('opp')),summary);
 }
 
 /* ═══════════════════════════════════════
@@ -678,17 +682,17 @@ function initOpp(){
   const o=S.opp;$('op-ic').textContent=o.ic;$('op-t').textContent=o.title;$('op-d').textContent=o.desc;$('op-loc').textContent=o.loc;
   $('scard').classList.toggle('rev',S.oppShown);
   $('op-opts').innerHTML=S.oppShown?optCards(o.opts,'opp'):'';$('just-opp').innerHTML='';
-  if(S.oppShown)renderJust('opp','just-opp',oppAB);
+  $('com-op').style.display='none';if(S.oppShown){renderJust('opp','just-opp',oppAB,true);$('com-op').style.display=S.comodin?'none':''}
   AB.set('Ver resultados 🏁',confirmOpp,{disabled:true,hint:P('Toquen la carta para revelarla','Toca la carta para revelarla')});if(S.oppShown)oppAB();
 }
 function revealOpp(){
   if(S.oppShown)return;S.oppShown=true;$('scard').classList.add('rev');Snd.whoosh();vib(30);
   Voz.play('opp_'+S.biz.id+'_'+S.oIdx,S.opp.news,'marcelo');
   setTimeout(()=>{Snd.ok();const r=$('scard').getBoundingClientRect();Confetti.burst(80,r.left+r.width/2,r.top+r.height/2);
-    $('op-opts').innerHTML=optCards(S.opp.opts,'opp');renderJust('opp','just-opp',oppAB);oppAB()},700);
+    $('op-opts').innerHTML=optCards(S.opp.opts,'opp');renderJust('opp','just-opp',oppAB,true);oppAB();$('com-op').style.display=S.comodin?'none':''},700);
 }
-function oppAB(){AB.ok(S.oppOpt!==null&&justOk('opp'),S.oppOpt===null?P('Elijan una opción','Elige una opción'):justHint())}
-function confirmOpp(){Voz.stop(true);const o=S.opp.opts[S.oppOpt];const r=evalOpt(o,1);S.oRes=r;const before=applyFx(r.fx);S.hist.push({k:'Oportunidad',m:{...S.met}});showImpact(before,'Impacto de la oportunidad',r,S.opp.opts,()=>go('results'))}
+function oppAB(){AB.ok(S.oppOpt!==null,P('Elijan una opción','Elige una opción'))}
+function confirmOpp(){Voz.stop(true);const o=S.opp.opts[S.oppOpt];const r=evalOpt(o,1);S.oRes=r;const before=applyFx(r.fx);S.hist.push({k:'Oportunidad',m:{...S.met}});showImpact(before,'Impacto de la oportunidad',r,S.opp.opts,()=>micro('opp',()=>go('results')))}
 
 /* ═══════════════════════════════════════
    TABLERO EN VIVO
@@ -708,12 +712,12 @@ function computeAll(){
   const avg=avgOf(S.met);S.score=avg;const ti=TIERS.findIndex(([t])=>avg>=t);S.tierIdx=ti;S.tier=TIERS[ti][1];S.finished=true;S.perfil=perfil().name;
   S.hireEval=hireEval();
   S.benchDist=AREAS.reduce((a,x)=>a+Math.abs(S.cap[x.id]/1000-BENCH[S.biz.id][x.id]),0);
-  S.negQ=S.negRes.map(r=>r?r.q:0);S.cQ=S.cRes?S.cRes.q:0;S.oQ=S.oRes?S.oRes.q:0;
+  S.prioMatch=prioMatch();S.negQ=S.negRes.map(r=>r?r.q:0);S.cQ=S.cRes?S.cRes.q:0;S.oQ=S.oRes?S.oRes.q:0;
   const resP=S.cap.res/1000,mx=Math.max(...Object.values(S.cap))/1000,payOk=S.payroll<=(S.capL.pla||0),T={};DEPTOS.forEach(d=>T[d.id]=0);hired().forEach(c=>{if(fitOf(c)>0)T[c.dept]++});
   const cover=DEPTOS.filter(d=>T[d.id]).length,e=S.hireEval;
   S.comps={
     fin:cl(40+(mx<=55?10:-10)+(resP>=10&&resP<=25?15:resP>=5?6:resP>25?8:-18)+(payOk?14:-14)+(S.met.rent-50)/3,5,98),
-    est:cl(92-S.benchDist*.9+S.oQ*6+(S.boards.d1?4:0)+(S.boards.d2?4:0),5,98),
+    est:cl(88-S.benchDist*.9+S.oQ*6+S.prioMatch*4+(S.boards.d2?4:0),5,98),
     tal:cl(30+e.key*12+e.useful*5-e.none*12+cover*3+(payOk?8:-10)-S.critMiss.length*12,5,98),
     neg:cl(26+S.negQ.reduce((a,b)=>a+b,0)*11,5,98),
     rie:cl(28+S.cQ*20+(resP>=10?14:resP>0?5:-12)+(S.timedOut?-14:S.crisisTime&&S.crisisTime<25?6:0),5,98),
@@ -736,8 +740,8 @@ function initResults(){
   const sent=$('sent-msg');
   if(Live.enabled()){sent.style.display='';sent.innerHTML='📡 Enviando resultado al ranking de la sala <b>'+esc(S.sala)+'</b>…';Live.push('Terminó',()=>{sent.innerHTML='✅ Resultado en el ranking de la sala <b>'+esc(S.sala)+'</b>';fetchClass()})}
   else sent.style.display='none';
-  const C=['¡Impresionante! Su gestión fue de nivel profesional. Imaginen lo que lograrán con cuatro años de formación en Negocios y Gestión Empresarial.','¡Muy bien! Tomaron decisiones sólidas. En la carrera aprenderán a convertir esa intuición en método.','Buen trabajo. Hubo aciertos y también decisiones costosas; justamente eso se aprende en Negocios y Gestión Empresarial.','Su empresa sobrevivió con dificultades. Lo importante es que hoy descubrieron por qué cada decisión importa.','Fue un reto duro, y está bien: así empiezan los grandes gerentes. Revisen su tablero y descubran qué materias les ayudarían.'];
-  setTimeout(()=>Voz.play('cierre_'+S.tierIdx,C[S.tierIdx],'sofia'),2200);
+  const cs=COMPS.slice().sort((x,y)=>S.comps[y.id]-S.comps[x.id]);const fu=cs[0].id,me=cs[cs.length-1].id;
+  setTimeout(()=>vozSeq([{key:'cierre_'+S.tierIdx,text:CIERRE[S.tierIdx],who:'sofia'},{key:'fuerte_'+fu,text:vozFuerte(fu),who:'sofia'},{key:'mejora_'+me,text:vozMejora(me),who:'sofia'},{key:'carrera',text:VOZ_CARRERA,who:'sofia'}]),2200);
   AB.set('💡 ¿Y mis finanzas personales? →',()=>{Voz.stop(true);go('transfer')});
 }
 function renderDashTab(c){
@@ -755,7 +759,8 @@ function renderDashTab(c){
     H.map(c=>{const f=fitOf(c);return`<div class="te"><span class="ta">${c.av}</span><span class="tn">${c.name} · ${c.role}<small>${fmt(c.sal)}/mes</small></span><span class="tv ${f===2?'k':f===1?'u':'n'}">${f===2?'⭐ Clave':f===1?'Útil':'✗ No aporta'}</span></div>`}).join('')+
     `</div><div class="crit">${(CRIT[S.biz.id]||[]).map(g=>{const ok=!S.critMiss.includes(g.l);return`<span class="chip ${ok?'g':'r'}">${ok?'✓':'✗'} ${g.l}</span>`}).join('')}</div>`+(()=>{const miss=CANDS.filter(c=>fitOf(c)===2&&!S.hires.includes(c.id));return miss.length?`<p class="cap-leg" style="margin-top:8px">💡 Perfiles clave que no contrataron: ${miss.map(c=>c.av+' '+c.role).join(' · ')}</p>`:''})();
   $('fin-mets').innerHTML=metBars(S.met);
-  $('res-boards').innerHTML=['d1','d2'].map(k=>{const i=Pizarra.info(k);return`<figure>${i.png?`<img src="${i.png}" alt="">`:'<span>Sin dibujo</span>'}<figcaption>${k==='d1'?'✏️ Boceto':'🏗️ Organigrama'}</figcaption></figure>`}).join('');
+  const i2=Pizarra.info('d2');const L=CAPLINES[S.biz.id];
+  $('res-boards').innerHTML=`<figure>${i2.png?`<img src="${i2.png}" alt="">`:'<span>Sin organigrama</span>'}<figcaption>🏗️ Organigrama</figcaption></figure><div class="planvs"><b>🧭 Su plan vs. lo que hicieron</b>${(S.prio||[]).slice(0,3).map((id,k)=>{const l=L.find(x=>x.id===id);return`<div>${k+1}. ${l.icon} ${l.name} <span>${fmt(S.capL[id]||0)}</span></div>`}).join('')}<small>${S.prioMatch}/3 de sus prioridades quedaron entre sus 3 mayores inversiones.</small></div>`;
 }
 async function fetchClass(){
   try{const r=await fetch(`${CONFIG.API_URL}?action=ranking&sala=${encodeURIComponent(S.sala)}&t=${Date.now()}`);const j=await r.json();if(!j.ok)return;
@@ -778,11 +783,15 @@ function renderDecisions(){
     ${best&&res&&res.q<2?`<p class="imp-best">💡 Mejor práctica: <b>«${esc(best.lbl)}»</b></p>`:''}
     ${just?`<div class="tl-j">“${esc(just)}”</div>`:''}</div>`;
   const B=BENCH[S.biz.id];const worst=AREAS.slice().sort((a,b)=>Math.abs(S.cap[b.id]/1000-B[b.id])-Math.abs(S.cap[a.id]/1000-B[a.id]))[0];
-  let h=card('💰','Fase 3 · Capital','Distribución de Bs 100.000',null,null,null,S.justif.cap,`<div class="dfx">${lines().map(l=>`<span class="chip">${l.icon} ${l.name}: ${fmt(S.capL[l.id])}</span>`).join('')}</div><p class="dch">Distancia al reparto recomendado: <b>${Math.round(S.benchDist)} puntos</b>. La mayor diferencia fue en <b>${worst.icon} ${worst.name}</b> (${Math.round(S.cap[worst.id]/1000)} % vs. ${B[worst.id]} % recomendado).</p>`);
+  let h=card('🧭','Fase 2 · Plan','Sus 3 prioridades',null,null,null,'',`<p class="dch">${(S.prio||[]).slice(0,3).map((id,k)=>{const l=CAPLINES[S.biz.id].find(x=>x.id===id);return`${k+1}. ${l.icon} ${l.name}`}).join(' · ')}</p><p class="dch">Coherencia plan-ejecución: <b>${S.prioMatch}/3</b>. ${S.prioMatch>=2?'Hicieron lo que planearon. 👏':'Lo que priorizaron no coincidió con dónde pusieron el dinero.'}</p>`);
+  h+=card('💰','Fase 3 · Capital','Distribución de Bs 100.000',null,null,null,S.justif.cap,`<div class="dfx">${lines().map(l=>`<span class="chip">${l.icon} ${l.name}: ${fmt(S.capL[l.id])}</span>`).join('')}</div><p class="dch">Distancia al reparto recomendado: <b>${Math.round(S.benchDist)} puntos</b>. La mayor diferencia fue en <b>${worst.icon} ${worst.name}</b> (${Math.round(S.cap[worst.id]/1000)} % vs. ${B[worst.id]} % recomendado).</p>`);
+  if(S.cajaRes)h+=card('💸','Fase 5 · Caja de 6 meses',S.cajaRes.min<-1500?`Se quedaron sin caja en el mes ${S.cajaRes.minM}`:'La caja aguantó los 6 meses',null,null,null,'',`<p class="dch">Caja inicial ${fmt(S.cajaRes.ini)} → mes 6: <b>${fmt(S.cajaRes.fin)}</b>. ${S.cajaRes.min<-1500?'Les faltó reserva o la planilla fue muy grande para sus ventas.':'Su reserva y su planilla estuvieron bien calibradas.'}</p>`);
   h+=card('👥','Fase 5 · Contratación',`${S.hires.length} personas contratadas`,null,null,null,S.justif.team,`<p class="dch">${S.critMiss.length?`⚠️ Les faltó: <b>${S.critMiss.join(', ')}</b>. `:'✅ Cubrieron todas las funciones críticas del rubro. '}${S.hireEval.key} clave · ${S.hireEval.useful} útiles · ${S.hireEval.none} sin relación con el rubro. Planilla: <b>${fmt(S.payroll)}/mes</b> de ${fmt(S.capL.pla||0)} presupuestados.</p>`);
   h+=card(S.crisis.ic,'Fase 6 · Crisis',S.crisis.title,S.crisis.opts[S.cOpt].lbl,S.cRes,bestOf(S.crisis.opts),S.justif.crisis,S.timedOut?'<div class="imp-note ko">⏰ Se les acabó el tiempo antes de decidir.</div>':S.crisisTime?`<p class="dch">Tiempo de decisión: <b>${S.crisisTime} s</b></p>`:'');
-  S.negs.forEach((n,i)=>h+=card(n.ic,`Fase 7 · Negociación ${i+1}/3 · ${n.badge}`,`${n.who}: ${n.title}`,n.opts[S.negOpts[i]].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:''));
+  S.negs.forEach((n,i)=>h+=card(n.ic,`Fase 7 · Negociación ${i+1}/3 · ${n.badge}`,`${n.who}: ${n.title}`,S.negRes[i].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:''));
   h+=card(S.opp.ic,'Fase 8 · Oportunidad',S.opp.title,S.opp.opts[S.oppOpt].lbl,S.oRes,bestOf(S.opp.opts),S.justif.opp);
+  if(S.liveRes)h+=card('⚡','Crisis en vivo (lanzada por el docente)',S.liveRes.title,S.liveRes.lbl,S.liveRes,null,'');
+  h+=card('🪞','Micropausas «¿Y en tu vida?»',`${microOk()} de ${Object.keys(S.micro||{}).length} respuestas ideales`,null,null,null,'',`<div class="dfx">${Object.entries(S.micro||{}).map(([k,i])=>`<span class="chip ${MICRO[k].o[i].ok?'g':''}">${MICRO[k].o[i].ok?'✓':'•'} ${MICRO[k].o[i].t}</span>`).join('')}</div>`);
   $('dec-cards').innerHTML=h;
 }
 function renderFeedback(){
@@ -815,12 +824,13 @@ function openSubj(i){
 function renderTimeline(){
   const it=[];
   it.push({i:'🏢',s:'Fase 1',d:`Negocio: ${S.biz.em} ${S.biz.name}`,x:S.biz.barrio});
-  it.push({i:'✏️',s:'Fase 2',d:'Pizarra de boceto',x:S.boards.d1?'✅ Planificaron visualmente antes de invertir.':'⚪ Omitieron la planificación visual.'});
+  it.push({i:'🧭',s:'Fase 2',d:'Plan de prioridades',x:(S.prio||[]).slice(0,3).map((id,k)=>(k+1)+'. '+CAPLINES[S.biz.id].find(l=>l.id===id).name).join(' · ')});
   it.push({i:'💰',s:'Fase 3',d:'Distribución del capital',tags:lines().map(l=>`${l.icon} ${l.name}: ${fmt(S.capL[l.id])}`),j:S.justif.cap});
   it.push({i:'🏗️',s:'Fase 4',d:'Organigrama',x:S.boards.d2?'✅ Diseñaron su estructura.':'⚪ Omitieron el organigrama.'});
   it.push({i:'👥',s:'Fase 5',d:`Contratación: ${S.hires.length} personas · ${fmt(S.payroll)}/mes`,tags:hired().map(c=>`${c.av} ${c.name} (${c.role})`),j:S.justif.team});
+  if(S.cajaRes)it.push({i:'💸',s:'Fase 5',d:'Caja de 6 meses',x:`Inicial ${fmt(S.cajaRes.ini)} → mes 6 ${fmt(S.cajaRes.fin)}${S.cajaRes.min<-1500?' · sin caja en el mes '+S.cajaRes.minM:''}`});
   it.push({i:'🚨',s:'Fase 6',d:`Crisis: ${S.crisis.title}`,x:`Opción: «${S.crisis.opts[S.cOpt].lbl}»${S.timedOut?' · ⏰ fuera de tiempo':''}`,j:S.justif.crisis});
-  it.push({i:'🤝',s:'Fase 7',d:'Negociaciones (3 rondas)',x:S.negs.map((n,i)=>`${n.who}: «${n.opts[S.negOpts[i]].lbl}»`).join(' · '),j:S.justif.neg});
+  it.push({i:'🤝',s:'Fase 7',d:'Negociaciones (3 rondas)',x:S.negs.map((n,i)=>`${n.who}: «${S.negRes[i].lbl}»`).join(' · '),j:S.justif.neg});
   it.push({i:'✦',s:'Fase 8',d:`Oportunidad: ${S.opp.title}`,x:`Opción: «${S.opp.opts[S.oppOpt].lbl}»`,j:S.justif.opp});
   it.push({i:'🏁',s:'Resultado',d:`Puntaje ${S.score}/100 · ${S.tier}`,x:METS.map(x=>`${x.ic} ${Math.round(S.met[x.id])}`).join(' · ')});
   $('timeline').innerHTML=it.map((t,k)=>`<div class="tl-i"><div class="tl-l"><div class="tl-dot">${t.i}</div>${k<it.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-b"><span class="tl-s">${t.s}</span><div class="tl-d">${esc(t.d)}</div>${t.x?`<div class="tl-x">${esc(t.x)}</div>`:''}${t.tags?`<div class="tl-tags">${t.tags.map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div>`:''}${t.j?`<div class="tl-j">“${esc(t.j)}”</div>`:''}</div></div>`).join('');
@@ -900,13 +910,16 @@ function reportHTML(){
     <div class="quote">“${esc(S.justif.team)}”</div>${foot(3)}</div>`;
   const p4=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🧠 Eventos y decisiones bajo presión</h2>
     ${ev(S.crisis.ic,'Crisis: '+S.crisis.title,S.crisis.opts[S.cOpt].lbl,S.cRes,bestOf(S.crisis.opts),S.justif.crisis,S.timedOut?'<p>⏰ Se les acabó el tiempo antes de decidir.</p>':S.crisisTime?`<p>Tiempo de decisión: ${S.crisisTime} s</p>`:'')}
-    ${S.negs.map((n,i)=>ev(n.ic,`Negociación con ${n.who} (${n.badge}): ${n.title}`,n.opts[S.negOpts[i]].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:'')).join('')}
+    ${S.negs.map((n,i)=>ev(n.ic,`Negociación con ${n.who} (${n.badge}): ${n.title}`,S.negRes[i].lbl,S.negRes[i],bestOf(n.opts),i===2?S.justif.neg:'')).join('')}
     ${ev(S.opp.ic,'Oportunidad: '+S.opp.title,S.opp.opts[S.oppOpt].lbl,S.oRes,bestOf(S.opp.opts),S.justif.opp)}
     ${foot(4)}</div>`;
   const i1=Pizarra.info('d1'),i2=Pizarra.info('d2');
-  const p5=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">✏️ Pizarras del equipo</h2>
-    <h3>Boceto de recursos</h3>${i1.png?`<img src="${i1.png}" style="width:100%;max-height:420px;object-fit:contain;border:1px solid #eee;border-radius:10px">`:'<p>No usaron la pizarra de boceto.</p>'}
-    <h3>Organigrama</h3>${i2.png?`<img src="${i2.png}" style="width:100%;max-height:420px;object-fit:contain;border:1px solid #eee;border-radius:10px">`:'<p>No usaron la pizarra de organigrama.</p>'}
+  const L5=CAPLINES[S.biz.id];
+  const p5=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🧭 Plan, caja y estructura</h2>
+    <h3>Plan de prioridades vs. inversión real</h3><table><tr><th>Prioridad</th><th>Partida</th><th>Invirtieron</th></tr>${(S.prio||[]).map((id,k)=>{const l=L5.find(x=>x.id===id);return`<tr><td>${k+1}</td><td>${l.icon} ${l.name}</td><td>${fmt(S.capL[id]||0)}</td></tr>`}).join('')}</table><p>Coherencia: ${S.prioMatch}/3 de sus prioridades quedaron entre sus 3 mayores inversiones.</p>
+    ${S.cajaRes?`<h3>Caja de 6 meses</h3><table><tr><th></th>${S.cajaRes.ms.map((m,k)=>`<th>Mes ${k+1}</th>`).join('')}</tr><tr><td>Caja</td>${S.cajaRes.ms.map(m=>`<td style="color:${m.cash<0?'#a3172a':'#3c6b00'}">${fmt(m.cash)}</td>`).join('')}</tr></table>`:''}
+    <h3>Organigrama${S.orgTipo?' ('+ORG_TIPOS.find(t=>t.id===S.orgTipo).n.toLowerCase()+')':''}</h3>${i2.png?`<img src="${i2.png}" style="width:100%;max-height:380px;object-fit:contain;border:1px solid #eee;border-radius:10px">`:'<p>No usaron la pizarra de organigrama.</p>'}
+    <h3>¿Y en su vida? · micropausas y quiz</h3><p>${Object.entries(S.micro||{}).map(([k,i])=>`${MICRO[k].o[i].ok?'✅':'•'} ${MICRO[k].q} → <b>${MICRO[k].o[i].t}</b>`).join('<br>')}${S.quiz?`<br>🧠 Quiz final: <b>${S.quiz.ok}/3</b> correctas`:''}</p>
     ${foot(5)}</div>`;
   const p6=`<div class="pg"><div class="band"></div><h2 style="margin-top:12px">🔄 De la empresa a su vida · 🎓 Su ruta en NGE</h2>
     <h3>Perfil financiero personal: ${esc(pf.name)}</h3><p>${esc(pf.d)}</p>
@@ -1017,7 +1030,7 @@ const Live={pending:null,busy:false,cb:[],warned:false,
     met:S.finished?Object.fromEntries(METS.map(m=>[m.id,Math.round(S.met[m.id])])):null,
     capital:S.biz?lines().map(l=>`${l.name}: ${S.capL[l.id]||0}`).join(' | '):'',
     equipo:S.hires.length?hired().map(c=>`${c.name} (${c.role})${S.biz?' ['+(['no aporta','útil','clave'][fitOf(c)])+']':''}`).join(' | ')+` · planilla ${S.payroll}`:'',
-    decisiones:S.finished?[`Crisis: ${S.crisis.opts[S.cOpt].lbl}${S.timedOut?' (fuera de tiempo)':''}`,...S.negs.map((n,i)=>`${n.badge}: ${n.opts[S.negOpts[i]].lbl}`),`Oportunidad: ${S.opp.opts[S.oppOpt].lbl}`,`Logros: ${(S.logros||[]).join(', ')}`].join(' | '):'',
+    decisiones:S.finished?[`Crisis: ${S.crisis.opts[S.cOpt].lbl}${S.timedOut?' (fuera de tiempo)':''}`,...S.negs.map((n,i)=>`${n.badge}: ${S.negRes[i].lbl}`),`Oportunidad: ${S.opp.opts[S.oppOpt].lbl}`,`Logros: ${(S.logros||[]).join(', ')}`,`Caja mes 6: ${S.cajaRes?Math.round(S.cajaRes.fin):'-'}`,`Micro: ${microOk()}/${Object.keys(S.micro||{}).length}`,`Quiz: ${S.quiz?S.quiz.ok+'/3':'-'}`].join(' | '):'',
     pizarras:`Boceto ${S.boards.d1?'sí':'no'} · Organigrama ${S.boards.d2?'sí':'no'}`,justif:S.finished?S.justif:null}},
   push(fase,cb){if(!this.enabled()||!S.name)return;this.pending=this.payload(fase);if(cb)this.cb.push(cb);this.flush()},
   async flush(){

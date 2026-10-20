@@ -535,7 +535,9 @@ const LOGROS=[
   {id:'planilla',ic:'🧾',n:'Planilla sana',d:'La planilla cupo en el presupuesto de talento.',t:s=>s.hires.length>0&&s.payroll<=(s.capL.pla||0)},
   {id:'ganar',ic:'🤝',n:'Maestro ganar-ganar',d:'Las 3 negociaciones con la mejor práctica.',t:s=>s.negQ.filter(q=>q===2).length===3},
   {id:'rayo',ic:'⚡',n:'Decisión relámpago',d:'Resolvieron la crisis en menos de 25 s.',t:s=>s.crisisTime>0&&s.crisisTime<25},
-  {id:'visual',ic:'✏️',n:'Pensamiento visual',d:'Usaron las dos pizarras.',t:s=>s.boards.d1&&s.boards.d2},
+  {id:'visual',ic:'✏️',n:'Pensamiento visual',d:'Diseñaron su organigrama.',t:s=>s.boards.d2},
+  {id:'coherente',ic:'🧭',n:'Plan coherente',d:'2 o más de sus prioridades fueron sus mayores inversiones.',t:s=>s.prioMatch>=2},
+  {id:'caja',ic:'💸',n:'Caja viva',d:'Nunca se quedaron sin efectivo en 6 meses.',t:s=>s.cajaRes&&s.cajaRes.min>=-1500},
   {id:'estratega',ic:'🧭',n:'Estratega del rubro',d:'Capital muy cercano al recomendado para su negocio.',t:s=>s.benchDist<=30},
   {id:'cohete',ic:'🚀',n:'Crecimiento explosivo',d:'Crecimiento final de 80 o más.',t:s=>s.met.cre>=80},
   {id:'etica',ic:'⚖️',n:'Brújula ética',d:'Ninguna decisión “débil” en crisis y oportunidad.',t:s=>s.cQ>0&&s.oQ>0}

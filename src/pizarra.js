@@ -66,6 +66,31 @@ const Pizarra=(()=>{
       return[g,...ds,...ps,...ds.map(d=>arrow(g,d)),...ds.map((d,i)=>arrow(d,ps[i],'#14A38B')),{type:'text',x:20,y:-40,text:'✍️ Doble toque en una caja para escribir · arrastren flechas entre cajas',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
     }
   };
+  /* Plantillas por tipo de organigrama */
+  const ORGT={
+    vertical:()=>TEMPLATES.d2(),
+    horizontal:()=>{
+      const g=box('g',0,325,170,90,'👑 Gerente General','#FFF0C2',{fs:18});
+      const ds=DEPTOS.map((d,i)=>box('d'+i,240,140+i*110,220,70,d.ic+' '+d.name,'#E9E4F7',{fs:15}));
+      const ps=DEPTOS.map((d,i)=>box('p'+i,520,147+i*110,160,56,'👤 Nombre…','#CFF5EE',{shape:'ellipse',fs:15}));
+      const side=(a,b,col)=>{const ax=a.x+a.width+4,ay=a.y+a.height/2,bx=b.x-4,by=b.y+b.height/2;return{type:'arrow',x:ax,y:ay,width:bx-ax,height:by-ay,points:[[0,0],[bx-ax,by-ay]],strokeColor:col,strokeWidth:2,start:{id:a.id},end:{id:b.id},endArrowhead:'arrow'}};
+      return[g,...ds,...ps,...ds.map(d=>side(g,d,'#7B61C9')),...ds.map((d,i)=>side(d,ps[i],'#14A38B'))];
+    },
+    plano:()=>{
+      const rel=CANDS.filter(c=>(c.fit[S.biz.id]||0)===2).slice(0,5);
+      const g=box('g',330,0,260,74,'🚀 Fundadores / Gerencia','#FFF0C2',{fs:20});
+      const ms=(rel.length?rel:CANDS.slice(0,5)).map((c,i)=>box('m'+i,i*190,190,170,70,c.av+' '+c.role,'#CFF5EE',{shape:'ellipse',fs:13}));
+      return[g,...ms,...ms.map(m=>arrow(g,m,'#14A38B')),{type:'text',x:0,y:300,text:'Todos reportan directo a la gerencia: pocas jerarquías, decisiones rápidas.',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
+    },
+    matricial:()=>{
+      const pr=['🏗️ Proyecto A','🏘️ Proyecto B','🏢 Proyecto C'].map((t,i)=>box('pr'+i,230+i*230,0,190,60,t,'#FFF0C2',{fs:17}));
+      const ar=['🏭 Producción','💼 Ventas','📊 Administración'].map((t,i)=>box('ar'+i,0,110+i*120,190,60,t,'#E9E4F7',{fs:17}));
+      const cells=[];ar.forEach((a,r)=>pr.forEach((p,c)=>cells.push(box('c'+r+c,p.x+30,a.y+4,130,52,'👤 …','#CFF5EE',{shape:'ellipse',fs:14}))));
+      const v=pr.map((p,c)=>({type:'line',x:p.x+95,y:p.y+62,width:0,height:ar[2].y+70-p.y-62,points:[[0,0],[0,ar[2].y+70-p.y-62]],strokeColor:'#E08A00',strokeStyle:'dashed',strokeWidth:2}));
+      const h=ar.map(a=>({type:'line',x:a.x+192,y:a.y+30,width:pr[2].x+190-a.x-192,height:0,points:[[0,0],[pr[2].x+190-a.x-192,0]],strokeColor:'#7B61C9',strokeStyle:'dashed',strokeWidth:2}));
+      return[...v,...h,...pr,...ar,...cells,{type:'text',x:0,y:470,text:'Cada persona responde a su jefe de área y a su jefe de proyecto.',fontSize:18,fontFamily:FONT,strokeColor:'#6b5a48'}];
+    }
+  };
   function fichas(k){
     if(k==='d1'){const BG={mkt:'#FFD6E8',ops:'#FFF0C2',rrhh:'#CFF5EE',inf:'#E4DCFF',res:'#E2F7C2'};return[
       {g:'Partidas de su negocio',items:CAPLINES[S.biz.id].map(l=>({t:l.icon+' '+l.name,bg:BG[l.area]}))},
@@ -100,6 +125,7 @@ const Pizarra=(()=>{
     if(!root)root=ReactDOM.createRoot($('xb-canvas'));
     root.render(el);
     $('xb-empty').style.display=st.elements.filter(e=>!e.isDeleted).length?'none':'flex';
+    if(conf.autoTemplate)setTimeout(()=>{if(api)template(conf.autoTemplate)},700);
   }
   async function close(fromPop){
     if(!fromPop&&history.state&&history.state.xb){history.back();return}
@@ -128,10 +154,11 @@ const Pizarra=(()=>{
     if(fit)setTimeout(()=>api.scrollToContent(nu,{fitToContent:true,animate:true}),60);
     else api.updateScene({appState:{selectedElementIds:Object.fromEntries(nu.filter(e=>!e.containerId).map(e=>[e.id,true]))}});
   }
-  function template(){
+  function template(tipo){
     if(!api)return;
+    if(key==='d2'&&!tipo){openGuia();return}
     if(api.getSceneElements().filter(e=>!e.isDeleted).length&&!confirm('¿Agregar la plantilla a lo que ya dibujaron?'))return;
-    addSkeleton(TEMPLATES[key](),true);Snd.ok();toast('✨ Plantilla lista: toquen una caja para cambiarla');
+    addSkeleton(key==='d2'?ORGT[tipo]():TEMPLATES[key](),true);Snd.ok();toast('✨ Plantilla lista: toquen una caja para cambiarla');
   }
   function buildFichas(k){
     const F=fichas(k);$('xb-fichas').innerHTML=F.map((g,gi)=>`<div class="bd-grp">${g.g}</div><div class="bd-stamps">`+g.items.map((it,ii)=>`<button class="bd-stamp" style="background:${it.bg}" onclick="Pizarra.ficha(${gi},${ii})">${esc(it.t)}</button>`).join('')+'</div>').join('');
