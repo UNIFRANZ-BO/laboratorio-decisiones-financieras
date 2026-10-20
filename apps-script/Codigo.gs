@@ -90,8 +90,6 @@ function preparar() {
   sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
   sa.setFrozenRows(1); sa.setColumnWidths(1, 7, 140);
 
-  // Protección: avisa antes de editar a mano las hojas que llena la app (si Google falla, no detiene la preparación)
-  proteger_();
 
   ['Sheet1', 'Hoja 1', 'Hoja1'].forEach(n => { const h = ss.getSheetByName(n); if (h && h.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(h); });
   ss.setActiveSheet(sa);
@@ -114,7 +112,7 @@ function proteger_() {
   });
   return hechas;
 }
-/* Ejecútala sola si la protección no se aplicó al preparar */
+/* Opcional: protege las hojas con aviso. En unidades compartidas Google puede rechazarlo; no es necesario para usar la app ni el panel. */
 function protegerHojas() {
   const h = proteger_();
   try { SpreadsheetApp.getUi().alert(h.length ? '🛡️ Hojas protegidas: ' + h.join(', ') + '.' : 'No se pudo proteger ninguna hoja (revisa el registro de ejecución).'); } catch (e) {}
@@ -308,7 +306,6 @@ function archivarSala_(sala) {
   if (ar.getLastRow() === 0) {
     ar.getRange(1, 1, 1, COLS.length + 1).setValues([COLS.concat(['Archivado'])]).setFontWeight('bold').setBackground('#7A6A82').setFontColor('#FFFFFF');
     ar.setFrozenRows(1);
-    ar.protect().setDescription('Archivo del Laboratorio').setWarningOnly(true);
   }
   const now = new Date();
   ar.getRange(ar.getLastRow() + 1, 1, rows.length, COLS.length + 1).setValues(rows.map(r => r.concat([now])));
@@ -386,7 +383,7 @@ a{color:#c2410c}
 <div id="carp"></div>
 <div id="msg"></div>
 <div id="lista"><div class="vac">Cargando…</div></div>
-<p style="font-size:11px;color:#6b6475">Las hojas Ranking, Salas y Archivo están protegidas: Google te avisará si intentas editarlas a mano. Usa este panel para gestionarlas sin riesgos.</p>
+<p style="font-size:11px;color:#6b6475">Gestiona las salas desde este panel: cada acción pide confirmación y borrar exige escribir el código de la sala. Evita editar a mano las hojas Ranking, Salas y Archivo.</p>
 <button onclick="cargar()">🔄 Actualizar</button>
 <script>
 function msg(t){var m=document.getElementById(\'msg\');m.style.display=\'block\';m.textContent=t}
