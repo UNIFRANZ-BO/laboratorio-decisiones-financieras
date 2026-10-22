@@ -1139,10 +1139,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
 @keyframes pulseG{50%{box-shadow:0 0 0 8px rgba(255,194,61,.18)}}
 @media(max-width:560px){.enc-cta{grid-template-columns:1fr;justify-items:center;text-align:center}.enc-sc{grid-template-columns:78px 1fr}.enc-leg{padding-left:86px}}
 
-/* ===== v3.4 · WhatsApp y anuncios del proyector ===== */
-.btn.wa-btn{background:linear-gradient(120deg,#25D366,#128C7E);color:#fff;box-shadow:0 12px 30px -10px rgba(37,211,102,.7)}
-.btn.wa-btn:not(:disabled):hover{box-shadow:0 16px 40px -8px rgba(37,211,102,.8)}
-.enc-ok .wa-btn{margin-bottom:2px}
+/* ===== v3.4 · Certificado y anuncios del proyector ===== */
 #cert-mail{margin-top:6px}
 #pj-ann{position:fixed;left:50%;top:18%;z-index:875;transform:translate(-50%,-30px) scale(.8);opacity:0;pointer-events:none;transition:.45s cubic-bezier(.2,.9,.2,1.2)}
 #pj-ann.on{opacity:1;transform:translate(-50%,0) scale(1)}
@@ -1570,7 +1567,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
         <div>
           <b style="font-family:var(--fd);font-size:1.3rem;display:block">¿Te gustó tomar las decisiones?</b>
           <p class="fb-t" style="margin:4px 0 12px">Programa Internacionalízate · clases espejo y docentes internacionales · intercambios en América, Asia y Europa.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><a class="btn wa-btn" data-wa href="#" target="_blank" rel="noopener" style="display:none">💬 Hablar con un asesor</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
         </div>
       </div>
     </div>
@@ -3574,7 +3571,6 @@ const Pizarra=(()=>{
 const CONFIG={
   API_URL:'https://script.google.com/macros/s/AKfycbx4E1a1cdKiOMZOzahLezsqJVEjW6HmqZSYxLVYQV3wMeV6TssZpivYVLSsnGxfQPw/exec',
   CTA_URL:'https://unifranz.edu.bo/carreras/negocios-y-gestion-empresarial/',
-  WA_NUMERO:'',  // WhatsApp de admisiones (solo dígitos, con 591). Si está vacío se usa el de la hoja CONFIG.
   POLL_MS:4000
 };
 const VOZ_BASE=/\/v\d+\/?$/.test(location.pathname.replace(/index\.html$/,''))?'../voz/':'voz/';
@@ -5001,8 +4997,7 @@ function encGracias(){
   const inGame=ENC.origen==='app';
   ENC.el.innerHTML=`<div class="enc-ok"><div class="enc-big">🎉</div><h3 class="enc-h">¡Gracias!</h3>
     <p>Tu opinión nos ayuda a que el próximo Laboratorio sea todavía mejor.</p>
-    ${waUrl()?`${ENC.r.ahora>=4?'<p><b>¿Te interesó la carrera?</b> Un asesor te cuenta todo por WhatsApp.</p>':''}<a class="btn wa-btn" href="${waUrl()}" target="_blank" rel="noopener">💬 Hablar con un asesor</a>`:''}
-    <a class="${waUrl()&&ENC.r.ahora>=4?'btn-ghost':'btn'}" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
+    <a class="btn" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
     <div class="enc-row">${inGame?`<button class="btn-ghost" onclick="renderEnc($('enc-modal'),'app')">👥 Responde otro integrante</button><button class="btn-ghost" onclick="closeModal('m-enc')">Cerrar</button>`:`<button class="btn-link" onclick="renderEnc($('enc-page'),'qr')">Otra persona usa este celular</button>`}</div></div>`;
   Snd.fanfare();Confetti.burst(160);
   if(inGame)AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});
@@ -5032,17 +5027,8 @@ async function contarEnc(){
 }
 
 /* ═══════════════════════════════════════
-   v3.4 · Certificado por correo, asesor por WhatsApp y anuncios en el proyector
+   v3.4 · Certificado por correo y anuncios en el proyector
 ═══════════════════════════════════════ */
-
-/* ---------- WhatsApp de admisiones (CONFIG.WA_NUMERO o la hoja CONFIG) ---------- */
-let WA=String(CONFIG.WA_NUMERO||'').replace(/\D/g,'');
-const waUrl=()=>WA?'https://wa.me/'+WA+'?text='+encodeURIComponent('Hola, participé en el Laboratorio de Decisiones Financieras de UNIFRANZ y quiero información sobre la carrera de Negocios y Gestión Empresarial.'):'';
-function waPintar(){document.querySelectorAll('[data-wa]').forEach(a=>{a.href=waUrl()||'#';a.style.display=WA?'':'none'})}
-(async()=>{
-  if(WA||!CONFIG.API_URL){waPintar();return}
-  try{const r=await fetch(`${CONFIG.API_URL}?action=config&t=${Date.now()}`);const j=await r.json();if(j.ok&&j.wa){WA=String(j.wa).replace(/\D/g,'');waPintar()}}catch(e){}
-})();
 
 /* ---------- Certificado por correo: lo arma y envía el Apps Script ---------- */
 async function pedirCertificado(intento){

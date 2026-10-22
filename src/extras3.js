@@ -123,8 +123,7 @@ function encGracias(){
   const inGame=ENC.origen==='app';
   ENC.el.innerHTML=`<div class="enc-ok"><div class="enc-big">🎉</div><h3 class="enc-h">¡Gracias!</h3>
     <p>Tu opinión nos ayuda a que el próximo Laboratorio sea todavía mejor.</p>
-    ${waUrl()?`${ENC.r.ahora>=4?'<p><b>¿Te interesó la carrera?</b> Un asesor te cuenta todo por WhatsApp.</p>':''}<a class="btn wa-btn" href="${waUrl()}" target="_blank" rel="noopener">💬 Hablar con un asesor</a>`:''}
-    <a class="${waUrl()&&ENC.r.ahora>=4?'btn-ghost':'btn'}" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
+    <a class="btn" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
     <div class="enc-row">${inGame?`<button class="btn-ghost" onclick="renderEnc($('enc-modal'),'app')">👥 Responde otro integrante</button><button class="btn-ghost" onclick="closeModal('m-enc')">Cerrar</button>`:`<button class="btn-link" onclick="renderEnc($('enc-page'),'qr')">Otra persona usa este celular</button>`}</div></div>`;
   Snd.fanfare();Confetti.burst(160);
   if(inGame)AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});

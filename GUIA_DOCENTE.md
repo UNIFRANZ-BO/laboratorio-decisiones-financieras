@@ -61,11 +61,10 @@ La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedi
 > **Para activar el guardado en Drive:** pega el nuevo `apps-script/Codigo.gs`, ejecuta una vez la función **autorizarDrive** (acepta el permiso de Drive), luego **preparar**, y publica **Gestionar implementaciones → ✏️ → Nueva versión**. El menú 🏆 Laboratorio suma **📁 Abrir carpeta de informes**.
 
 ## Novedades v3.4
-- **Certificado por correo**: cuando un equipo termina, el Apps Script arma el certificado en PDF y lo envía a cada integrante (una vez por partida), con botones a la carrera y al asesor. También queda en la carpeta Drive del grupo y la hoja **Contactos** marca la fecha en «Certificado enviado». Se apaga en CONFIG → «Enviar certificado por correo». Gmail permite unos 100 correos al día en una cuenta personal.
-- **Asesor por WhatsApp**: botón verde «💬 Hablar con un asesor» al final del juego, en el agradecimiento de la encuesta (destacado si el interés subió a 4 o 5) y en el correo. Se activa escribiendo el número en CONFIG → «WhatsApp de admisiones» (solo dígitos, con 591).
+- **Certificado por correo**: cuando un equipo termina, el Apps Script arma el certificado en PDF y lo envía a cada integrante (una vez por partida), con un botón a la página de la carrera. También queda en la carpeta Drive del grupo y la hoja **Contactos** marca la fecha en «Certificado enviado». Se apaga en CONFIG → «Enviar certificado por correo». Gmail permite unos 100 correos al día en una cuenta personal.
 - **Anuncios en el proyector**: cada equipo que se une aparece en grande con su mascota y Marcelo lo anuncia. Se apaga con **🔊 Anuncios**. Si el navegador bloquea el sonido, toca una vez la pantalla del proyector.
 
-> **Para activar v3.4:** pega el nuevo `Codigo.gs`, ejecuta una vez **autorizarCorreo** (acepta el permiso de Gmail), luego **preparar**, escribe el número en CONFIG → «WhatsApp de admisiones» y publica **Nueva versión**.
+> **Para activar v3.4:** pega el nuevo `Codigo.gs`, ejecuta una vez **autorizarCorreo** (acepta el permiso de Gmail), luego **preparar** y publica **Nueva versión**.
 
 ## Novedades v3.3
 - **Registro con contacto**: cada integrante deja nombre completo, correo y celular boliviano (8 dígitos, empieza con 6 o 7). Se guardan en la hoja **Contactos** y nunca se muestran en el ranking ni en el proyector. Sin Apps Script (HTML offline) estos campos son opcionales.

@@ -77,10 +77,7 @@
 @keyframes pulseG{50%{box-shadow:0 0 0 8px rgba(255,194,61,.18)}}
 @media(max-width:560px){.enc-cta{grid-template-columns:1fr;justify-items:center;text-align:center}.enc-sc{grid-template-columns:78px 1fr}.enc-leg{padding-left:86px}}
 
-/* ===== v3.4 · WhatsApp y anuncios del proyector ===== */
-.btn.wa-btn{background:linear-gradient(120deg,#25D366,#128C7E);color:#fff;box-shadow:0 12px 30px -10px rgba(37,211,102,.7)}
-.btn.wa-btn:not(:disabled):hover{box-shadow:0 16px 40px -8px rgba(37,211,102,.8)}
-.enc-ok .wa-btn{margin-bottom:2px}
+/* ===== v3.4 · Certificado y anuncios del proyector ===== */
 #cert-mail{margin-top:6px}
 #pj-ann{position:fixed;left:50%;top:18%;z-index:875;transform:translate(-50%,-30px) scale(.8);opacity:0;pointer-events:none;transition:.45s cubic-bezier(.2,.9,.2,1.2)}
 #pj-ann.on{opacity:1;transform:translate(-50%,0) scale(1)}

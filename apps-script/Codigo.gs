@@ -51,8 +51,7 @@ const CFG_DEF = [
   ['Salas cerradas', '', 'Códigos separados por coma que ya no aceptan datos nuevos. Ej: ABCD, XK7P. Usa el menú para cerrar o abrir.'],
   ['Retener incompletos (horas)', '24', 'El menú «Limpiar incompletos» borra a quienes no terminaron y llevan más de estas horas sin actividad.'],
   ['Carpeta Drive de informes (ID)', '', 'Se llena sola la primera vez. Dentro se crea una carpeta por sala y otra por grupo con su informe PDF.'],
-  ['Enviar certificado por correo', 'SÍ', 'SÍ = al terminar, cada integrante recibe su certificado en PDF en su correo (una vez por partida). Gmail permite unos 100 correos al día.'],
-  ['WhatsApp de admisiones', '', 'Número con código de país, solo dígitos. Ej: 59171234567. Activa el botón «Hablar con un asesor» en la app y en el correo.']
+  ['Enviar certificado por correo', 'SÍ', 'SÍ = al terminar, cada integrante recibe su certificado en PDF en su correo (una vez por partida). Gmail permite unos 100 correos al día.']
 ];
 
 /* ═════════════ MENÚ ═════════════ */
@@ -107,8 +106,6 @@ function preparar() {
       const r = filaCfg_(cfg, k);
       if (r) cfg.getRange(r, 2).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['SÍ', 'NO'], true).build());
     });
-    const w = filaCfg_(cfg, 'WhatsApp de admisiones');
-    if (w) cfg.getRange(w, 2).setNumberFormat('@');
   });
   paso('Fórmula de la hoja Salas', () => {
     const sa = hoja_(HOJA_SALAS);
@@ -171,7 +168,6 @@ function doGet(e) {
     const v = sala ? PropertiesService.getScriptProperties().getProperty('ev_' + sala) : null;
     return json_({ ok: true, ev: v ? JSON.parse(v) : null });
   }
-  if (p.action === 'config') return json_({ ok: true, wa: waNumero_() });
   if (p.action === 'encuesta') {
     const sala = limpiaSala_(p.sala);
     return json_({ ok: true, n: sala ? filasDe_(HOJA_ENC, COLS_ENC).filter(r => r[1] === sala).length : 0 });
@@ -318,11 +314,6 @@ function textoEncuesta_(sala) {
     (frases.length ? '\n\n¿Qué se llevan?\n' + frases.map(x => '· ' + x).join('\n') : '');
 }
 /* ═════════════ CERTIFICADO POR CORREO ═════════════ */
-function waNumero_() { return String(cfg_('WhatsApp de admisiones') || '').replace(/\D/g, '').slice(0, 15); }
-function waLink_() {
-  const n = waNumero_();
-  return n ? 'https://wa.me/' + n + '?text=' + encodeURIComponent('Hola, participé en el Laboratorio de Decisiones Financieras de UNIFRANZ y quiero información sobre la carrera de Negocios y Gestión Empresarial.') : '';
-}
 function h_(v) { return String(v == null ? '' : v).replace(/^'/, '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
 function sinEmoji_(v) { return String(v || '').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').trim(); }
 /* El PDF se arma en el servidor con los datos guardados: nadie puede mandar un adjunto propio */
@@ -343,7 +334,6 @@ function htmlCertificado_(eq, nombres, negocio, puntaje, nivel, fecha) {
     '</div></body></html>';
 }
 function htmlCorreo_(nombre, eq, negocio, puntaje, nivel) {
-  const wa = waLink_();
   const btn = (url, txt, bg) => '<a href="' + url + '" style="display:inline-block;margin:6px 4px;padding:12px 22px;border-radius:99px;background:' + bg + ';color:#fff;font-weight:bold;text-decoration:none">' + txt + '</a>';
   return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;color:#1d1626">' +
     '<div style="background:linear-gradient(120deg,#FFC23D,#FF8A00,#FF3D7F);background-color:#FF8A00;border-radius:16px 16px 0 0;padding:22px;color:#1A0A00">' +
@@ -352,7 +342,7 @@ function htmlCorreo_(nombre, eq, negocio, puntaje, nivel) {
     '<div style="border:1px solid #eee;border-top:0;border-radius:0 0 16px 16px;padding:22px;line-height:1.55">' +
     '<p>Hoy, con el equipo <b>' + h_(eq) + '</b>, dirigiste <b>' + h_(negocio) + '</b> y lograron <b>' + h_(puntaje) + ' puntos</b> (nivel <b>' + h_(nivel) + '</b>). Te adjuntamos el certificado.</p>' +
     '<p>Repartir un capital, contratar un equipo, resolver una crisis y negociar: eso es lo que se aprende en <b>Negocios y Gestión Empresarial</b> de UNIFRANZ, con un proyecto real en cada semestre.</p>' +
-    '<p style="text-align:center;margin:22px 0">' + btn(CARRERA_URL, 'Conocer la carrera →', '#FF5E3A') + (wa ? btn(wa, '💬 Hablar con un asesor', '#25D366') : '') + '</p>' +
+    '<p style="text-align:center;margin:22px 0">' + btn(CARRERA_URL, 'Conocer la carrera →', '#FF5E3A') + '</p>' +
     '<p style="font-size:11px;color:#8a8291">Recibes este correo porque tu equipo registró esta dirección en el Laboratorio de Decisiones Financieras de UNIFRANZ. Si no participaste, ignóralo.</p>' +
     '</div></div>';
 }

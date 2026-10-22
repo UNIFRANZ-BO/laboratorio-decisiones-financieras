@@ -1,15 +1,6 @@
 /* ═══════════════════════════════════════
-   v3.4 · Certificado por correo, asesor por WhatsApp y anuncios en el proyector
+   v3.4 · Certificado por correo y anuncios en el proyector
 ═══════════════════════════════════════ */
-
-/* ---------- WhatsApp de admisiones (CONFIG.WA_NUMERO o la hoja CONFIG) ---------- */
-let WA=String(CONFIG.WA_NUMERO||'').replace(/\D/g,'');
-const waUrl=()=>WA?'https://wa.me/'+WA+'?text='+encodeURIComponent('Hola, participé en el Laboratorio de Decisiones Financieras de UNIFRANZ y quiero información sobre la carrera de Negocios y Gestión Empresarial.'):'';
-function waPintar(){document.querySelectorAll('[data-wa]').forEach(a=>{a.href=waUrl()||'#';a.style.display=WA?'':'none'})}
-(async()=>{
-  if(WA||!CONFIG.API_URL){waPintar();return}
-  try{const r=await fetch(`${CONFIG.API_URL}?action=config&t=${Date.now()}`);const j=await r.json();if(j.ok&&j.wa){WA=String(j.wa).replace(/\D/g,'');waPintar()}}catch(e){}
-})();
 
 /* ---------- Certificado por correo: lo arma y envía el Apps Script ---------- */
 async function pedirCertificado(intento){

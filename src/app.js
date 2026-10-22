@@ -4,7 +4,6 @@
 const CONFIG={
   API_URL:'https://script.google.com/macros/s/AKfycbx4E1a1cdKiOMZOzahLezsqJVEjW6HmqZSYxLVYQV3wMeV6TssZpivYVLSsnGxfQPw/exec',
   CTA_URL:'https://unifranz.edu.bo/carreras/negocios-y-gestion-empresarial/',
-  WA_NUMERO:'',  // WhatsApp de admisiones (solo dígitos, con 591). Si está vacío se usa el de la hoja CONFIG.
   POLL_MS:4000
 };
 const VOZ_BASE=/\/v\d+\/?$/.test(location.pathname.replace(/index\.html$/,''))?'../voz/':'voz/';
