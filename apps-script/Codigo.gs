@@ -21,8 +21,10 @@
  *   cada 10 s con ?action=evento&sala=XXXX (se guarda en las propiedades del script).
  *
  * Certificado por correo: cuando un equipo termina, la app envía {action:'certificado', sala, id}.
- *   El certificado se arma AQUÍ (no se acepta un PDF del celular) y llega a cada correo de la hoja Contactos,
- *   una sola vez por partida. Antes ejecuta una vez «autorizarCorreo» para dar permiso a Gmail.
+ *   El certificado se arma AQUÍ en Google Slides (no se acepta un PDF del celular): uno por integrante,
+ *   con su nombre, y se envía a su correo junto con la malla de la carrera, una sola vez por partida.
+ *   Antes ejecuta una vez «autorizarCorreo» (permisos de Gmail, Slides y descarga de la malla).
+ *   «probarCertificado» crea un ejemplo en la carpeta de informes sin enviar correos.
  *
  * Encuesta final: el QR del proyector abre ?encuesta=XXXX y cada estudiante envía {action:'encuesta'}.
  *   El proyector cuenta las respuestas con ?action=encuesta&sala=XXXX.
@@ -51,6 +53,7 @@ const CFG_DEF = [
   ['Salas cerradas', '', 'Códigos separados por coma que ya no aceptan datos nuevos. Ej: ABCD, XK7P. Usa el menú para cerrar o abrir.'],
   ['Retener incompletos (horas)', '24', 'El menú «Limpiar incompletos» borra a quienes no terminaron y llevan más de estas horas sin actividad.'],
   ['Carpeta Drive de informes (ID)', '', 'Se llena sola la primera vez. Dentro se crea una carpeta por sala y otra por grupo con su informe PDF.'],
+  ['Malla PDF (ID)', '', 'Se llena sola: la malla de la carrera que se adjunta al correo del certificado. Puedes poner el ID de otro PDF de tu Drive.'],
   ['Enviar certificado por correo', 'SÍ', 'SÍ = al terminar, cada integrante recibe su certificado en PDF en su correo (una vez por partida). Gmail permite unos 100 correos al día.']
 ];
 
@@ -316,34 +319,112 @@ function textoEncuesta_(sala) {
 /* ═════════════ CERTIFICADO POR CORREO ═════════════ */
 function h_(v) { return String(v == null ? '' : v).replace(/^'/, '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
 function sinEmoji_(v) { return String(v || '').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').trim(); }
-/* El PDF se arma en el servidor con los datos guardados: nadie puede mandar un adjunto propio */
-function htmlCertificado_(eq, nombres, negocio, puntaje, nivel, fecha) {
-  return '<html><body style="margin:0;font-family:Arial,Helvetica,sans-serif;color:#1d1626">' +
-    '<div style="margin:24px;border:8px solid #FF8A00;border-radius:18px;padding:56px 44px;text-align:center">' +
-    '<p style="letter-spacing:4px;font-size:11px;color:#c2410c;font-weight:bold;margin:0">UNIFRANZ · NEGOCIOS Y GESTIÓN EMPRESARIAL</p>' +
-    '<p style="font-size:52px;font-weight:bold;margin:26px 0 4px;color:#1d1626">Certificado</p>' +
-    '<p style="font-size:15px;color:#6b6475;margin:0">de «Gerente por un día» otorgado a</p>' +
-    '<p style="font-size:34px;font-weight:bold;color:#FF5E3A;margin:22px 0 8px">' + h_(eq) + '</p>' +
-    (nombres.length ? '<p style="font-size:15px;margin:0 0 6px">' + nombres.map(n => 'Lic. ' + h_(n)).join(' · ') + '</p>' : '') +
-    '<p style="font-size:13px;color:#6b6475;margin:0 0 26px">Licenciadas y licenciados por un día en Negocios y Gestión Empresarial</p>' +
-    '<p style="font-size:16px;line-height:1.6;margin:0 40px">por dirigir <b>' + h_(negocio) + '</b> en el Laboratorio de Decisiones Financieras, ' +
-    'alcanzando <b>' + h_(puntaje) + ' puntos</b> y el nivel <b>' + h_(nivel) + '</b>.</p>' +
-    '<table style="width:100%;margin-top:70px;font-size:12px;color:#6b6475"><tr>' +
-    '<td style="text-align:left"><div style="border-top:1px solid #1d1626;width:220px;margin-bottom:6px"></div>Negocios y Gestión Empresarial<br>UNIFRANZ · Cochabamba</td>' +
-    '<td style="text-align:right;vertical-align:bottom">' + h_(fecha) + '</td></tr></table>' +
-    '</div></body></html>';
+/* El certificado se arma aquí, en Google Slides, con los datos guardados: nadie puede mandar un adjunto propio.
+   Fondo futurista: cert/fondo.jpg del sitio (lo genera herramientas/fondo_certificado.py). Medidas en puntos (720 × 405). */
+const FONDO_CERT = 'https://unifranz-bo.github.io/laboratorio-decisiones-financieras/cert/fondo.jpg';
+const MALLA_URL = 'https://unifranz.edu.bo/wp-content/uploads/2026/07/negocios-y-gestion-empresarial.pdf';
+const MET_CERT = [['Rentabilidad', 12, '#FF8A00'], ['Equipo', 13, '#22E1C3'], ['Clientes', 14, '#4CC9FF'], ['Crecimiento', 15, '#9D7BFF'], ['Sostenibilidad', 16, '#B8F34A']];
+const PAD = 7; // margen interno de los cuadros de texto de Slides
+function caja_(sl, txt, x, y, w, h, o) {
+  const tb = sl.insertTextBox(String(txt), x - PAD, y - PAD, w + PAD * 2, h + PAD * 2);
+  const st = tb.getText().getTextStyle();
+  st.setFontFamily(o.f || 'Exo 2').setFontSize(o.s || 10).setForegroundColor(o.c || '#FFFFFF').setBold(!!o.b).setItalic(!!o.i);
+  if (o.der) tb.getText().getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment.END);
+  return tb;
 }
-function htmlCorreo_(nombre, eq, negocio, puntaje, nivel) {
-  const btn = (url, txt, bg) => '<a href="' + url + '" style="display:inline-block;margin:6px 4px;padding:12px 22px;border-radius:99px;background:' + bg + ';color:#fff;font-weight:bold;text-decoration:none">' + txt + '</a>';
-  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;color:#1d1626">' +
-    '<div style="background:linear-gradient(120deg,#FFC23D,#FF8A00,#FF3D7F);background-color:#FF8A00;border-radius:16px 16px 0 0;padding:22px;color:#1A0A00">' +
-    '<div style="font-size:12px;letter-spacing:3px;font-weight:bold">UNIFRANZ · LABORATORIO NGE</div>' +
-    '<div style="font-size:26px;font-weight:bold;margin-top:6px">¡Felicitaciones, ' + h_(nombre) + '! 🎓</div></div>' +
-    '<div style="border:1px solid #eee;border-top:0;border-radius:0 0 16px 16px;padding:22px;line-height:1.55">' +
-    '<p>Hoy, con el equipo <b>' + h_(eq) + '</b>, dirigiste <b>' + h_(negocio) + '</b> y lograron <b>' + h_(puntaje) + ' puntos</b> (nivel <b>' + h_(nivel) + '</b>). Te adjuntamos el certificado.</p>' +
-    '<p>Repartir un capital, contratar un equipo, resolver una crisis y negociar: eso es lo que se aprende en <b>Negocios y Gestión Empresarial</b> de UNIFRANZ, con un proyecto real en cada semestre.</p>' +
-    '<p style="text-align:center;margin:22px 0">' + btn(CARRERA_URL, 'Conocer la carrera →', '#FF5E3A') + '</p>' +
-    '<p style="font-size:11px;color:#8a8291">Recibes este correo porque tu equipo registró esta dirección en el Laboratorio de Decisiones Financieras de UNIFRANZ. Si no participaste, ignóralo.</p>' +
+function barra_(sl, x, y, w, h, color) {
+  const r = sl.insertShape(SlidesApp.ShapeType.ROUND_RECTANGLE, x, y, Math.max(w, h), h);
+  r.getFill().setSolidFill(color); r.getBorder().setTransparent();
+  return r;
+}
+function codigo_(sala, id, k) {
+  const dg = Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, sala + '|' + id + '|' + k);
+  return 'NGE-' + sala + '-' + dg.slice(0, 2).map(b => ('0' + (b & 255).toString(16)).slice(-2)).join('').toUpperCase();
+}
+/* Devuelve un PDF por integrante: [{nombre, blob, codigo}] */
+function certificadosPdf_(r, sala, id, nombres) {
+  const eq = String(r[C.nombre]), solo = /indiv/i.test(String(r[2])), negocio = sinEmoji_(r[6]) || 'su negocio';
+  const fecha = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'dd/MM/yyyy');
+  const pres = SlidesApp.create('Certificado temporal ' + sala + ' ' + id);
+  const pid = pres.getId();
+  try {
+    const sl = pres.getSlides()[0];
+    sl.getPageElements().forEach(e => e.remove());
+    try { sl.getBackground().setPictureFill(FONDO_CERT); } catch (e) { sl.getBackground().setSolidFill('#0E0718'); }
+    caja_(sl, 'UNIFRANZ  ·  NEGOCIOS Y GESTIÓN EMPRESARIAL', 44, 28, 380, 14, { s: 9.5, c: '#FFC23D', b: true });
+    caja_(sl, 'LABORATORIO DE DECISIONES FINANCIERAS', 392, 28, 300, 14, { s: 9, c: '#B9A6BC', der: true });
+    caja_(sl, 'CERTIFICADO', 44, 70, 410, 46, { f: 'Orbitron', s: 36, b: true });
+    caja_(sl, 'GERENTE POR UN DÍA', 46, 116, 380, 16, { f: 'Orbitron', s: 12, c: '#FF8A00', b: true });
+    caja_(sl, 'otorgado a', 46, 146, 380, 14, { s: 10, c: '#B9A6BC', i: true });
+    const nom = caja_(sl, ' ', 44, 160, 410, 34, { s: 26, b: true });
+    caja_(sl, 'Lic. por un día en Negocios y Gestión Empresarial', 46, 200, 410, 16, { s: 11, c: '#FFC23D', b: true });
+    // Texto del cuerpo con partes destacadas
+    const seg = [['por dirigir '], [negocio, '#FFFFFF']].concat(solo ? [] : [[' junto al equipo '], [eq, '#FFFFFF']])
+      .concat([[', decidiendo capital, contratación, crisis, negociación y oportunidades: '], [r[C.puntaje] + ' puntos', '#FFC23D'], [' · nivel '], [String(r[C.nivel]), '#FFC23D'], ['.']]);
+    const tx = caja_(sl, seg.map(x => x[0]).join(''), 46, 226, 400, 50, { s: 10.5, c: '#EADBCB' }).getText();
+    let ini = 0;
+    seg.forEach(x => { const fin = ini + x[0].length; if (x[1] && fin > ini) tx.getRange(ini, fin).getTextStyle().setForegroundColor(x[1]).setBold(true); ini = fin; });
+    if (r[11]) caja_(sl, 'Perfil financiero: ' + String(r[11]).replace(/^'/, ''), 46, 284, 400, 14, { s: 10, c: '#22E1C3', b: true });
+    caja_(sl, 'Negocios y Gestión Empresarial\nUNIFRANZ · Cochabamba', 44, 356, 200, 26, { s: 8.5, c: '#B9A6BC' });
+    caja_(sl, 'SALA ' + sala + '  ·  ' + fecha, 250, 351, 330, 12, { f: 'Orbitron', s: 7.5, c: '#B9A6BC' });
+    const cod = caja_(sl, ' ', 250, 364, 330, 12, { f: 'Orbitron', s: 7.5, c: '#FFC23D', b: true });
+    // Panel de desempeño
+    caja_(sl, 'DESEMPEÑO', 478, 108, 140, 14, { f: 'Orbitron', s: 9, c: '#FFC23D', b: true });
+    caja_(sl, String(r[C.puntaje]), 560, 98, 100, 34, { f: 'Orbitron', s: 26, b: true, der: true });
+    caja_(sl, '/100', 662, 116, 30, 12, { s: 8, c: '#B9A6BC' });
+    MET_CERT.forEach((m, i) => {
+      const y = 148 + i * 30, v = Math.max(0, Math.min(100, Number(r[m[1]]) || 0));
+      caja_(sl, m[0], 478, y, 150, 12, { s: 9, c: '#EADBCB' });
+      caja_(sl, String(Math.round(v)), 628, y, 50, 12, { f: 'Orbitron', s: 9, b: true, der: true });
+      barra_(sl, 478, y + 15, 200, 5, '#2A1C3E');
+      if (v > 0) barra_(sl, 478, y + 15, 200 * v / 100, 5, m[2]);
+    });
+    const nomId = nom.getObjectId(), codId = cod.getObjectId();
+    pres.saveAndClose();
+    // Un PDF por integrante: solo cambian el nombre y el código de verificación
+    return nombres.map((n, k) => {
+      const p = SlidesApp.openById(pid), s = p.getSlides()[0];
+      const largo = n.length > 30 ? 18 : n.length > 22 ? 22 : 26;
+      const tn = s.getPageElementById(nomId).asShape().getText();
+      tn.setText(n); tn.getTextStyle().setFontFamily('Exo 2').setFontSize(largo).setForegroundColor('#FFFFFF').setBold(true);
+      const codigo = codigo_(sala, id, k);
+      const tc = s.getPageElementById(codId).asShape().getText();
+      tc.setText('CÓDIGO ' + codigo); tc.getTextStyle().setFontFamily('Orbitron').setFontSize(7.5).setForegroundColor('#FFC23D').setBold(true);
+      p.saveAndClose();
+      const blob = DriveApp.getFileById(pid).getAs(MimeType.PDF).setName('Certificado NGE - ' + n.replace(/[\/:*?"<>|#%]/g, '') + '.pdf');
+      return { nombre: n, blob: blob, codigo: codigo };
+    });
+  } finally {
+    try { DriveApp.getFileById(pid).setTrashed(true); } catch (e) {}
+  }
+}
+/* Malla curricular: se descarga una vez de la web de UNIFRANZ y se guarda en la carpeta de informes */
+function malla_() {
+  const id = cfg_('Malla PDF (ID)');
+  if (id) { try { return DriveApp.getFileById(id).getBlob(); } catch (e) {} }
+  try {
+    const blob = UrlFetchApp.fetch(MALLA_URL).getBlob().setName('Malla Negocios y Gestión Empresarial - UNIFRANZ.pdf');
+    const f = carpetaRaiz_().createFile(blob);
+    try { setCfg_('Malla PDF (ID)', f.getId()); } catch (e) {}
+    return f.getBlob();
+  } catch (e) { console.warn('No se pudo obtener la malla: ' + e.message); return null; }
+}
+function htmlCorreo_(nombre, eq, negocio, puntaje, nivel, codigo, conMalla) {
+  const btn = (url, txt, bg) => '<a href="' + url + '" style="display:inline-block;margin:6px 4px;padding:13px 24px;border-radius:99px;background:' + bg + ';color:#fff;font-weight:bold;text-decoration:none">' + txt + '</a>';
+  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:580px;margin:auto;background:#0E0718;border-radius:18px;overflow:hidden;color:#EADBCB">' +
+    '<div style="background:#FF8A00;background-image:linear-gradient(120deg,#FFC23D,#FF8A00 45%,#FF3D7F);padding:26px 26px 22px;color:#1A0A00">' +
+    '<div style="font-size:11px;letter-spacing:3px;font-weight:bold">UNIFRANZ · LABORATORIO DE DECISIONES FINANCIERAS</div>' +
+    '<div style="font-size:27px;font-weight:bold;margin-top:8px">¡Felicitaciones, ' + h_(nombre) + '! 🎓</div>' +
+    '<div style="font-size:14px;margin-top:4px">Hoy fuiste Lic. por un día en Negocios y Gestión Empresarial</div></div>' +
+    '<div style="padding:24px 26px;line-height:1.6;font-size:15px">' +
+    '<p style="margin:0 0 14px">Con el equipo <b style="color:#fff">' + h_(eq) + '</b> dirigiste <b style="color:#fff">' + h_(negocio) + '</b> y lograron ' +
+    '<b style="color:#FFC23D">' + h_(puntaje) + ' puntos</b> (nivel <b style="color:#FFC23D">' + h_(nivel) + '</b>).</p>' +
+    '<div style="background:#1B1029;border:1px solid #3a2550;border-radius:12px;padding:14px 16px;margin:0 0 16px;font-size:14px">' +
+    '📎 <b style="color:#fff">Adjuntos</b><br>🏅 Tu certificado personal (código <b style="color:#FFC23D">' + h_(codigo) + '</b>)' +
+    (conMalla ? '<br>📚 La malla curricular de la carrera de Negocios y Gestión Empresarial' : '') + '</div>' +
+    '<p style="margin:0 0 14px">Repartir un capital, contratar un equipo, resolver una crisis y negociar: eso es lo que se aprende en <b style="color:#fff">Negocios y Gestión Empresarial</b> de UNIFRANZ, con un proyecto real en cada semestre y dos menciones: Transformación Digital y Analítica de Negocios, o Emprendimiento e Innovación.</p>' +
+    '<p style="text-align:center;margin:22px 0 8px">' + btn(CARRERA_URL, 'Conocer la carrera →', '#FF5E3A') + '</p>' +
+    '<p style="font-size:11px;color:#7D6C86;margin:18px 0 0">Recibes este correo porque tu equipo registró esta dirección en el Laboratorio de Decisiones Financieras de UNIFRANZ. Si no participaste, ignóralo.</p>' +
     '</div></div>';
 }
 function certificado_(d) {
@@ -352,40 +433,60 @@ function certificado_(d) {
   if (String(cfg_('Enviar certificado por correo') || 'SÍ').toUpperCase() === 'NO') return json_({ ok: true, n: 0, apagado: true });
   if (salaCerrada_(sala)) return json_({ ok: false, error: 'cerrada' });
   const props = PropertiesService.getScriptProperties(), clave = 'mail_' + sala + '_' + id;
+  // El candado solo reserva el envío; el armado del PDF va fuera para no frenar a los demás equipos
   const lock = LockService.getScriptLock();
   lock.waitLock(20000);
+  let r, cont;
   try {
-    if (props.getProperty(clave)) return json_({ ok: true, n: 0, ya: true });
-    const r = filas_().filter(x => x[C.sala] === sala && x[C.id] === id)[0];
+    const prev = props.getProperty(clave);
+    if (prev && !/^enviando:/.test(prev)) return json_({ ok: true, n: 0, ya: true });
+    if (prev && Date.now() - Number(prev.split(':')[1]) < 5 * 60000) return json_({ ok: true, n: 0, enCurso: true });
+    r = filas_().filter(x => x[C.sala] === sala && x[C.id] === id)[0];
     if (!r || r[C.puntaje] === '') return json_({ ok: true, n: 0, pendiente: true });
-    const sh = SpreadsheetApp.getActive().getSheetByName(HOJA_CON);
-    const cont = filasDe_(HOJA_CON, COLS_CON).map((x, i) => ({ x: x, fila: i + 2 }))
+    cont = filasDe_(HOJA_CON, COLS_CON).map((x, i) => ({ x: x, fila: i + 2 }))
       .filter(o => o.x[1] === sala && o.x[2] === id && /^[^\s@,;]+@[^\s@,;]+\.[a-z]{2,}$/i.test(String(o.x[6]))).slice(0, 6);
     if (!cont.length) return json_({ ok: true, n: 0, sinCorreos: true });
     if (MailApp.getRemainingDailyQuota() < cont.length) return json_({ ok: true, n: 0, cupo: true });
+    props.setProperty(clave, 'enviando:' + Date.now());
+  } finally { lock.releaseLock(); }
+  try {
     const eq = String(r[C.nombre]), negocio = sinEmoji_(r[6]), puntaje = r[C.puntaje], nivel = String(r[C.nivel]);
     const nombres = cont.map(o => String(o.x[5]).replace(/^'/, ''));
-    const fecha = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'dd/MM/yyyy');
-    const pdf = Utilities.newBlob(htmlCertificado_(eq, nombres, negocio, puntaje, nivel, fecha), MimeType.HTML, 'cert.html')
-      .getAs(MimeType.PDF).setName('Certificado NGE - ' + eq.replace(/[\/:*?"<>|#%]/g, '') + '.pdf');
-    try { subcarpeta_(subcarpeta_(carpetaRaiz_(), 'Sala ' + sala), eq.replace(/[\/:*?"<>|#%]/g, '').trim().slice(0, 60) || 'Grupo').createFile(pdf.copyBlob()); } catch (e) {}
-    const ahora = new Date();
+    const pdfs = certificadosPdf_(r, sala, id, nombres);
+    const malla = malla_();
+    let carpeta = null;
+    try { carpeta = subcarpeta_(subcarpeta_(carpetaRaiz_(), 'Sala ' + sala), eq.replace(/[\/:*?"<>|#%]/g, '').trim().slice(0, 60) || 'Grupo'); } catch (e) {}
+    const sh = SpreadsheetApp.getActive().getSheetByName(HOJA_CON), ahora = new Date();
     let n = 0;
-    cont.forEach(o => {
-      const nombre = String(o.x[5]).replace(/^'/, '').split(/\s+/)[0];
-      MailApp.sendEmail({ to: String(o.x[6]).trim(), subject: '🎓 ' + eq + ': su certificado del Laboratorio de Decisiones Financieras · UNIFRANZ',
-        htmlBody: htmlCorreo_(nombre, eq, negocio, puntaje, nivel), attachments: [pdf.copyBlob()], name: 'Laboratorio NGE · UNIFRANZ' });
+    cont.forEach((o, k) => {
+      const c = pdfs[k];
+      if (carpeta) { try { carpeta.createFile(c.blob.copyBlob()); } catch (e) {} }
+      const adj = [c.blob.copyBlob()];
+      if (malla) adj.push(malla.copyBlob());
+      MailApp.sendEmail({ to: String(o.x[6]).trim(), subject: '🎓 ' + eq + ': tu certificado del Laboratorio de Decisiones Financieras · UNIFRANZ',
+        htmlBody: htmlCorreo_(c.nombre.split(/\s+/)[0], eq, negocio, puntaje, nivel, c.codigo, !!malla), attachments: adj, name: 'Laboratorio NGE · UNIFRANZ' });
       if (sh) sh.getRange(o.fila, 10).setValue(ahora);
       n++;
     });
     props.setProperty(clave, ahora.toISOString());
-    return json_({ ok: true, n: n });
+    return json_({ ok: true, n: n, malla: !!malla });
   } catch (e) {
+    props.deleteProperty(clave);
     return json_({ ok: false, error: 'correo', msg: String(e && e.message || e).slice(0, 200) });
-  } finally { lock.releaseLock(); }
+  }
 }
-/* Ejecuta esta función una vez desde el editor para autorizar el envío de correos (Gmail) */
-function autorizarCorreo() { return 'Correos disponibles hoy: ' + MailApp.getRemainingDailyQuota(); }
+/* Ejecuta esta función una vez desde el editor: pide los permisos de Gmail, Slides y descarga de la malla */
+function autorizarCorreo() {
+  const m = malla_();
+  return 'Correos disponibles hoy: ' + MailApp.getRemainingDailyQuota() + ' · Malla: ' + (m ? 'lista en la carpeta de informes' : 'no se pudo descargar');
+}
+/* Prueba visual: crea un certificado de ejemplo en la carpeta de informes (no envía correos) */
+function probarCertificado() {
+  const r = ['ZTEST', 'demo', 'Equipo', 'Los Cóndores Andinos', '🦊', '', '🍔 Hamburguesería «El Tunari»', 'Terminó', 100, 78, 'Gerente estratega', 'Ahorrador estratégico', 82, 64, 77, 70, 88];
+  const c = certificadosPdf_(r, 'ZTEST', 'demo', ['Rafael Aramayo'])[0];
+  const f = carpetaRaiz_().createFile(c.blob);
+  return f.getUrl();
+}
 
 function resumenEncuesta() {
   const sala = pedirSala_('📝 Resultados de la encuesta', 'que quieres ver (escribe TODAS para todas)'); if (!sala) return;
@@ -421,7 +522,8 @@ function cfg_(clave) {
 function setCfg_(clave, valor) {
   const sh = hoja_(HOJA_CFG);
   if (sh.getLastRow() < 2) preparar();
-  const r = filaCfg_(sh, clave);
+  let r = filaCfg_(sh, clave);
+  if (!r) { const def = CFG_DEF.filter(x => x[0] === clave)[0] || [clave, '', '']; sh.appendRow(def); r = sh.getLastRow(); }
   sh.getRange(r, 2).setValue(valor);
 }
 function salasCerradas_() {
