@@ -85,12 +85,10 @@
       <div class="avs" id="avs"></div>
     </div>
     <div class="field" id="members-field">
-      <label for="in-member">Integrantes <small>(opcional, hasta 6)</small></label>
-      <div class="inp-row">
-        <input class="inp" id="in-member" maxlength="24" autocomplete="off" placeholder="Nombre y presiona +" onkeydown="if(event.key==='Enter'){event.preventDefault();addMember()}">
-        <button class="icon-btn" style="width:52px;height:52px;font-size:1.4rem" onclick="addMember()" aria-label="Agregar">+</button>
-      </div>
-      <div class="members" id="members"></div>
+      <label id="lbl-pers">Integrantes <small>nombre completo, correo y celular</small></label>
+      <div class="personas" id="personas"></div>
+      <button class="btn-ghost pers-add" id="pers-add" onclick="addPersona()">＋ Agregar integrante</button>
+      <label class="consent" id="consent"><input type="checkbox" id="in-ok" onchange="validateSetup()"><span id="consent-t"></span></label>
     </div>
     <div class="field">
       <label for="in-sala">Código de sala <small id="sala-req">(lo da el docente para el ranking en vivo)</small></label>
@@ -99,6 +97,12 @@
   </div>
 </section>
 <div id="countdown"><div id="cd-n"></div></div>
+<!-- Ceremonia de inicio: credencial de licenciados -->
+<div id="cere"><div class="cere-in">
+  <div class="cere-drum" id="cere-drum"><span>🥁</span><b>Con ustedes…</b></div>
+  <div class="cred" id="cred"></div>
+  <button class="btn lg" id="cere-go" onclick="cerrarCeremonia()">¡Aceptamos el reto! 🚀</button>
+</div></div>
 
 <!-- ============ FASE 1: NEGOCIO ============ -->
 <section id="ph-select" class="ph">
@@ -413,7 +417,21 @@
         </div>
       </div>
     </div>
+    <div class="glass enc-cta" id="enc-cta">
+      <div class="qr" id="enc-cta-qr"></div>
+      <div>
+        <span class="lbl">Antes de irse · 30 segundos</span>
+        <b>📝 ¿Qué les pareció el Laboratorio?</b>
+        <p class="fb-t">Cada integrante responde desde su celular escaneando este QR. Es anónima y nos ayuda a mejorar.</p>
+        <button class="btn" onclick="abrirEnc()">Responder aquí ✨</button>
+      </div>
+    </div>
   </div>
+</section>
+
+<!-- ============ ENCUESTA (página del QR) ============ -->
+<section id="ph-enc" class="ph">
+  <div class="enc-wrap"><div class="glass enc" id="enc-page"></div></div>
 </section>
 
 <!-- ============ PROYECTOR ============ -->
@@ -433,6 +451,7 @@
       <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
         <button class="btn" onclick="revealPodium()">🥁 Revelar podio</button>
         <button class="btn-ghost" onclick="openLanzar()">⚡ Crisis en vivo</button>
+        <button class="btn-ghost" id="encqr-btn" onclick="abrirEncQR()">📝 Encuesta final</button>
         <button class="btn-ghost" onclick="toggleScores()" id="hide-btn">🙈 Ocultar puntajes</button>
         <button class="btn-ghost" onclick="exitProjector()">← Salir</button>
       </div>
@@ -546,6 +565,19 @@
   <div class="micro-opts" id="qz-o"></div>
   <p class="micro-f" id="qz-f"></p>
   <div class="row"><button class="btn" id="qz-btn" disabled>Siguiente →</button></div>
+</div></div>
+
+<!-- Encuesta dentro del juego -->
+<div class="modal" id="m-enc"><div class="card enc-card"><div id="enc-modal"></div></div></div>
+
+<!-- QR de la encuesta (proyector) -->
+<div class="modal" id="m-encqr"><div class="card encqr-card">
+  <span class="tag">📝 Encuesta final · 30 segundos</span>
+  <h3>¿Qué les pareció el Laboratorio?</h3>
+  <p>Escaneen el QR con <b>su propio celular</b>. Es anónima: una respuesta por persona.</p>
+  <div class="encqr-box"><div class="qr" id="encqr"></div><div class="encqr-n"><b id="encqr-n">0</b><span>respuestas</span></div></div>
+  <small class="encqr-url" id="encqr-url"></small>
+  <div class="row"><button class="btn-ghost" onclick="cerrarEncQR()">Cerrar</button></div>
 </div></div>
 
 <!-- Selector de crisis en vivo (proyector) -->

@@ -128,7 +128,7 @@ async function enviarContra(r){
 let liveT=null,liveTimer=null;
 function startLivePoll(){clearInterval(liveT);S.joinT=Date.now();liveT=setInterval(pollLive,10000)}
 async function pollLive(){
-  if(!Live.enabled()||['home','setup','results','transfer','proj'].includes(S.phase)||S.finished)return;
+  if(!Live.enabled()||['home','setup','results','transfer','proj','enc'].includes(S.phase)||S.finished)return;
   if(document.querySelector('.modal.on,#impact.on,#breaking.on,#xb.on'))return;
   try{const r=await fetch(`${CONFIG.API_URL}?action=evento&sala=${encodeURIComponent(S.sala)}&t=${Date.now()}`);const j=await r.json();
     if(j.ok&&j.ev&&j.ev.id>S.joinT&&j.ev.id!==S.lastLive){S.lastLive=j.ev.id;showLive(j.ev.tipo)}}catch(e){}

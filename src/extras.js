@@ -105,3 +105,11 @@ const ORG_TIPOS=[
    svg:'<rect x="56" y="4" width="40" height="16" rx="4"/><rect x="104" y="4" width="40" height="16" rx="4"/><rect x="152" y="4" width="40" height="16" rx="4"/><rect x="2" y="34" width="44" height="16" rx="4"/><rect x="2" y="64" width="44" height="16" rx="4"/><circle cx="76" cy="42" r="6"/><circle cx="124" cy="42" r="6"/><circle cx="172" cy="42" r="6"/><circle cx="76" cy="72" r="6"/><circle cx="124" cy="72" r="6"/><circle cx="172" cy="72" r="6"/><path d="M76 20v46M124 20v46M172 20v46M46 42h120M46 72h120" stroke-dasharray="3 3"/>'}
 ];
 const ORG_PASOS=['Escriban las <b>funciones</b> que su negocio necesita (no los nombres todavía).','Agrúpenlas en <b>áreas</b>: producción, ventas, atención, administración…','Definan <b>quién reporta a quién</b> con flechas.','Pongan <b>nombres o cargos</b> y revisen que nadie tenga dos jefes (salvo en el matricial).'];
+
+/* Ceremonia de inicio: Marcelo anuncia al equipo y Sofía los presenta como licenciados */
+const slugVoz=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+const anuncio=(n,solo)=>solo?`¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡${n}!`:`¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo ${n}!`;
+const BIENV={
+  eq:'¡Bienvenidos! Soy Sofía, su mentora. Desde este momento los presento oficialmente como licenciadas y licenciados en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegan a ser gerentes: hoy lo son. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?',
+  solo:'¡Bienvenida, bienvenido! Soy Sofía, tu mentora. Desde este momento te presento oficialmente como profesional en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegas a ser gerente: hoy lo eres. Vas a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que tú vas a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Empezamos?'
+};

@@ -20,15 +20,22 @@
  * Crisis en vivo: el proyector envía {action:'evento', sala, tipo} y los celulares la consultan
  *   cada 10 s con ?action=evento&sala=XXXX (se guarda en las propiedades del script).
  *
+ * Encuesta final: el QR del proyector abre ?encuesta=XXXX y cada estudiante envía {action:'encuesta'}.
+ *   El proyector cuenta las respuestas con ?action=encuesta&sala=XXXX.
+ *
  * Hojas:
  *  · Ranking  — una fila por equipo o jugador (se crea y actualiza sola).
+ *  · Contactos — nombre completo, correo y celular de cada integrante (nunca se envía al ranking ni al proyector).
+ *  · Encuesta — satisfacción, interés antes/ahora y «¿qué te llevas?» (anónima).
  *  · Salas    — resumen automático por sala (fórmula, no editar).
  *  · CONFIG   — abrir o cerrar el registro, salas cerradas.
  *  · Archivo  — salas archivadas (evidencia que ya no aparece en el ranking).
  *  · Sala XXXX — copias exportadas de una sala (evidencia para el colegio).
  */
 
-const HOJA = 'Ranking', HOJA_CFG = 'CONFIG', HOJA_SALAS = 'Salas', HOJA_ARCH = 'Archivo';
+const HOJA = 'Ranking', HOJA_CFG = 'CONFIG', HOJA_SALAS = 'Salas', HOJA_ARCH = 'Archivo', HOJA_CON = 'Contactos', HOJA_ENC = 'Encuesta';
+const COLS_CON = ['Fecha','Sala','ID partida','Equipo','Modo','Nombre completo','Correo','Celular','Autorizó contacto'];
+const COLS_ENC = ['Fecha','Sala','Satisfacción (1-5)','Interés antes (1-5)','Interés ahora (1-5)','Cambio de interés','¿Qué se lleva?','Origen'];
 const COLS = ['Sala','ID','Modo','Nombre','Avatar','Integrantes','Negocio','Fase','Progreso','Puntaje','Nivel','Perfil',
   'Rentabilidad','Equipo','Clientes','Crecimiento','Sostenibilidad','Capital','Asignación equipo','Decisiones','Pizarras',
   'Just. capital','Just. equipo','Just. crisis','Just. negociación','Just. oportunidad','Creado','Actualizado','Informe PDF'];
@@ -47,6 +54,7 @@ function onOpen() {
     .addItem('🛠️ Panel de control (seguro)', 'abrirPanel')
     .addSeparator()
     .addItem('📊 Resumen de una sala…', 'resumenSala')
+    .addItem('📝 Resultados de la encuesta…', 'resumenEncuesta')
     .addItem('📄 Exportar sala a hoja propia…', 'exportarSala')
     .addSeparator()
     .addItem('🔒 Cerrar o abrir una sala…', 'alternarSala')
@@ -106,10 +114,12 @@ function preparar() {
     sa.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FF8A00').setFontColor('#1A0A00');
     sa.setFrozenRows(1); sa.setColumnWidths(1, 7, 140);
   });
+  paso('Hoja Contactos', () => cabecera_(HOJA_CON, COLS_CON, '#2E7D32'));
+  paso('Hoja Encuesta', () => cabecera_(HOJA_ENC, COLS_ENC, '#6A1B9A'));
   paso('Quitar hoja vacía inicial', () => {
     ['Sheet1', 'Hoja 1', 'Hoja1'].forEach(n => { const h = ss.getSheetByName(n); if (h && h.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(h); });
   });
-  const msg = fallos.length ? '⚠️ Listo, salvo: ' + fallos.join(', ') + '. Revisa el registro de ejecución.' : '✅ Hojas listas: Ranking, Salas y CONFIG.';
+  const msg = fallos.length ? '⚠️ Listo, salvo: ' + fallos.join(', ') + '. Revisa el registro de ejecución.' : '✅ Hojas listas: Ranking, Salas, CONFIG, Contactos y Encuesta.';
   console.log(msg);
   try { SpreadsheetApp.getUi().alert(msg); } catch (e) {}
   return msg;
@@ -150,6 +160,10 @@ function doGet(e) {
     const v = sala ? PropertiesService.getScriptProperties().getProperty('ev_' + sala) : null;
     return json_({ ok: true, ev: v ? JSON.parse(v) : null });
   }
+  if (p.action === 'encuesta') {
+    const sala = limpiaSala_(p.sala);
+    return json_({ ok: true, n: sala ? filasDe_(HOJA_ENC, COLS_ENC).filter(r => r[1] === sala).length : 0 });
+  }
   if (p.action === 'ranking') {
     const sala = limpiaSala_(p.sala);
     if (!sala) return json_({ ok: false, error: 'Falta sala' });
@@ -170,6 +184,7 @@ function doPost(e) {
     PropertiesService.getScriptProperties().setProperty('ev_' + sala, JSON.stringify(ev));
     return json_({ ok: true, ev: ev });
   }
+  if (d.action === 'encuesta') return guardarEncuesta_(d);
   if (d.action !== 'upsert') return json_({ ok: false, error: 'Acción desconocida' });
   const sala = limpiaSala_(d.sala);
   const id = String(d.id || '').slice(0, 40);
@@ -184,7 +199,7 @@ function doPost(e) {
     const now = new Date();
     const m = d.met || {};
     const j = d.justif || {};
-    const t = v => String(v == null ? '' : v).slice(0, 1500);
+    const t = v => txt_(v, 1500);
     const n_ = v => v == null || v === '' ? '' : Number(v);
     const fila = [sala, id, t(d.modo), t(d.nombre).slice(0, 40), t(d.avatar).slice(0, 8), t(d.integrantes), t(d.negocio),
       t(d.fase), Number(d.progreso) || 0, n_(d.puntaje), t(d.nivel), t(d.perfil),
@@ -206,6 +221,7 @@ function doPost(e) {
       for (let c = C.puntaje; c < fila.length; c++) if (fila[c] === '' && prev[c] !== '') fila[c] = prev[c];
       sh.getRange(row, 1, 1, COLS.length).setValues([fila.concat([prev[C.creado] || now, now, prev[C.pdf] || ''])]);
     }
+    if (Array.isArray(d.contactos) && d.contactos.length) guardarContactos_(sala, id, d, now);
     return json_({ ok: true });
   } finally {
     lock.releaseLock();
@@ -218,6 +234,79 @@ function hoja_(nombre) {
   return ss.getSheetByName(nombre) || ss.insertSheet(nombre);
 }
 function limpiaSala_(s) { const v = String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); return v === 'TODAS' ? v : v.slice(0, 6); }
+/* Texto seguro para la hoja: evita que algo como «=HYPERLINK(…)» se ejecute como fórmula */
+function txt_(v, max) {
+  const s = String(v == null ? '' : v).slice(0, max || 1500);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+function cabecera_(nombre, cols, color) {
+  const sh = hoja_(nombre);
+  if (sh.getLastRow() === 0) {
+    sh.getRange(1, 1, 1, cols.length).setValues([cols]).setFontWeight('bold').setBackground(color).setFontColor('#FFFFFF');
+    sh.setFrozenRows(1); sh.setColumnWidths(1, cols.length, 140);
+  }
+  return sh;
+}
+function filasDe_(nombre, cols) {
+  const sh = SpreadsheetApp.getActive().getSheetByName(nombre);
+  if (!sh) return [];
+  const n = sh.getLastRow() - 1;
+  return n < 1 ? [] : sh.getRange(2, 1, n, cols.length).getValues();
+}
+function borrarDe_(nombre, cols, pred) {
+  const sh = SpreadsheetApp.getActive().getSheetByName(nombre);
+  if (!sh) return 0;
+  const v = filasDe_(nombre, cols); let k = 0;
+  for (let i = v.length - 1; i >= 0; i--) if (pred(v[i])) { sh.deleteRow(i + 2); k++; }
+  return k;
+}
+/* Contactos: una fila por integrante; si el equipo reenvía, se reemplazan sus filas */
+function guardarContactos_(sala, id, d, now) {
+  const sh = cabecera_(HOJA_CON, COLS_CON, '#2E7D32');
+  borrarDe_(HOJA_CON, COLS_CON, r => r[1] === sala && r[2] === id);
+  const filas = d.contactos.slice(0, 6).map(p => {
+    const cel = String((p && p.c) || '').replace(/\D/g, '').slice(-8);
+    return [now, sala, id, txt_(d.nombre, 40), txt_(d.modo, 20), txt_(p && p.n, 60), txt_(String((p && p.e) || '').toLowerCase(), 80), cel, d.autoriza ? 'SÍ' : 'NO'];
+  }).filter(r => r[5]);
+  if (!filas.length) return;
+  const r0 = sh.getLastRow() + 1;
+  sh.getRange(r0, 8, filas.length, 1).setNumberFormat('@');
+  sh.getRange(r0, 1, filas.length, COLS_CON.length).setValues(filas);
+}
+/* Encuesta final (anónima) */
+function guardarEncuesta_(d) {
+  const n15 = v => { const x = Math.round(Number(v)); return x >= 1 && x <= 5 ? x : 0; };
+  const sat = n15(d.sat), antes = n15(d.antes), ahora = n15(d.ahora);
+  if (!sat || !antes || !ahora) return json_({ ok: false, error: 'Faltan respuestas' });
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sh = cabecera_(HOJA_ENC, COLS_ENC, '#6A1B9A');
+    sh.appendRow([new Date(), limpiaSala_(d.sala) || 'SIN-SALA', sat, antes, ahora, ahora - antes, txt_(d.txt, 500), txt_(d.origen, 10)]);
+    return json_({ ok: true });
+  } finally { lock.releaseLock(); }
+}
+function statsEncuesta_(filas) {
+  const n = filas.length;
+  if (!n) return null;
+  const avg = i => Math.round(filas.reduce((a, r) => a + Number(r[i] || 0), 0) / n * 10) / 10;
+  return { n: n, sat: avg(2), antes: avg(3), ahora: avg(4), subio: Math.round(filas.filter(r => Number(r[5]) > 0).length / n * 100) };
+}
+function textoEncuesta_(sala) {
+  const f = filasDe_(HOJA_ENC, COLS_ENC).filter(r => sala === 'TODAS' || r[1] === sala);
+  const st = statsEncuesta_(f);
+  if (!st) return 'Aún no hay respuestas' + (sala === 'TODAS' ? '.' : ' en la sala ' + sala + '.');
+  const frases = f.map(r => String(r[6] || '').trim()).filter(Boolean).slice(-25);
+  return '📝 Encuesta · ' + (sala === 'TODAS' ? 'todas las salas' : 'sala ' + sala) + '\n' +
+    st.n + ' respuestas · satisfacción ' + st.sat + '/5\n' +
+    'Interés en NGE: ' + st.antes + ' antes → ' + st.ahora + ' ahora (subió en el ' + st.subio + ' %)' +
+    (frases.length ? '\n\n¿Qué se llevan?\n' + frases.map(x => '· ' + x).join('\n') : '');
+}
+function resumenEncuesta() {
+  const sala = pedirSala_('📝 Resultados de la encuesta', 'que quieres ver (escribe TODAS para todas)'); if (!sala) return;
+  SpreadsheetApp.getUi().alert(textoEncuesta_(sala));
+}
+
 function filas_() {
   const sh = hoja_(HOJA);
   const n = sh.getLastRow() - 1;
@@ -344,7 +433,9 @@ function archivarSala_(sala) {
 }
 function borrarSala_(sala) {
   const k = borrarFilas_(r => r[C.sala] === sala);
-  return k ? '🗑️ ' + k + ' filas de la sala ' + sala + ' borradas definitivamente.' : 'La sala ' + sala + ' no tenía datos.';
+  const kc = borrarDe_(HOJA_CON, COLS_CON, r => r[1] === sala);
+  const ke = borrarDe_(HOJA_ENC, COLS_ENC, r => r[1] === sala);
+  return k + kc + ke ? '🗑️ Sala ' + sala + ' borrada definitivamente: ' + k + ' filas del ranking, ' + kc + ' contactos y ' + ke + ' respuestas de encuesta.' : 'La sala ' + sala + ' no tenía datos.';
 }
 
 /* ═════════════ PANEL DE CONTROL (barra lateral) ═════════════ */
@@ -361,12 +452,16 @@ function panelDatos() {
     if (r[C.pdf]) st[s].pdf++;
     const t = r[C.act] instanceof Date ? r[C.act].getTime() : 0; if (t > st[s].ult) st[s].ult = t;
   });
+  const con = {}; filasDe_(HOJA_CON, COLS_CON).forEach(r => { con[r[1]] = (con[r[1]] || 0) + 1; });
+  const encF = filasDe_(HOJA_ENC, COLS_ENC), enc = {};
+  encF.forEach(r => { (enc[r[1]] = enc[r[1]] || []).push(r); });
   const cerr = salasCerradas_(), tz = Session.getScriptTimeZone();
   let carpeta = '';
   try { const id = cfg_('Carpeta Drive de informes (ID)'); if (id) carpeta = DriveApp.getFolderById(id).getUrl(); } catch (e) {}
   return {
-    abierto: String(cfg_('Registro abierto') || 'SÍ').toUpperCase() !== 'NO', carpeta: carpeta,
+    abierto: String(cfg_('Registro abierto') || 'SÍ').toUpperCase() !== 'NO', carpeta: carpeta, encuesta: statsEncuesta_(encF),
     salas: Object.values(st).sort((a, b) => b.ult - a.ult).map(x => ({ sala: x.sala, n: x.n, fin: x.fin, pdf: x.pdf,
+      con: con[x.sala] || 0, enc: statsEncuesta_(enc[x.sala] || []),
       prom: x.fin ? Math.round(x.suma / x.fin) : null, cerrada: cerr.indexOf(x.sala) >= 0,
       ult: x.ult ? Utilities.formatDate(new Date(x.ult), tz, 'dd/MM HH:mm') : '' }))
   };
@@ -382,6 +477,7 @@ function panelAccion(accion, sala, confirmacion) {
       return fin.length ? fin.map((x, i) => (i + 1) + '. ' + x.nombre + ' — ' + x.puntaje + ' pts').join('\n') : 'Nadie terminó todavía en la sala ' + sala + '.';
     }
     if (accion === 'exportar') return exportarSala_(sala);
+    if (accion === 'encuesta') return textoEncuesta_(sala);
     if (accion === 'cerrar') return alternarSala_(sala);
     if (accion === 'limpiar') return limpiarIncompletos_(sala);
     if (accion === 'archivar') return archivarSala_(sala);
@@ -411,22 +507,25 @@ a{color:#c2410c}
 <h3>🏆 Panel de control</h3>
 <div class="top"><span>Registro de resultados: <span id="reg" class="pill"></span></span><button onclick="act(\'registro\')">⏯️ Cambiar</button></div>
 <div id="carp"></div>
+<div id="imp"></div>
 <div id="msg"></div>
 <div id="lista"><div class="vac">Cargando…</div></div>
-<p style="font-size:11px;color:#6b6475">Gestiona las salas desde este panel: cada acción pide confirmación y borrar exige escribir el código de la sala. Evita editar a mano las hojas Ranking, Salas y Archivo.</p>
+<p style="font-size:11px;color:#6b6475">Gestiona las salas desde este panel: cada acción pide confirmación y borrar exige escribir el código de la sala. Evita editar a mano las hojas Ranking, Salas y Archivo. «Borrar» también elimina los contactos y la encuesta de esa sala.</p>
 <button onclick="cargar()">🔄 Actualizar</button>
 <script>
 function msg(t){var m=document.getElementById(\'msg\');m.style.display=\'block\';m.textContent=t}
 function cargar(){google.script.run.withSuccessHandler(pintar).withFailureHandler(function(e){msg(\'Error: \'+e.message)}).panelDatos()}
 function pintar(d){
   var r=document.getElementById(\'reg\');r.textContent=d.abierto?\'ABIERTO\':\'PAUSADO\';r.className=\'pill \'+(d.abierto?\'on\':\'off\');
+  var e=d.encuesta;document.getElementById(\'imp\').innerHTML=e?\'<div class="top" style="display:block;background:#F3E8FB"><b>📝 Encuesta (todas las salas)</b><br>\'+e.n+\' respuestas · satisfacción \'+e.sat+\'/5<br>Interés en NGE: \'+e.antes+\' → \'+e.ahora+\' (subió en el \'+e.subio+\' %)<br><button style="margin-top:6px" onclick="act(\\'encuesta\\',\\'TODAS\\')">💬 Ver frases</button></div>\':\'\';
   document.getElementById(\'carp\').innerHTML=d.carpeta?\'<p>📁 <a href="\'+d.carpeta+\'" target="_blank">Abrir carpeta de informes PDF</a></p>\':\'\';
   var L=document.getElementById(\'lista\');
   if(!d.salas.length){L.innerHTML=\'<div class="vac">Aún no hay salas registradas.</div>\';return}
   L.innerHTML=d.salas.map(function(s){return \'<div class="sala"><b>\'+s.sala+\'</b> \'+(s.cerrada?\'<span class="pill off">🔒 cerrada</span>\':\'<span class="pill on">abierta</span>\')+
-   \'<div class="meta">\'+s.n+\' participantes · \'+s.fin+\' terminaron\'+(s.prom!==null?\' · promedio \'+s.prom:\'\')+\' · \'+s.pdf+\' PDF · \'+s.ult+\'</div><div class="acts">\'+
+   \'<div class="meta">\'+s.n+\' participantes · \'+s.fin+\' terminaron\'+(s.prom!==null?\' · promedio \'+s.prom:\'\')+\' · \'+s.pdf+\' PDF · \'+s.con+\' contactos\'+(s.enc?\' · encuesta \'+s.enc.n+\' (\'+s.enc.sat+\'/5)\':\'\')+\' · \'+s.ult+\'</div><div class="acts">\'+
    \'<button onclick="act(\\'resumen\\',\\'\'+s.sala+\'\\')">📊 Resumen</button>\'+
    \'<button onclick="act(\\'exportar\\',\\'\'+s.sala+\'\\')">📄 Exportar</button>\'+
+   \'<button onclick="act(\\'encuesta\\',\\'\'+s.sala+\'\\')">📝 Encuesta</button>\'+
    \'<button onclick="act(\\'cerrar\\',\\'\'+s.sala+\'\\')">\'+(s.cerrada?\'🔓 Abrir\':\'🔒 Cerrar\')+\'</button>\'+
    \'<button onclick="act(\\'limpiar\\',\\'\'+s.sala+\'\\')">🧹 Limpiar incompletos</button>\'+
    \'<button onclick="if(confirm(\\'¿Archivar la sala \'+s.sala+\'? Dejará de verse en el ranking, pero se conserva en la hoja Archivo.\\'))act(\\'archivar\\',\\'\'+s.sala+\'\\')">📦 Archivar</button>\'+

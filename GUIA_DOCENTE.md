@@ -25,9 +25,10 @@
 
 ## 2. El día del taller (equipos de 3 a 5)
 1. En la laptop del proyector abre `…/laboratorio-decisiones-financieras/?docente`: se abre el modo docente. Elige un código (por ejemplo `ABCD`) y pulsa **Proyectar**. Los estudiantes no ven esta opción en su enlace. También puedes ir directo con `?proyector=ABCD`.
-2. El proyector muestra un QR. Cada equipo lo escanea, elige **Jugar en equipo**, se pone un nombre y una mascota. El código de sala ya viene escrito.
+2. El proyector muestra un QR. Cada equipo lo escanea, elige **Jugar en equipo**, se pone un nombre y una mascota, y registra a cada integrante con **nombre completo, correo y celular** (mínimo 2, máximo 6), con la casilla de autorización. El código de sala ya viene escrito.
 3. En el proyector ves en vivo a cada equipo: en qué fase está y su puntaje al terminar. Con **🙈 Ocultar puntajes** mantienes el suspenso.
 4. Cuando todos terminen, pulsa **🥁 Revelar podio**.
+4b. Después del podio, pulsa **📝 Encuesta final**: aparece un QR grande con el contador de respuestas en vivo. Cada estudiante responde desde su propio celular (30 segundos, anónima).
 5. En la hoja «Ranking» quedan como evidencia pedagógica las decisiones, las 5 justificaciones, los indicadores y el perfil de cada equipo.
 6. Al terminar, usa **🔒 Cerrar o abrir una sala** para que nadie siga enviando datos, y **📄 Exportar sala** si quieres una hoja propia para el colegio.
 
@@ -35,12 +36,13 @@
 | Opción | Qué hace |
 |---|---|
 | 📊 Resumen de una sala | Ranking, promedio y quiénes siguen jugando. |
+| 📝 Resultados de la encuesta | Satisfacción, interés en NGE antes → ahora y las frases «¿qué te llevas?». Acepta `TODAS`. |
 | 📄 Exportar sala a hoja propia | Crea la hoja «Sala XXXX» ordenada por puntaje, con todas las justificaciones. Se descarga en Archivo → Descargar. |
 | 🔒 Cerrar o abrir una sala | La sala deja de aceptar resultados nuevos; su ranking se sigue viendo. La app avisa «Sala cerrada». |
 | ⏯️ Abrir o pausar todo el registro | Interruptor general (CONFIG → Registro abierto). |
 | 🧹 Limpiar incompletos | Borra a quienes no terminaron y llevan más de N horas sin actividad (CONFIG). Acepta `TODAS`. |
 | 📦 Archivar una sala | Mueve sus filas a la hoja «Archivo»: salen del ranking pero se conserva la evidencia. |
-| 🗑️ Borrar una sala | Borra definitivamente (pide confirmación). Ideal para salas de prueba como `ZTEST`. |
+| 🗑️ Borrar una sala | Borra definitivamente el ranking, los contactos y la encuesta de esa sala (pide confirmación). Ideal para salas de prueba como `ZTEST`. |
 | ⚙️ Preparar o reparar hojas | Crea o repara Ranking, Salas (resumen automático) y CONFIG. |
 
 La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedio, mejor puntaje y fechas de cada sala.
@@ -57,6 +59,13 @@ La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedi
 - **Informe PDF detallado (6 páginas)** que se descarga y además se guarda en Drive: `Laboratorio NGE – Informes / Sala XXXX / Nombre del grupo`.
 
 > **Para activar el guardado en Drive:** pega el nuevo `apps-script/Codigo.gs`, ejecuta una vez la función **autorizarDrive** (acepta el permiso de Drive), luego **preparar**, y publica **Gestionar implementaciones → ✏️ → Nueva versión**. El menú 🏆 Laboratorio suma **📁 Abrir carpeta de informes**.
+
+## Novedades v3.3
+- **Registro con contacto**: cada integrante deja nombre completo, correo y celular boliviano (8 dígitos, empieza con 6 o 7). Se guardan en la hoja **Contactos** y nunca se muestran en el ranking ni en el proyector. Sin Apps Script (HTML offline) estos campos son opcionales.
+- **Ceremonia de inicio**: Marcelo anuncia al equipo por su nombre y Sofía los presenta como licenciadas y licenciados en Negocios y Gestión Empresarial, con una credencial animada que lleva el nombre de cada integrante. Los 12 nombres del 🎲 tienen el anuncio grabado; un nombre inventado lo lee la mejor voz en español del navegador (en Edge, la misma voz de Marcelo).
+- **Encuesta final**: 3 preguntas (satisfacción, interés en NGE antes de hoy y ahora, y «¿qué te llevas?» abierta y opcional). Se abre con el QR del proyector o con el botón **📝 Encuesta (30 s)** al final del juego. Se guarda en la hoja **Encuesta**; el panel muestra el promedio y cuánto subió el interés.
+
+> **Para activar v3.3:** pega el nuevo `apps-script/Codigo.gs`, ejecuta **preparar** (crea Contactos y Encuesta) y publica **Gestionar implementaciones → ✏️ → Nueva versión**.
 
 ## Novedades v3.2
 - **Fase 2 · Plan**: en lugar del boceto, ordenan las 7 partidas de su rubro por importancia. Al final se compara su plan con lo que invirtieron (coherencia plan-ejecución).

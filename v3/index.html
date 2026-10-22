@@ -1060,6 +1060,85 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
 .ce-f td{vertical-align:bottom;text-align:left}
 .ce-line{width:260px;height:1.5px;background:#1d1626;margin-bottom:6px}
 
+/* ===== v3.3 · Integrantes con contacto ===== */
+.personas{display:grid;gap:10px}
+.pers{padding:12px;border-radius:16px;background:rgba(0,0,0,.2);border:1px solid var(--line);display:grid;gap:8px;animation:fadeUp .35s both}
+.pers-h{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--ink2)}
+.pers-h button{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);font-size:.75rem}
+.pers-2{display:grid;grid-template-columns:1.4fr 1fr;gap:8px}
+.pers .inp{min-height:46px;padding:10px 14px;font-size:.95rem}
+.inp.bad{border-color:rgba(255,71,87,.75);box-shadow:0 0 0 3px rgba(255,71,87,.12)}
+.inp.good{border-color:rgba(184,243,74,.45)}
+.pers-add{margin-top:10px;width:100%}
+.field .consent{display:flex;gap:10px;align-items:flex-start;margin:12px 0 0;padding:12px;border-radius:14px;background:rgba(255,194,61,.06);border:1px solid rgba(255,194,61,.22);font-size:.8rem;color:var(--ink3);line-height:1.45;cursor:pointer;font-weight:500}
+.consent input{width:22px;height:22px;flex:none;accent-color:var(--o1);margin-top:1px}
+.consent b{color:var(--ink2)}
+@media(max-width:520px){.pers-2{grid-template-columns:1fr}}
+
+/* ===== Ceremonia: credencial de licenciados ===== */
+#cere{position:fixed;inset:0;z-index:860;display:none;place-items:center;padding:16px;overflow:auto;background:radial-gradient(circle at 50% 38%,rgba(255,110,30,.38),rgba(10,6,18,.97) 65%)}
+#cere.on{display:grid}
+.cere-in{display:grid;justify-items:center;gap:18px;width:100%;max-width:500px;padding:10px 0 190px}
+.cere-drum{display:grid;justify-items:center;gap:6px;font-family:var(--fd);font-weight:800;font-size:clamp(1.6rem,6vw,2.6rem)}
+.cere-drum span{font-size:clamp(4rem,18vw,7rem);line-height:1;animation:drum .26s infinite alternate}
+@keyframes drum{to{transform:scale(1.12) rotate(-6deg)}}
+#cere.rev .cere-drum{display:none}
+.cred{display:none;width:100%;position:relative;padding:22px 20px 16px;border-radius:24px;text-align:center;background:linear-gradient(160deg,#2C1742,#160C24);border:1.5px solid rgba(255,194,61,.55);box-shadow:0 30px 80px -20px rgba(255,90,60,.65),inset 0 1px 0 rgba(255,255,255,.08);overflow:hidden}
+.cred::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.16) 50%,transparent 70%);transform:translateX(-120%);animation:shine 2.6s .9s infinite;pointer-events:none}
+@keyframes shine{to{transform:translateX(120%)}}
+#cere.rev .cred{display:block;animation:credIn .8s cubic-bezier(.2,.9,.2,1.2) both}
+@keyframes credIn{from{transform:scale(.4) rotateY(90deg);opacity:0}to{transform:none;opacity:1}}
+.cred-k{font-family:var(--fm);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.cred-t{font-size:.78rem;color:var(--ink3);margin-top:4px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.cred-av{font-size:4rem;line-height:1;margin:12px 0 6px}
+.cred-n{font-family:var(--fd);font-weight:800;font-size:clamp(1.8rem,8vw,2.6rem);line-height:1.05;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;word-break:break-word}
+.cred-s{font-weight:700;margin-top:8px;color:var(--ink);font-size:.95rem}
+.cred-m{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}
+.cred-m span{font-size:.76rem;font-weight:700;padding:5px 10px;border-radius:99px;background:rgba(255,194,61,.1);border:1px solid rgba(255,194,61,.3)}
+.cred-f{display:flex;justify-content:space-between;margin-top:16px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.15);font-family:var(--fm);font-size:.64rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+#cere-go{display:none}
+#cere.rev #cere-go{display:inline-flex;animation:fadeUp .5s 1.2s both}
+
+/* ===== Encuesta final ===== */
+#ph-enc{padding:0}
+.enc-wrap{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px 16px 40px;position:relative;z-index:1}
+.enc{width:100%;max-width:520px;padding:24px 20px}
+.modal .enc-card{max-width:520px;max-height:92vh;max-height:92dvh;overflow:auto}
+.enc-h{font-family:var(--fd);font-weight:800;font-size:1.6rem;line-height:1.1;margin:0 0 14px}
+.enc-q{margin-bottom:16px}
+.enc-q>b{display:block;font-size:.95rem;margin-bottom:10px}
+.enc-emo{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.enc-emo button{display:grid;justify-items:center;gap:2px;padding:10px 2px;border-radius:14px;background:rgba(255,255,255,.04);border:1.5px solid var(--line);transition:.15s}
+.enc-emo span{font-size:1.8rem;line-height:1}
+.enc-emo small{font-size:.6rem;color:var(--ink3);font-weight:700}
+.enc-emo button.sel,.enc-n button.sel{border-color:var(--o1);background:rgba(255,138,0,.18);transform:translateY(-2px) scale(1.05)}
+.enc-sc{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:8px;margin-bottom:8px}
+.enc-sc>span{font-size:.8rem;font-weight:700;color:var(--ink2)}
+.enc-n{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.enc-n button{min-height:44px;border-radius:12px;background:rgba(255,255,255,.04);border:1.5px solid var(--line);font-family:var(--fd);font-weight:800;font-size:1.05rem;transition:.15s}
+.enc-leg{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);padding-left:100px}
+.enc-q textarea{resize:vertical;min-height:64px;line-height:1.4}
+#enc-send{width:100%}
+.enc-st{font-size:.78rem;color:var(--ink3);text-align:center;margin:10px 0 0}
+.enc-ok{text-align:center;display:grid;justify-items:center;gap:10px;padding:8px 0}
+.enc-big{font-size:4rem;line-height:1;animation:pop .5s both}
+.enc-ok p{color:var(--ink3)}
+.enc-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.enc-cta{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:18px;margin-top:18px}
+.enc-cta b{display:block;font-family:var(--fd);font-size:1.25rem;margin-bottom:4px}
+.enc-cta .fb-t{margin-bottom:12px}
+.modal .encqr-card{max-width:600px;text-align:center}
+.encqr-box{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap;margin:8px 0 10px}
+.encqr-box .qr{width:270px;height:270px}
+.encqr-n{display:grid;justify-items:center}
+.encqr-n b{font-family:var(--fd);font-weight:800;font-size:4.5rem;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.encqr-n span{font-family:var(--fm);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--ink3)}
+.encqr-n.bump b{animation:pop .5s both}
+.encqr-url{display:block;font-family:var(--fm);font-size:.72rem;color:var(--ink3);word-break:break-all}
+.btn-ghost.pulse{border-color:var(--gold);color:var(--gold);animation:pulseG 1.4s infinite}
+@keyframes pulseG{50%{box-shadow:0 0 0 8px rgba(255,194,61,.18)}}
+@media(max-width:560px){.enc-cta{grid-template-columns:1fr;justify-items:center;text-align:center}.enc-sc{grid-template-columns:78px 1fr}.enc-leg{padding-left:86px}}
+
 </style>
 </head>
 <body>
@@ -1150,12 +1229,10 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       <div class="avs" id="avs"></div>
     </div>
     <div class="field" id="members-field">
-      <label for="in-member">Integrantes <small>(opcional, hasta 6)</small></label>
-      <div class="inp-row">
-        <input class="inp" id="in-member" maxlength="24" autocomplete="off" placeholder="Nombre y presiona +" onkeydown="if(event.key==='Enter'){event.preventDefault();addMember()}">
-        <button class="icon-btn" style="width:52px;height:52px;font-size:1.4rem" onclick="addMember()" aria-label="Agregar">+</button>
-      </div>
-      <div class="members" id="members"></div>
+      <label id="lbl-pers">Integrantes <small>nombre completo, correo y celular</small></label>
+      <div class="personas" id="personas"></div>
+      <button class="btn-ghost pers-add" id="pers-add" onclick="addPersona()">＋ Agregar integrante</button>
+      <label class="consent" id="consent"><input type="checkbox" id="in-ok" onchange="validateSetup()"><span id="consent-t"></span></label>
     </div>
     <div class="field">
       <label for="in-sala">Código de sala <small id="sala-req">(lo da el docente para el ranking en vivo)</small></label>
@@ -1164,6 +1241,12 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
   </div>
 </section>
 <div id="countdown"><div id="cd-n"></div></div>
+<!-- Ceremonia de inicio: credencial de licenciados -->
+<div id="cere"><div class="cere-in">
+  <div class="cere-drum" id="cere-drum"><span>🥁</span><b>Con ustedes…</b></div>
+  <div class="cred" id="cred"></div>
+  <button class="btn lg" id="cere-go" onclick="cerrarCeremonia()">¡Aceptamos el reto! 🚀</button>
+</div></div>
 
 <!-- ============ FASE 1: NEGOCIO ============ -->
 <section id="ph-select" class="ph">
@@ -1478,7 +1561,21 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
         </div>
       </div>
     </div>
+    <div class="glass enc-cta" id="enc-cta">
+      <div class="qr" id="enc-cta-qr"></div>
+      <div>
+        <span class="lbl">Antes de irse · 30 segundos</span>
+        <b>📝 ¿Qué les pareció el Laboratorio?</b>
+        <p class="fb-t">Cada integrante responde desde su celular escaneando este QR. Es anónima y nos ayuda a mejorar.</p>
+        <button class="btn" onclick="abrirEnc()">Responder aquí ✨</button>
+      </div>
+    </div>
   </div>
+</section>
+
+<!-- ============ ENCUESTA (página del QR) ============ -->
+<section id="ph-enc" class="ph">
+  <div class="enc-wrap"><div class="glass enc" id="enc-page"></div></div>
 </section>
 
 <!-- ============ PROYECTOR ============ -->
@@ -1498,6 +1595,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
       <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
         <button class="btn" onclick="revealPodium()">🥁 Revelar podio</button>
         <button class="btn-ghost" onclick="openLanzar()">⚡ Crisis en vivo</button>
+        <button class="btn-ghost" id="encqr-btn" onclick="abrirEncQR()">📝 Encuesta final</button>
         <button class="btn-ghost" onclick="toggleScores()" id="hide-btn">🙈 Ocultar puntajes</button>
         <button class="btn-ghost" onclick="exitProjector()">← Salir</button>
       </div>
@@ -1611,6 +1709,19 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
   <div class="micro-opts" id="qz-o"></div>
   <p class="micro-f" id="qz-f"></p>
   <div class="row"><button class="btn" id="qz-btn" disabled>Siguiente →</button></div>
+</div></div>
+
+<!-- Encuesta dentro del juego -->
+<div class="modal" id="m-enc"><div class="card enc-card"><div id="enc-modal"></div></div></div>
+
+<!-- QR de la encuesta (proyector) -->
+<div class="modal" id="m-encqr"><div class="card encqr-card">
+  <span class="tag">📝 Encuesta final · 30 segundos</span>
+  <h3>¿Qué les pareció el Laboratorio?</h3>
+  <p>Escaneen el QR con <b>su propio celular</b>. Es anónima: una respuesta por persona.</p>
+  <div class="encqr-box"><div class="qr" id="encqr"></div><div class="encqr-n"><b id="encqr-n">0</b><span>respuestas</span></div></div>
+  <small class="encqr-url" id="encqr-url"></small>
+  <div class="row"><button class="btn-ghost" onclick="cerrarEncQR()">Cerrar</button></div>
 </div></div>
 
 <!-- Selector de crisis en vivo (proyector) -->
@@ -2867,6 +2978,14 @@ const ORG_TIPOS=[
 ];
 const ORG_PASOS=['Escriban las <b>funciones</b> que su negocio necesita (no los nombres todavía).','Agrúpenlas en <b>áreas</b>: producción, ventas, atención, administración…','Definan <b>quién reporta a quién</b> con flechas.','Pongan <b>nombres o cargos</b> y revisen que nadie tenga dos jefes (salvo en el matricial).'];
 
+/* Ceremonia de inicio: Marcelo anuncia al equipo y Sofía los presenta como licenciados */
+const slugVoz=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+const anuncio=(n,solo)=>solo?`¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡${n}!`:`¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo ${n}!`;
+const BIENV={
+  eq:'¡Bienvenidos! Soy Sofía, su mentora. Desde este momento los presento oficialmente como licenciadas y licenciados en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegan a ser gerentes: hoy lo son. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?',
+  solo:'¡Bienvenida, bienvenido! Soy Sofía, tu mentora. Desde este momento te presento oficialmente como profesional en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegas a ser gerente: hoy lo eres. Vas a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que tú vas a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Empezamos?'
+};
+
 /* ═══════════════════════════════════════
    PIZARRA — vectorial, táctil, pantalla completa
 ═══════════════════════════════════════ */
@@ -3486,14 +3605,17 @@ const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
     $('nr-txt').textContent=text;n.classList.add('on');
     const a=new Audio(VOZ_BASE+key+'.mp3');this.audio=a;
     a.onended=()=>{if(tok===this.tok)this.end()};
-    a.onerror=()=>{if(tok===this.tok)this.tts(text,tok)};
-    a.play().catch(()=>{if(tok===this.tok&&!a.error)this.tts(text,tok)});
+    a.onerror=()=>{if(tok===this.tok)this.tts(text,tok,who)};
+    a.play().catch(()=>{if(tok===this.tok&&!a.error)this.tts(text,tok,who)});
   },
-  tts(text,tok){
+  tts(text,tok,who){
     this.audio=null;
     if(!('speechSynthesis'in window)){setTimeout(()=>{if(tok===this.tok)this.end()},Math.min(9000,text.length*55));return}
     const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=1.03;
-    const v=speechSynthesis.getVoices().find(v=>/es[-_](BO|419|MX|US|ES)/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^es/i.test(v.lang));if(v)u.voice=v;
+    // Edge trae las mismas voces neuronales (Sofía y Marcelo de Bolivia); si no, la mejor voz en español disponible
+    const es=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)),nm=who==='marcelo'?/Marcelo/i:who==='dani'?/Dalia/i:/Sofia/i;
+    const v=es.find(v=>nm.test(v.name)&&/BO|MX/i.test(v.lang))||es.find(v=>/BO/i.test(v.lang)&&/Natural|Online/i.test(v.name))||es.find(v=>/Natural|Online/i.test(v.name))||es.find(v=>/Google/i.test(v.name))||es.find(v=>/es[-_](BO|419|MX|US)/i.test(v.lang))||es[0];
+    if(v){u.voice=v;u.lang=v.lang}
     u.onend=()=>{if(tok===this.tok)this.end()};speechSynthesis.cancel();speechSynthesis.speak(u);
   },
   stop(silent){
@@ -3579,7 +3701,7 @@ function donut(el,cap,o){
    ESTADO
 ═══════════════════════════════════════ */
 function newState(prev){return{
-  id:uid(),mode:prev?prev.mode:'team',name:prev?prev.name:'',av:prev?prev.av:'🦊',members:prev?prev.members:[],sala:prev?prev.sala:'',
+  id:uid(),mode:prev?prev.mode:'team',name:prev?prev.name:'',av:prev?prev.av:'🦊',members:prev?prev.members:[],sala:prev?prev.sala:'',personas:prev?prev.personas:[],autoriza:prev?prev.autoriza:false,contactOk:prev?prev.contactOk:false,
   biz:null,cap:{mkt:0,ops:0,rrhh:0,inf:0,res:0},capL:{},hires:[],candIds:null,critMiss:[],payroll:0,resEff:0,
   met:{rent:50,eq:50,cli:50,cre:50,sos:50},noRes:false,hist:[],
   crisis:null,cIdx:0,cOpt:null,timedOut:false,crisisT0:0,crisisTime:0,cRes:null,
@@ -3614,14 +3736,14 @@ const STEPS=['select','prio','capital','draw2','team','crisis','neg','opp','resu
 const LABELS={setup:'Preparación',select:'Fase 1 de 8 · Negocio',mision:'Fase 1 de 8 · Misión',prio:'Fase 2 de 8 · Plan',caja:'Fase 5 de 8 · Caja',capital:'Fase 3 de 8 · Capital',draw2:'Fase 4 de 8 · Organigrama',team:'Fase 5 de 8 · Contratación',crisis:'Fase 6 de 8 · Crisis',neg:'Fase 7 de 8 · Negociación',opp:'Fase 8 de 8 · Oportunidad',results:'Resultados',transfer:'Tus finanzas personales'};
 const PROG={setup:2,select:8,mision:10,prio:18,caja:58,capital:30,draw2:42,team:52,crisis:64,neg:76,opp:88,results:100,transfer:100};
 const SPL={select:['1','Elige tu negocio'],prio:['2','Su plan'],caja:['💸','Caja de 6 meses'],capital:['3','Capital'],draw2:['4','Organigrama'],team:['5','Contratación'],neg:['7','Negociación'],opp:['8','Oportunidad'],results:['🏁','Resultados']};
-const INIT={setup:initSetup,select:initSelect,mision:initMision,prio:initPrio,caja:initCaja,capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{}};
+const INIT={setup:initSetup,select:initSelect,mision:initMision,prio:initPrio,caja:initCaja,capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{},enc:initEncPage};
 let skipT=null;
 function splash(ph){const s=SPL[ph];if(!s)return;$('sp-n').textContent=s[0];$('sp-t').textContent=s[1];const el=$('splash');el.classList.remove('on');void el.offsetWidth;el.classList.add('on');Snd.whoosh();setTimeout(()=>el.classList.remove('on'),1100)}
 function go(ph){
   document.querySelectorAll('.ph').forEach(p=>p.classList.remove('on'));
   $('ph-'+ph).classList.add('on');S.phase=ph;
   if(ph==='home')FX.start();else FX.stop();
-  const showHud=!['home','proj'].includes(ph);$('hud').classList.toggle('on',showHud);
+  const showHud=!['home','proj','enc'].includes(ph);$('hud').classList.toggle('on',showHud);
   if(showHud){
     const i=STEPS.indexOf(ph==='mision'?'select':ph==='caja'?'team':ph);
     $('hud-steps').innerHTML=STEPS.map((s,k)=>`<span class="${ph==='transfer'||k<i?'done':k===i?'now':''}"></span>`).join('');
@@ -3663,35 +3785,26 @@ function initSetup(){
   $('setup-lead').textContent=t?'Pónganse un nombre épico. Así aparecerán en el ranking de la sala.':'Escribe tu nombre o apodo. Así aparecerás en el ranking.';
   $('lbl-name').textContent=t?'Nombre del equipo':'Tu nombre o apodo';
   $('in-name').placeholder=t?'Ej: Los Tigres del Valle':'Ej: Cami R.';
-  $('members-field').style.display=t?'':'none';
   $('in-name').value=S.name;$('in-sala').value=S.sala||'';
   $('avs').innerHTML=AVATARS.map(a=>`<button class="av-op${a===S.av?' sel':''}" onclick="pickAv('${a}',this)">${a}</button>`).join('');
-  renderMembers();
+  initPersonas();
   AB.set('¡Listos! 🚀',startGame,{back:()=>go('home')});validateSetup();
   Pizarra.preload();
 }
 function pickAv(a,el){S.av=a;document.querySelectorAll('.av-op').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');Snd.click()}
 function randomName(){$('in-name').value=rnd(TEAM_NAMES);validateSetup();Snd.click()}
-function addMember(){const i=$('in-member');const v=i.value.trim();if(!v||S.members.length>=6)return;S.members.push(v);i.value='';renderMembers();Snd.click()}
-function delMember(k){S.members.splice(k,1);renderMembers()}
-function renderMembers(){$('members').innerHTML=S.members.map((m,k)=>`<span class="member">${esc(m)}<button onclick="delMember(${k})">✕</button></span>`).join('')}
 const salaReq=()=>S.mode==='team'&&!!CONFIG.API_URL;
 function validateSetup(){
-  const nm=$('in-name').value.trim().length>=2,sl=$('in-sala').value.trim().length>=3,need=salaReq();
+  const nm=$('in-name').value.trim().length>=2,sl=$('in-sala').value.trim().length>=3,need=salaReq(),pe=personasEstado();
   $('sala-req').innerHTML=need?'<b style="color:var(--gold)">obligatorio</b> · está grande en el proyector':'(lo da el docente para el ranking en vivo)';
   $('in-sala').style.borderColor=need&&!sl?'rgba(255,194,61,.6)':'';
-  AB.ok(nm&&(!need||sl),!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):'Escriban el código de sala que muestra el proyector');
+  AB.ok(nm&&pe.ok&&(!need||sl),!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):!pe.ok?pe.msg:'Escriban el código de sala que muestra el proyector');
 }
-const BIENVENIDA='¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. Bienvenidos al Laboratorio de Decisiones Financieras de UNIFRANZ. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?';
-async function startGame(){
+function startGame(){
   S.name=$('in-name').value.trim().slice(0,28);S.sala=$('in-sala').value.trim().toUpperCase();
-  if($('in-member').value.trim())addMember();
-  Live.push('Preparación');startLivePoll();
-  Voz.play('bienvenida',BIENVENIDA,'sofia');
-  const cd=$('countdown');cd.classList.add('on');AB.reset();
-  for(const n of[3,2,1]){$('cd-n').innerHTML=`<div class="n">${n}</div>`;Snd.beep();vib(40);await sleep(850)}
-  $('cd-n').innerHTML=`<div class="msg">${P('¡Ahora son<br><span class="gt">gerentes!</span> 💼','¡Ahora eres<br><span class="gt">gerente!</span> 💼')}</div>`;Snd.beep(true);vib([60,40,120]);Confetti.burst(120);
-  await sleep(1300);cd.classList.remove('on');go('select');
+  guardarPersonas();
+  Live.push('Preparación',()=>{S.contactOk=true});startLivePoll();
+  ceremonia();
 }
 
 /* ═══════════════════════════════════════
@@ -4401,7 +4514,7 @@ function initTransfer(){
   $('years').innerHTML=YEARS.map(y=>`<div class="year"><div class="yn">Año ${y.n}</div><div class="yt">${y.t}</div><ul>${y.l.map(l=>`<li>${l}</li>`).join('')}</ul></div>`).join('');
   $('jobs').innerHTML=JOBS.map(j=>`<span class="chip">${j}</span>`).join('');
   $('cta-link').href=CONFIG.CTA_URL;qrInto($('cta-qr'),CONFIG.CTA_URL);
-  AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});
+  encEnJuego();
 }
 function setInc(v,el){SU.inc=v;document.querySelectorAll('#inc button').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');Snd.click();renderSueldo()}
 function adjCat(id,d){const v=SU.p[id]+d;if(v<0||v>100)return;SU.p[id]=v;Snd.click();renderSueldo()}
@@ -4457,6 +4570,7 @@ function setLive(st){
 const Live={pending:null,busy:false,cb:[],warned:false,
   enabled(){return!!(CONFIG.API_URL&&S.sala)},
   payload(fase){return{action:'upsert',sala:S.sala,id:S.id,nombre:S.name,avatar:S.av,modo:S.mode==='team'?'Equipo':'Individual',integrantes:S.members.join(', '),
+    contactos:!S.contactOk&&S.personas.length?S.personas.map(p=>({n:p.n,e:p.e,c:p.c})):null,autoriza:!!S.autoriza,
     negocio:S.biz?S.biz.em+' '+S.biz.name:'',fase:fase||LABELS[S.phase]||S.phase,progreso:PROG[S.phase]||0,
     puntaje:S.finished?S.score:'',nivel:S.finished?S.tier:'',perfil:S.finished?S.perfil:'',
     met:S.finished?Object.fromEntries(METS.map(m=>[m.id,Math.round(S.met[m.id])])):null,
@@ -4515,7 +4629,7 @@ async function revealPodium(){
   [1,0,2].forEach(i=>{const t=top[i];if(!t)return;const el=document.createElement('div');el.className='pod p'+(i+1);
     el.innerHTML=`<div class="pav">${esc(t.avatar||'🦊')}</div><div class="pnm">${esc(t.nombre)}</div><div class="psc">${t.puntaje} pts</div><div class="blk">${i+1}</div>`;pd.appendChild(el)});
   for(const i of[2,1,0]){const el=pd.querySelector('.pod.p'+(i+1));if(!el)continue;el.classList.add('show');Snd.coin();await sleep(i===0?300:900)}
-  Snd.fanfare();Confetti.burst(260);setTimeout(()=>Confetti.burst(200,innerWidth*.2,innerHeight*.3),500);setTimeout(()=>Confetti.burst(200,innerWidth*.8,innerHeight*.3),900);
+  Snd.fanfare();Confetti.burst(260);$('encqr-btn').classList.add('pulse');setTimeout(()=>Confetti.burst(200,innerWidth*.2,innerHeight*.3),500);setTimeout(()=>Confetti.burst(200,innerWidth*.8,innerHeight*.3),900);
 }
 function qrInto(el,url){
   el.innerHTML='';if(typeof qrcode!=='function'){el.style.display='none';return}
@@ -4536,6 +4650,7 @@ function restart(){
   if(!document.getElementById('fx-canvas')){const c=document.createElement('canvas');c.id='fx-canvas';document.getElementById('ph-home').prepend(c)}
   const q=new URLSearchParams(location.search);
   if(q.get('proyector')){startProjector(q.get('proyector'));return}
+  if(q.has('encuesta')){S.sala=String(q.get('encuesta')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);setTimeout(()=>go('enc'));return}  // extras3.js se evalúa después
   if(q.has('docente')){$('teacher-link').style.display='';openTeacher()}
   initHome();
 })();
@@ -4670,7 +4785,7 @@ async function enviarContra(r){
 let liveT=null,liveTimer=null;
 function startLivePoll(){clearInterval(liveT);S.joinT=Date.now();liveT=setInterval(pollLive,10000)}
 async function pollLive(){
-  if(!Live.enabled()||['home','setup','results','transfer','proj'].includes(S.phase)||S.finished)return;
+  if(!Live.enabled()||['home','setup','results','transfer','proj','enc'].includes(S.phase)||S.finished)return;
   if(document.querySelector('.modal.on,#impact.on,#breaking.on,#xb.on'))return;
   try{const r=await fetch(`${CONFIG.API_URL}?action=evento&sala=${encodeURIComponent(S.sala)}&t=${Date.now()}`);const j=await r.json();
     if(j.ok&&j.ev&&j.ev.id>S.joinT&&j.ev.id!==S.lastLive){S.lastLive=j.ev.id;showLive(j.ev.tipo)}}catch(e){}
@@ -4737,6 +4852,160 @@ async function makeCert(){
   const fname=`Certificado NGE - ${S.name.replace(/[\\/:*?"<>|]/g,'')}.pdf`;pdf.save(fname);root.innerHTML='';
   st.innerHTML='🏅 Certificado descargado.';Snd.fanfare();Confetti.burst(120);
   if(Live.enabled()){try{await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'pdf',sala:S.sala,id:S.id,nombre:S.name,filename:fname,b64:pdf.output('datauristring').split(',')[1]})});st.innerHTML='🏅 Certificado descargado y guardado en la carpeta Drive del grupo.'}catch(e){}}
+}
+
+/* ═══════════════════════════════════════
+   v3.3 · Registro con contacto, ceremonia de licenciados y encuesta final
+═══════════════════════════════════════ */
+
+/* ---------- Integrantes: nombre completo, correo y celular ---------- */
+const contactReq=()=>!!CONFIG.API_URL;
+const MAILRX=/^[^\s@,;]+@[^\s@,;]+\.[a-z]{2,}$/i;
+function celNorm(v){let d=String(v||'').replace(/\D/g,'');if(d.length===11&&d.startsWith('591'))d=d.slice(3);return d}
+const celOk=v=>/^[67]\d{7}$/.test(celNorm(v));
+const nomOk=v=>String(v||'').trim().split(/\s+/).filter(w=>w.length>=2).length>=2;
+const mailOk=v=>MAILRX.test(String(v||'').trim());
+const vacia=p=>!String(p.n||'').trim()&&!String(p.e||'').trim()&&!String(p.c||'').trim();
+const PMIN=()=>S.mode==='team'?2:1,PMAX=()=>S.mode==='team'?6:1;
+
+function initPersonas(){
+  const t=S.mode==='team';
+  S.personas=(S.personas||[]).slice(0,PMAX());while(S.personas.length<PMIN())S.personas.push({n:'',e:'',c:''});
+  $('lbl-pers').innerHTML=t?'Integrantes <small>nombre completo, correo y celular de cada uno</small>':'Tus datos <small>nombre completo, correo y celular</small>';
+  $('consent-t').innerHTML=t?'Aceptamos que UNIFRANZ use estos datos para enviarnos nuestros resultados e información de la carrera. <b>No se muestran en el ranking ni en el proyector.</b>':'Acepto que UNIFRANZ use estos datos para enviarme mis resultados e información de la carrera. <b>No se muestran en el ranking ni en el proyector.</b>';
+  $('consent').style.display=contactReq()?'':'none';$('in-ok').checked=!!S.autoriza;
+  renderPersonas();
+}
+function renderPersonas(){
+  const t=S.mode==='team',ac=f=>t?'off':f;
+  $('personas').innerHTML=S.personas.map((p,k)=>`<div class="pers">
+    <div class="pers-h"><b>${t?'👤 Integrante '+(k+1):'👤 Tú'}</b>${t&&S.personas.length>PMIN()?`<button onclick="delPersona(${k})" aria-label="Quitar integrante ${k+1}">✕</button>`:''}</div>
+    <input class="inp" data-k="${k}" data-f="n" value="${esc(p.n)}" placeholder="Nombre y apellido" autocomplete="${ac('name')}" autocapitalize="words" maxlength="60" oninput="setPersona(this)" onblur="tocar(this)">
+    <div class="pers-2">
+      <input class="inp" data-k="${k}" data-f="e" value="${esc(p.e)}" type="email" inputmode="email" placeholder="correo@ejemplo.com" autocomplete="${ac('email')}" autocapitalize="off" maxlength="80" oninput="setPersona(this)" onblur="tocar(this)">
+      <input class="inp" data-k="${k}" data-f="c" value="${esc(p.c)}" type="tel" inputmode="tel" placeholder="Celular · 7XXXXXXX" autocomplete="${ac('tel')}" maxlength="16" oninput="setPersona(this)" onblur="tocar(this)">
+    </div></div>`).join('');
+  $('pers-add').style.display=t&&S.personas.length<PMAX()?'':'none';
+  document.querySelectorAll('#personas .inp').forEach(marcar);
+}
+function campoOk(f,v){return f==='n'?nomOk(v):f==='e'?mailOk(v):celOk(v)}
+function marcar(el){const v=el.value,bad=el.dataset.t&&v.trim()&&!campoOk(el.dataset.f,v);el.classList.toggle('bad',!!bad);el.classList.toggle('good',!!v.trim()&&campoOk(el.dataset.f,v))}
+function tocar(el){el.dataset.t=1;marcar(el)}
+function setPersona(el){S.personas[+el.dataset.k][el.dataset.f]=el.value;marcar(el);validateSetup()}
+function addPersona(){if(S.personas.length>=PMAX())return;S.personas.push({n:'',e:'',c:''});Snd.click();renderPersonas();validateSetup();
+  const ins=document.querySelectorAll('#personas .pers:last-child .inp');if(ins[0])ins[0].focus()}
+function delPersona(k){S.personas.splice(k,1);Snd.click();renderPersonas();validateSetup()}
+function personasEstado(){
+  if(!contactReq())return{ok:true};
+  const quien=k=>S.mode==='team'?' del integrante '+(k+1):'';
+  const llenas=S.personas.filter(p=>!vacia(p));
+  for(let k=0;k<S.personas.length;k++){const p=S.personas[k];
+    if(vacia(p)&&k>=PMIN())continue;
+    if(!nomOk(p.n))return{ok:false,msg:'Falta nombre y apellido'+quien(k)};
+    if(!mailOk(p.e))return{ok:false,msg:'Revisen el correo'+quien(k)};
+    if(!celOk(p.c))return{ok:false,msg:'El celular'+quien(k)+' debe tener 8 dígitos (empieza con 6 o 7)'}}
+  if(llenas.length<PMIN())return{ok:false,msg:'Registren al menos '+PMIN()+' integrantes'};
+  if(!$('in-ok').checked)return{ok:false,msg:P('Marquen la casilla de autorización','Marca la casilla de autorización')};
+  return{ok:true};
+}
+function guardarPersonas(){
+  S.personas=S.personas.filter(p=>!vacia(p)).map(p=>({n:String(p.n).trim().replace(/\s+/g,' ').slice(0,60),e:String(p.e).trim().toLowerCase().slice(0,80),c:celNorm(p.c)}));
+  S.autoriza=contactReq()?$('in-ok').checked:false;
+  const nombres=S.personas.map(p=>p.n).filter(Boolean);if(nombres.length)S.members=nombres;else if(S.mode==='solo')S.members=[];
+  if(!S.personas.length)S.personas=[{n:'',e:'',c:''}];
+}
+
+/* ---------- Ceremonia: credencial de licenciados ---------- */
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}catch(e){}
+Voz.say=function(text,who,cb){
+  this.stop(true);this.cb=cb||null;const tok=++this.tok;
+  if(!this.on||!text){if(cb)setTimeout(cb,0);return}
+  const n=$('narr');n.classList.toggle('news',who==='marcelo');
+  $('nr-av').textContent=who==='marcelo'?'🎙️':'👩🏽‍💼';$('nr-who').textContent=who==='marcelo'?'Marcelo · presentador':'Sofía · tu mentora';
+  $('nr-txt').textContent=text;n.classList.add('on');this.tts(text,tok,who);
+};
+const presetEq=n=>TEAM_NAMES.some(x=>slugVoz(x)===slugVoz(n));
+async function ceremonia(){
+  const solo=S.mode==='solo',c=$('cere');AB.reset();
+  const sofia=()=>Voz.play(solo?'bienvenida_solo':'bienvenida_eq',BIENV[solo?'solo':'eq'],'sofia');
+  const txt=anuncio(S.name,solo);
+  // Los nombres sugeridos tienen el anuncio grabado por Marcelo; los inventados los lee la voz del navegador
+  if(!solo&&presetEq(S.name)){Voz.play('anuncio_'+slugVoz(S.name),txt,'marcelo',sofia);$('nr-who').textContent='Marcelo · presentador'}else Voz.say(txt,'marcelo',sofia);
+  const nm=S.members.length?S.members:[];
+  $('cred').innerHTML=`<div class="cred-k">🎓 UNIFRANZ · Negocios y Gestión Empresarial</div>
+    <div class="cred-t">Credencial oficial de gerencia</div>
+    <div class="cred-av">${S.av}</div>
+    <div class="cred-n">${esc(S.name)}</div>
+    <div class="cred-s">${solo?'Profesional en Negocios y Gestión Empresarial':'Licenciadas y licenciados en Negocios y Gestión Empresarial'}</div>
+    ${nm.length?`<div class="cred-m">${nm.map(n=>`<span>🎓 Lic. ${esc(n)}</span>`).join('')}</div>`:''}
+    <div class="cred-f"><span>${S.sala?'Sala '+esc(S.sala):'Laboratorio NGE'}</span><span>${new Date().toLocaleDateString('es-BO',{day:'numeric',month:'short',year:'numeric'})}</span></div>`;
+  c.classList.remove('rev');c.classList.add('on');
+  for(let i=0;i<5;i++){Snd.tick();await sleep(260)}
+  c.classList.add('rev');Snd.fanfare();vib([60,40,120]);Confetti.burst(160);setTimeout(()=>Confetti.burst(120,innerWidth*.2,innerHeight*.35),400);setTimeout(()=>Confetti.burst(120,innerWidth*.8,innerHeight*.35),700);
+}
+function cerrarCeremonia(){Snd.click();$('cere').classList.remove('on','rev');go('select')}
+
+/* ---------- Encuesta final ---------- */
+const ENC_EMO=[['😴','Aburrido'],['😕','Meh'],['🙂','Bien'],['😃','Muy bien'],['🤩','¡Increíble!']];
+let ENC={el:null,origen:'qr',r:{}};
+const encUrl=sala=>location.origin+location.pathname+'?encuesta='+encodeURIComponent(sala||'');
+function renderEnc(el,origen){
+  ENC={el,origen,r:{sat:0,antes:0,ahora:0}};
+  const esc5=k=>[1,2,3,4,5].map(v=>`<button data-v="${v}" onclick="encPick('${k}',${v},this)">${v}</button>`).join('');
+  el.innerHTML=`<span class="tag">📝 30 segundos · anónima</span>
+    <h3 class="enc-h">¿Qué te pareció el <span class="gt">Laboratorio</span>?</h3>
+    <div class="enc-q"><b>1. ¿Cuánto te gustó la actividad?</b>
+      <div class="enc-emo" data-k="sat">${ENC_EMO.map((e,i)=>`<button data-v="${i+1}" onclick="encPick('sat',${i+1},this)"><span>${e[0]}</span><small>${e[1]}</small></button>`).join('')}</div></div>
+    <div class="enc-q"><b>2. ¿Qué tanto te interesa estudiar Negocios y Gestión Empresarial?</b>
+      <div class="enc-sc"><span>Antes de hoy</span><div class="enc-n" data-k="antes">${esc5('antes')}</div></div>
+      <div class="enc-sc"><span>Ahora</span><div class="enc-n" data-k="ahora">${esc5('ahora')}</div></div>
+      <div class="enc-leg"><span>1 = nada</span><span>5 = muchísimo</span></div></div>
+    <div class="enc-q"><b>3. En una frase: ¿qué te llevas de hoy?</b>
+      <textarea class="inp" id="enc-txt" maxlength="300" rows="2" placeholder="Ej: que sin un fondo de emergencia una crisis te hunde…"></textarea></div>
+    <button class="btn" id="enc-send" onclick="encEnviar()" disabled>Enviar ✨</button>
+    <p class="enc-st" id="enc-st">Toca una opción en las preguntas 1 y 2.</p>`;
+}
+function encPick(k,v,b){ENC.r[k]=v;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));Snd.click();vib(15);
+  const ok=ENC.r.sat&&ENC.r.antes&&ENC.r.ahora;$('enc-send').disabled=!ok;$('enc-st').textContent=ok?'La pregunta 3 es opcional, pero nos encanta leerla 💛':'Toca una opción en las preguntas 1 y 2.'}
+async function encEnviar(){
+  const b=$('enc-send'),st=$('enc-st');b.disabled=true;st.textContent='⏳ Enviando…';
+  const body={action:'encuesta',sala:S.sala||'',sat:ENC.r.sat,antes:ENC.r.antes,ahora:ENC.r.ahora,txt:$('enc-txt').value.trim().slice(0,300),origen:ENC.origen};
+  try{const r=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});const j=await r.json();
+    if(!j.ok)throw new Error(j.error||'');
+    store('nge-enc-'+(S.sala||'x'),'1');encGracias()}
+  catch(e){b.disabled=false;st.innerHTML='📴 No se pudo enviar. Revisa tu conexión y toca <b>Enviar</b> otra vez.'}
+}
+function encGracias(){
+  const inGame=ENC.origen==='app';
+  ENC.el.innerHTML=`<div class="enc-ok"><div class="enc-big">🎉</div><h3 class="enc-h">¡Gracias!</h3>
+    <p>Tu opinión nos ayuda a que el próximo Laboratorio sea todavía mejor.</p>
+    <a class="btn" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
+    <div class="enc-row">${inGame?`<button class="btn-ghost" onclick="renderEnc($('enc-modal'),'app')">👥 Responde otro integrante</button><button class="btn-ghost" onclick="closeModal('m-enc')">Cerrar</button>`:`<button class="btn-link" onclick="renderEnc($('enc-page'),'qr')">Otra persona usa este celular</button>`}</div></div>`;
+  Snd.fanfare();Confetti.burst(160);
+  if(inGame)AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});
+}
+/* Página que abre el QR */
+function initEncPage(){renderEnc($('enc-page'),'qr');if(!CONFIG.API_URL)$('enc-st').textContent='⚠️ Falta configurar el Apps Script: la encuesta no se puede enviar.'}
+/* Dentro del juego (pantalla final) */
+function encEnJuego(){
+  const on=!!CONFIG.API_URL;$('enc-cta').style.display=on?'':'none';
+  if(!on){AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});return}
+  qrInto($('enc-cta-qr'),encUrl(S.sala));
+  AB.set('📝 Encuesta (30 s)',abrirEnc,{back:()=>go('results')});
+}
+function abrirEnc(){renderEnc($('enc-modal'),'app');$('m-enc').classList.add('on')}
+/* Proyector: QR grande y contador en vivo */
+let encT=null;
+function abrirEncQR(){
+  const u=encUrl(pjCode);qrInto($('encqr'),u);$('encqr-url').textContent=u.replace(/^https?:\/\//,'');
+  $('m-encqr').classList.add('on');$('encqr-btn').classList.remove('pulse');Snd.ok();
+  contarEnc();clearInterval(encT);encT=setInterval(contarEnc,6000);
+}
+function cerrarEncQR(){clearInterval(encT);closeModal('m-encqr')}
+async function contarEnc(){
+  if(!CONFIG.API_URL)return;
+  try{const r=await fetch(`${CONFIG.API_URL}?action=encuesta&sala=${encodeURIComponent(pjCode)}&t=${Date.now()}`);const j=await r.json();
+    if(j.ok){const el=$('encqr-n'),old=+el.textContent||0;el.textContent=j.n||0;if((j.n||0)>old){el.parentElement.classList.remove('bump');void el.offsetWidth;el.parentElement.classList.add('bump');Snd.coin()}}}catch(e){}
 }
 
 </script>

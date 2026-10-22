@@ -1,8 +1,73 @@
 [
  {
-  "key": "bienvenida",
+  "key": "bienvenida_eq",
   "voz": "sofia",
-  "text": "¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. Bienvenidos al Laboratorio de Decisiones Financieras de UNIFRANZ. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?"
+  "text": "¡Bienvenidos! Soy Sofía, su mentora. Desde este momento los presento oficialmente como licenciadas y licenciados en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegan a ser gerentes: hoy lo son. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?"
+ },
+ {
+  "key": "bienvenida_solo",
+  "voz": "sofia",
+  "text": "¡Bienvenida, bienvenido! Soy Sofía, tu mentora. Desde este momento te presento oficialmente como profesional en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegas a ser gerente: hoy lo eres. Vas a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que tú vas a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Empezamos?"
+ },
+ {
+  "key": "anuncio_los_tigres_del_valle",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Los Tigres del Valle!"
+ },
+ {
+  "key": "anuncio_llajta_capital",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Llajta Capital!"
+ },
+ {
+  "key": "anuncio_condores_s_r_l",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Cóndores S.R.L.!"
+ },
+ {
+  "key": "anuncio_tunari_ventures",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Tunari Ventures!"
+ },
+ {
+  "key": "anuncio_chicharron_holdings",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Chicharrón Holdings!"
+ },
+ {
+  "key": "anuncio_los_lobos_del_mercado",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Los Lobos del Mercado!"
+ },
+ {
+  "key": "anuncio_valle_alto_inc",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Valle Alto Inc.!"
+ },
+ {
+  "key": "anuncio_cocha_unicornios",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Cocha Unicornios!"
+ },
+ {
+  "key": "anuncio_los_estrategas",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Los Estrategas!"
+ },
+ {
+  "key": "anuncio_pumas_financieros",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Pumas Financieros!"
+ },
+ {
+  "key": "anuncio_quillacollo_power",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Quillacollo Power!"
+ },
+ {
+  "key": "anuncio_llama_corp",
+  "voz": "marcelo",
+  "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Llama Corp!"
  },
  {
   "key": "indicadores",

@@ -6,10 +6,12 @@ const ctx = {};
 vm.createContext(ctx);
 vm.runInContext(['data.js', 'eventos.js', 'rubros.js', 'extras.js'].map(src).join('\n') +
   '\n;this.BIZS=BIZS;this.EV=EV;this.CIERRE=CIERRE;this.VOZ_IND=VOZ_IND;this.vozIndicadores=vozIndicadores;this.vozPartidas=vozPartidas;' +
-  'this.vozHint=vozHint;this.vozFuerte=vozFuerte;this.vozMejora=vozMejora;this.VOZ_CARRERA=VOZ_CARRERA;this.COMPS=COMPS;this.LIVE=LIVE;', ctx);
-const app = src('app.js');
-const bienvenida = app.match(/const BIENVENIDA='([^']+)'/)[1];
-const out = [{ key: 'bienvenida', voz: 'sofia', text: bienvenida }];
+  'this.vozHint=vozHint;this.vozFuerte=vozFuerte;this.vozMejora=vozMejora;this.VOZ_CARRERA=VOZ_CARRERA;this.COMPS=COMPS;this.LIVE=LIVE;this.TEAM_NAMES=TEAM_NAMES;this.slugVoz=slugVoz;this.anuncio=anuncio;this.BIENV=BIENV;', ctx);
+const out = [
+  { key: 'bienvenida_eq', voz: 'sofia', text: ctx.BIENV.eq },
+  { key: 'bienvenida_solo', voz: 'sofia', text: ctx.BIENV.solo }];
+// Los nombres sugeridos (🎲) tienen anuncio pregrabado; los inventados se leen con la voz del navegador
+ctx.TEAM_NAMES.forEach(n => out.push({ key: 'anuncio_' + ctx.slugVoz(n), voz: 'marcelo', text: ctx.anuncio(n) }));
 out.push({ key: 'indicadores', voz: 'sofia', text: ctx.vozIndicadores() });
 ['rent', 'eq', 'cli', 'cre', 'sos'].forEach(k => out.push({ key: 'ind_' + k, voz: 'sofia', text: ctx.VOZ_IND[k] }));
 for (const b of ctx.BIZS) {

@@ -54,14 +54,17 @@ const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
     $('nr-txt').textContent=text;n.classList.add('on');
     const a=new Audio(VOZ_BASE+key+'.mp3');this.audio=a;
     a.onended=()=>{if(tok===this.tok)this.end()};
-    a.onerror=()=>{if(tok===this.tok)this.tts(text,tok)};
-    a.play().catch(()=>{if(tok===this.tok&&!a.error)this.tts(text,tok)});
+    a.onerror=()=>{if(tok===this.tok)this.tts(text,tok,who)};
+    a.play().catch(()=>{if(tok===this.tok&&!a.error)this.tts(text,tok,who)});
   },
-  tts(text,tok){
+  tts(text,tok,who){
     this.audio=null;
     if(!('speechSynthesis'in window)){setTimeout(()=>{if(tok===this.tok)this.end()},Math.min(9000,text.length*55));return}
     const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=1.03;
-    const v=speechSynthesis.getVoices().find(v=>/es[-_](BO|419|MX|US|ES)/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^es/i.test(v.lang));if(v)u.voice=v;
+    // Edge trae las mismas voces neuronales (Sofía y Marcelo de Bolivia); si no, la mejor voz en español disponible
+    const es=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)),nm=who==='marcelo'?/Marcelo/i:who==='dani'?/Dalia/i:/Sofia/i;
+    const v=es.find(v=>nm.test(v.name)&&/BO|MX/i.test(v.lang))||es.find(v=>/BO/i.test(v.lang)&&/Natural|Online/i.test(v.name))||es.find(v=>/Natural|Online/i.test(v.name))||es.find(v=>/Google/i.test(v.name))||es.find(v=>/es[-_](BO|419|MX|US)/i.test(v.lang))||es[0];
+    if(v){u.voice=v;u.lang=v.lang}
     u.onend=()=>{if(tok===this.tok)this.end()};speechSynthesis.cancel();speechSynthesis.speak(u);
   },
   stop(silent){
@@ -147,7 +150,7 @@ function donut(el,cap,o){
    ESTADO
 ═══════════════════════════════════════ */
 function newState(prev){return{
-  id:uid(),mode:prev?prev.mode:'team',name:prev?prev.name:'',av:prev?prev.av:'🦊',members:prev?prev.members:[],sala:prev?prev.sala:'',
+  id:uid(),mode:prev?prev.mode:'team',name:prev?prev.name:'',av:prev?prev.av:'🦊',members:prev?prev.members:[],sala:prev?prev.sala:'',personas:prev?prev.personas:[],autoriza:prev?prev.autoriza:false,contactOk:prev?prev.contactOk:false,
   biz:null,cap:{mkt:0,ops:0,rrhh:0,inf:0,res:0},capL:{},hires:[],candIds:null,critMiss:[],payroll:0,resEff:0,
   met:{rent:50,eq:50,cli:50,cre:50,sos:50},noRes:false,hist:[],
   crisis:null,cIdx:0,cOpt:null,timedOut:false,crisisT0:0,crisisTime:0,cRes:null,
@@ -182,14 +185,14 @@ const STEPS=['select','prio','capital','draw2','team','crisis','neg','opp','resu
 const LABELS={setup:'Preparación',select:'Fase 1 de 8 · Negocio',mision:'Fase 1 de 8 · Misión',prio:'Fase 2 de 8 · Plan',caja:'Fase 5 de 8 · Caja',capital:'Fase 3 de 8 · Capital',draw2:'Fase 4 de 8 · Organigrama',team:'Fase 5 de 8 · Contratación',crisis:'Fase 6 de 8 · Crisis',neg:'Fase 7 de 8 · Negociación',opp:'Fase 8 de 8 · Oportunidad',results:'Resultados',transfer:'Tus finanzas personales'};
 const PROG={setup:2,select:8,mision:10,prio:18,caja:58,capital:30,draw2:42,team:52,crisis:64,neg:76,opp:88,results:100,transfer:100};
 const SPL={select:['1','Elige tu negocio'],prio:['2','Su plan'],caja:['💸','Caja de 6 meses'],capital:['3','Capital'],draw2:['4','Organigrama'],team:['5','Contratación'],neg:['7','Negociación'],opp:['8','Oportunidad'],results:['🏁','Resultados']};
-const INIT={setup:initSetup,select:initSelect,mision:initMision,prio:initPrio,caja:initCaja,capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{}};
+const INIT={setup:initSetup,select:initSelect,mision:initMision,prio:initPrio,caja:initCaja,capital:initCapital,draw2:()=>initDraw('d2'),team:initTeam,crisis:initCrisis,neg:initNeg,opp:initOpp,results:initResults,transfer:initTransfer,proj:()=>{},enc:initEncPage};
 let skipT=null;
 function splash(ph){const s=SPL[ph];if(!s)return;$('sp-n').textContent=s[0];$('sp-t').textContent=s[1];const el=$('splash');el.classList.remove('on');void el.offsetWidth;el.classList.add('on');Snd.whoosh();setTimeout(()=>el.classList.remove('on'),1100)}
 function go(ph){
   document.querySelectorAll('.ph').forEach(p=>p.classList.remove('on'));
   $('ph-'+ph).classList.add('on');S.phase=ph;
   if(ph==='home')FX.start();else FX.stop();
-  const showHud=!['home','proj'].includes(ph);$('hud').classList.toggle('on',showHud);
+  const showHud=!['home','proj','enc'].includes(ph);$('hud').classList.toggle('on',showHud);
   if(showHud){
     const i=STEPS.indexOf(ph==='mision'?'select':ph==='caja'?'team':ph);
     $('hud-steps').innerHTML=STEPS.map((s,k)=>`<span class="${ph==='transfer'||k<i?'done':k===i?'now':''}"></span>`).join('');
@@ -231,35 +234,26 @@ function initSetup(){
   $('setup-lead').textContent=t?'Pónganse un nombre épico. Así aparecerán en el ranking de la sala.':'Escribe tu nombre o apodo. Así aparecerás en el ranking.';
   $('lbl-name').textContent=t?'Nombre del equipo':'Tu nombre o apodo';
   $('in-name').placeholder=t?'Ej: Los Tigres del Valle':'Ej: Cami R.';
-  $('members-field').style.display=t?'':'none';
   $('in-name').value=S.name;$('in-sala').value=S.sala||'';
   $('avs').innerHTML=AVATARS.map(a=>`<button class="av-op${a===S.av?' sel':''}" onclick="pickAv('${a}',this)">${a}</button>`).join('');
-  renderMembers();
+  initPersonas();
   AB.set('¡Listos! 🚀',startGame,{back:()=>go('home')});validateSetup();
   Pizarra.preload();
 }
 function pickAv(a,el){S.av=a;document.querySelectorAll('.av-op').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');Snd.click()}
 function randomName(){$('in-name').value=rnd(TEAM_NAMES);validateSetup();Snd.click()}
-function addMember(){const i=$('in-member');const v=i.value.trim();if(!v||S.members.length>=6)return;S.members.push(v);i.value='';renderMembers();Snd.click()}
-function delMember(k){S.members.splice(k,1);renderMembers()}
-function renderMembers(){$('members').innerHTML=S.members.map((m,k)=>`<span class="member">${esc(m)}<button onclick="delMember(${k})">✕</button></span>`).join('')}
 const salaReq=()=>S.mode==='team'&&!!CONFIG.API_URL;
 function validateSetup(){
-  const nm=$('in-name').value.trim().length>=2,sl=$('in-sala').value.trim().length>=3,need=salaReq();
+  const nm=$('in-name').value.trim().length>=2,sl=$('in-sala').value.trim().length>=3,need=salaReq(),pe=personasEstado();
   $('sala-req').innerHTML=need?'<b style="color:var(--gold)">obligatorio</b> · está grande en el proyector':'(lo da el docente para el ranking en vivo)';
   $('in-sala').style.borderColor=need&&!sl?'rgba(255,194,61,.6)':'';
-  AB.ok(nm&&(!need||sl),!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):'Escriban el código de sala que muestra el proyector');
+  AB.ok(nm&&pe.ok&&(!need||sl),!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):!pe.ok?pe.msg:'Escriban el código de sala que muestra el proyector');
 }
-const BIENVENIDA='¡Hola, futuros gerentes! Soy Sofía y hoy seré su mentora. Bienvenidos al Laboratorio de Decisiones Financieras de UNIFRANZ. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?';
-async function startGame(){
+function startGame(){
   S.name=$('in-name').value.trim().slice(0,28);S.sala=$('in-sala').value.trim().toUpperCase();
-  if($('in-member').value.trim())addMember();
-  Live.push('Preparación');startLivePoll();
-  Voz.play('bienvenida',BIENVENIDA,'sofia');
-  const cd=$('countdown');cd.classList.add('on');AB.reset();
-  for(const n of[3,2,1]){$('cd-n').innerHTML=`<div class="n">${n}</div>`;Snd.beep();vib(40);await sleep(850)}
-  $('cd-n').innerHTML=`<div class="msg">${P('¡Ahora son<br><span class="gt">gerentes!</span> 💼','¡Ahora eres<br><span class="gt">gerente!</span> 💼')}</div>`;Snd.beep(true);vib([60,40,120]);Confetti.burst(120);
-  await sleep(1300);cd.classList.remove('on');go('select');
+  guardarPersonas();
+  Live.push('Preparación',()=>{S.contactOk=true});startLivePoll();
+  ceremonia();
 }
 
 /* ═══════════════════════════════════════
@@ -969,7 +963,7 @@ function initTransfer(){
   $('years').innerHTML=YEARS.map(y=>`<div class="year"><div class="yn">Año ${y.n}</div><div class="yt">${y.t}</div><ul>${y.l.map(l=>`<li>${l}</li>`).join('')}</ul></div>`).join('');
   $('jobs').innerHTML=JOBS.map(j=>`<span class="chip">${j}</span>`).join('');
   $('cta-link').href=CONFIG.CTA_URL;qrInto($('cta-qr'),CONFIG.CTA_URL);
-  AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});
+  encEnJuego();
 }
 function setInc(v,el){SU.inc=v;document.querySelectorAll('#inc button').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');Snd.click();renderSueldo()}
 function adjCat(id,d){const v=SU.p[id]+d;if(v<0||v>100)return;SU.p[id]=v;Snd.click();renderSueldo()}
@@ -1025,6 +1019,7 @@ function setLive(st){
 const Live={pending:null,busy:false,cb:[],warned:false,
   enabled(){return!!(CONFIG.API_URL&&S.sala)},
   payload(fase){return{action:'upsert',sala:S.sala,id:S.id,nombre:S.name,avatar:S.av,modo:S.mode==='team'?'Equipo':'Individual',integrantes:S.members.join(', '),
+    contactos:!S.contactOk&&S.personas.length?S.personas.map(p=>({n:p.n,e:p.e,c:p.c})):null,autoriza:!!S.autoriza,
     negocio:S.biz?S.biz.em+' '+S.biz.name:'',fase:fase||LABELS[S.phase]||S.phase,progreso:PROG[S.phase]||0,
     puntaje:S.finished?S.score:'',nivel:S.finished?S.tier:'',perfil:S.finished?S.perfil:'',
     met:S.finished?Object.fromEntries(METS.map(m=>[m.id,Math.round(S.met[m.id])])):null,
@@ -1083,7 +1078,7 @@ async function revealPodium(){
   [1,0,2].forEach(i=>{const t=top[i];if(!t)return;const el=document.createElement('div');el.className='pod p'+(i+1);
     el.innerHTML=`<div class="pav">${esc(t.avatar||'🦊')}</div><div class="pnm">${esc(t.nombre)}</div><div class="psc">${t.puntaje} pts</div><div class="blk">${i+1}</div>`;pd.appendChild(el)});
   for(const i of[2,1,0]){const el=pd.querySelector('.pod.p'+(i+1));if(!el)continue;el.classList.add('show');Snd.coin();await sleep(i===0?300:900)}
-  Snd.fanfare();Confetti.burst(260);setTimeout(()=>Confetti.burst(200,innerWidth*.2,innerHeight*.3),500);setTimeout(()=>Confetti.burst(200,innerWidth*.8,innerHeight*.3),900);
+  Snd.fanfare();Confetti.burst(260);$('encqr-btn').classList.add('pulse');setTimeout(()=>Confetti.burst(200,innerWidth*.2,innerHeight*.3),500);setTimeout(()=>Confetti.burst(200,innerWidth*.8,innerHeight*.3),900);
 }
 function qrInto(el,url){
   el.innerHTML='';if(typeof qrcode!=='function'){el.style.display='none';return}
@@ -1104,6 +1099,7 @@ function restart(){
   if(!document.getElementById('fx-canvas')){const c=document.createElement('canvas');c.id='fx-canvas';document.getElementById('ph-home').prepend(c)}
   const q=new URLSearchParams(location.search);
   if(q.get('proyector')){startProjector(q.get('proyector'));return}
+  if(q.has('encuesta')){S.sala=String(q.get('encuesta')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);setTimeout(()=>go('enc'));return}  // extras3.js se evalúa después
   if(q.has('docente')){$('teacher-link').style.display='';openTeacher()}
   initHome();
 })();
