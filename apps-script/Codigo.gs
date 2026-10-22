@@ -132,7 +132,8 @@ function preparar() {
   });
   const msg = fallos.length ? '⚠️ Listo, salvo: ' + fallos.join(', ') + '. Revisa el registro de ejecución.' : '✅ Hojas listas: Ranking, Salas, CONFIG, Contactos y Encuesta.';
   console.log(msg);
-  try { SpreadsheetApp.getUi().alert(msg); } catch (e) {}
+  // Aviso que no bloquea: un alert dejaría al editor «cargando» si la hoja no está abierta
+  try { ss.toast(msg, 'Laboratorio', 8); } catch (e) {}
   return msg;
 }
 
