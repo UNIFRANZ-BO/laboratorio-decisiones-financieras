@@ -277,7 +277,7 @@ function guardarContactos_(sala, id, d, now) {
   borrarDe_(HOJA_CON, COLS_CON, r => r[1] === sala && r[2] === id);
   const filas = d.contactos.slice(0, 6).map(p => {
     const cel = String((p && p.c) || '').replace(/\D/g, '').slice(-8);
-    return [now, sala, id, txt_(d.nombre, 40), txt_(d.modo, 20), txt_(p && p.n, 60), txt_(String((p && p.e) || '').toLowerCase(), 80), cel, d.autoriza ? 'SÍ' : 'NO'];
+    return [now, sala, id, txt_(d.nombre, 40), txt_(d.modo, 20), txt_(p && p.n, 60), txt_(String((p && p.e) || '').toLowerCase(), 80), cel, d.autoriza ? 'SÍ' : 'NO', ''];
   }).filter(r => r[5]);
   if (!filas.length) return;
   const r0 = sh.getLastRow() + 1;
