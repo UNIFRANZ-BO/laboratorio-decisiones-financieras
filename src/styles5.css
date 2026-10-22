@@ -86,3 +86,18 @@
 .pa-k{font-family:var(--fm);font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:6px}
 .pa-n{font-family:var(--fd);font-weight:800;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:80vw;word-break:break-word}
 .pa-b{font-size:.9rem;color:var(--ink3);min-height:1.2em}
+
+/* ===== Malla curricular ===== */
+.malla-btn{width:auto;padding:0 10px;gap:5px;display:inline-flex;align-items:center;font-size:.95rem;border-color:rgba(255,194,61,.35);background:rgba(255,194,61,.08)}
+.malla-btn span{font-family:var(--fm);font-size:.62rem;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+@media(max-width:420px){.malla-btn{width:38px;padding:0}.malla-btn span{display:none}}
+.modal .mpdf-card{max-width:460px}
+.mpdf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 12px}
+.mpdf-stats div{display:grid;justify-items:center;text-align:center;padding:10px 6px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.mpdf-stats b{font-family:var(--fd);font-weight:800;font-size:1.6rem;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mpdf-stats span{font-size:.68rem;color:var(--ink3);margin-top:4px;line-height:1.25}
+.mpdf-menc{display:grid;gap:6px;margin-bottom:14px}
+.mpdf-menc span{font-size:.8rem;font-weight:700;padding:8px 12px;border-radius:12px;background:rgba(255,138,0,.08);border:1px solid rgba(255,138,0,.25)}
+.mpdf-dl{width:100%}
+.modal p.mpdf-n{font-size:.75rem;color:var(--muted);text-align:center;margin:10px 0 0}
+a.btn,a.btn-ghost{text-decoration:none}

@@ -124,6 +124,7 @@ function encGracias(){
   ENC.el.innerHTML=`<div class="enc-ok"><div class="enc-big">🎉</div><h3 class="enc-h">¡Gracias!</h3>
     <p>Tu opinión nos ayuda a que el próximo Laboratorio sea todavía mejor.</p>
     <a class="btn" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
+    <a class="btn-ghost" href="${MALLA_PDF}" download="${MALLA_NOMBRE}" onclick="Snd.ok()">📚 Descargar la malla curricular</a>
     <div class="enc-row">${inGame?`<button class="btn-ghost" onclick="renderEnc($('enc-modal'),'app')">👥 Responde otro integrante</button><button class="btn-ghost" onclick="closeModal('m-enc')">Cerrar</button>`:`<button class="btn-link" onclick="renderEnc($('enc-page'),'qr')">Otra persona usa este celular</button>`}</div></div>`;
   Snd.fanfare();Confetti.burst(160);
   if(inGame)AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});

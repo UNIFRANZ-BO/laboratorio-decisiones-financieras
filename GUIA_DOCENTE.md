@@ -62,6 +62,7 @@ La hoja **Salas** se actualiza sola: participantes, cuántos terminaron, promedi
 
 ## Novedades v3.4
 - **Certificado por correo**: cuando un equipo termina, el Apps Script arma el certificado en PDF y lo envía a cada integrante (una vez por partida), con un botón a la página de la carrera. También queda en la carpeta Drive del grupo y la hoja **Contactos** marca la fecha en «Certificado enviado». Se apaga en CONFIG → «Enviar certificado por correo». Gmail permite unos 100 correos al día en una cuenta personal.
+- **Malla curricular**: el ícono **📚 Malla** de la barra superior abre una ventana con el resumen de la carrera y el botón para descargar la malla en PDF (7 MB). También hay botón de descarga en Resultados, en la pantalla de la carrera y al terminar la encuesta, y la malla llega adjunta al correo del certificado. La copia está en `docs/` del sitio.
 - **Anuncios en el proyector**: cada equipo que se une aparece en grande con su mascota y Marcelo lo anuncia. Se apaga con **🔊 Anuncios**. Si el navegador bloquea el sonido, toca una vez la pantalla del proyector.
 
 > **Para activar v3.4:** pega el nuevo `Codigo.gs`, ejecuta una vez **autorizarCorreo** (acepta el permiso de Gmail), luego **preparar** y publica **Nueva versión**.

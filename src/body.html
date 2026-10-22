@@ -11,6 +11,7 @@
   <div class="hud-right">
     <div class="live-pill" id="live-pill" title="Ranking en vivo"><i></i><span class="txt" id="live-txt">EN VIVO</span></div>
     <div class="hud-team" id="hud-team"><span class="av" id="hud-av">🦊</span><span id="hud-name"></span></div>
+    <button class="icon-btn malla-btn" onclick="abrirMallaPDF()" aria-label="Malla curricular" title="Malla curricular de la carrera">📚<span>Malla</span></button>
     <button class="icon-btn" id="dash-btn" onclick="openDash()" aria-label="Tablero" title="Tablero en vivo" style="display:none">📊</button>
     <button class="icon-btn" id="voz-btn" onclick="toggleVoz()" aria-label="Voz" title="Voz de la narradora">🎙️</button>
     <button class="icon-btn" id="snd-btn" onclick="toggleSound()" aria-label="Sonido">🔊</button>
@@ -346,6 +347,7 @@
     <div class="res-actions">
       <button class="btn" id="pdf-btn" onclick="makePDF()">📄 Descargar informe PDF</button>
       <button class="btn-ghost" onclick="openQuiz()">🧠 Quiz final</button>
+      <a class="btn-ghost" data-malla href="#">📚 Malla curricular</a>
       <button class="btn-ghost" onclick="makeCert()">🏅 Certificado</button>
       <button class="btn-ghost" onclick="shareCard()">📸 Tarjeta para historia</button>
       <button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button>
@@ -413,7 +415,7 @@
         <div>
           <b style="font-family:var(--fd);font-size:1.3rem;display:block">¿Te gustó tomar las decisiones?</b>
           <p class="fb-t" style="margin:4px 0 12px">Programa Internacionalízate · clases espejo y docentes internacionales · intercambios en América, Asia y Europa.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><a class="btn-ghost" data-malla href="#">📚 Descargar malla</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
         </div>
       </div>
     </div>
@@ -573,6 +575,18 @@
 
 <!-- Encuesta dentro del juego -->
 <div class="modal" id="m-enc"><div class="card enc-card"><div id="enc-modal"></div></div></div>
+
+<!-- Malla curricular en PDF -->
+<div class="modal" id="m-mallapdf"><div class="card mpdf-card">
+  <span class="tag">📚 Negocios y Gestión Empresarial</span>
+  <h3>La malla de la carrera</h3>
+  <p>Lo que hoy están haciendo como gerentes se estudia aquí: finanzas, talento, negociación, marketing y datos.</p>
+  <div class="mpdf-stats"><div><b>4</b><span>años</span></div><div><b>2</b><span>menciones</span></div><div><b>1</b><span>proyecto real por semestre</span></div></div>
+  <div class="mpdf-menc"><span>🤖📊 Transformación Digital y Analítica de Negocios</span><span>🚀💡 Emprendimiento, Innovación y Startups</span></div>
+  <a class="btn mpdf-dl" data-malla href="#">⬇️ Descargar malla (7 MB)</a>
+  <p class="mpdf-n" id="mpdf-n"></p>
+  <div class="row"><button class="btn-ghost" onclick="closeModal('m-mallapdf')">Seguir jugando →</button></div>
+</div></div>
 
 <!-- QR de la encuesta (proyector) -->
 <div class="modal" id="m-encqr"><div class="card encqr-card">

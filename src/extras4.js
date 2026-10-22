@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   v3.4 · Certificado por correo y anuncios en el proyector
+   v3.4 · Certificado por correo, malla curricular y anuncios en el proyector
 ═══════════════════════════════════════ */
 
 /* ---------- Certificado por correo: lo arma y envía el Apps Script ---------- */
@@ -52,3 +52,14 @@ function pjTTS(txt,fin){
 function pjBloqueado(){if(PJA.avisado)return;PJA.avisado=true;toast('🔊 Toca una vez la pantalla del proyector para activar los anuncios con voz',6000)}
 const _renderRanking=renderRanking;
 renderRanking=function(){_renderRanking();pjAnunciar(pjData)};
+
+/* ---------- Malla curricular en PDF (copia en el sitio para que se descargue, no solo se abra) ---------- */
+const MALLA_PDF=VOZ_BASE.replace(/voz\/$/,'')+'docs/malla-negocios-y-gestion-empresarial-unifranz.pdf';
+const MALLA_NOMBRE='Malla Negocios y Gestión Empresarial - UNIFRANZ.pdf';
+function mallaLinks(){document.querySelectorAll('[data-malla]').forEach(a=>{a.href=MALLA_PDF;a.setAttribute('download',MALLA_NOMBRE);a.onclick=()=>{Snd.ok();toast('📚 Descargando la malla curricular…',2500)}})}
+mallaLinks();
+function abrirMallaPDF(){
+  Snd.click();mallaLinks();
+  $('mpdf-n').textContent=S.personas&&S.personas.some(p=>p.e)&&CONFIG.API_URL?'¿Con datos móviles? Tranquilos: también les llega al correo junto con su certificado.':'Ocupa unos 7 MB: si tienes datos móviles, mejor descárgala con wifi.';
+  $('m-mallapdf').classList.add('on');
+}
