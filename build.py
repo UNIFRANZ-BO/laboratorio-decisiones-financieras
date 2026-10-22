@@ -47,6 +47,7 @@ html = f"""<!DOCTYPE html>
 {app}
 {read("extras2.js")}
 {read("extras3.js")}
+{read("extras4.js")}
 </script>
 </body>
 </html>

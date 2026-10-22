@@ -20,6 +20,10 @@
  * Crisis en vivo: el proyector envía {action:'evento', sala, tipo} y los celulares la consultan
  *   cada 10 s con ?action=evento&sala=XXXX (se guarda en las propiedades del script).
  *
+ * Certificado por correo: cuando un equipo termina, la app envía {action:'certificado', sala, id}.
+ *   El certificado se arma AQUÍ (no se acepta un PDF del celular) y llega a cada correo de la hoja Contactos,
+ *   una sola vez por partida. Antes ejecuta una vez «autorizarCorreo» para dar permiso a Gmail.
+ *
  * Encuesta final: el QR del proyector abre ?encuesta=XXXX y cada estudiante envía {action:'encuesta'}.
  *   El proyector cuenta las respuestas con ?action=encuesta&sala=XXXX.
  *
@@ -34,7 +38,8 @@
  */
 
 const HOJA = 'Ranking', HOJA_CFG = 'CONFIG', HOJA_SALAS = 'Salas', HOJA_ARCH = 'Archivo', HOJA_CON = 'Contactos', HOJA_ENC = 'Encuesta';
-const COLS_CON = ['Fecha','Sala','ID partida','Equipo','Modo','Nombre completo','Correo','Celular','Autorizó contacto'];
+const COLS_CON = ['Fecha','Sala','ID partida','Equipo','Modo','Nombre completo','Correo','Celular','Autorizó contacto','Certificado enviado'];
+const CARRERA_URL = 'https://unifranz.edu.bo/carreras/negocios-y-gestion-empresarial/';
 const COLS_ENC = ['Fecha','Sala','Satisfacción (1-5)','Interés antes (1-5)','Interés ahora (1-5)','Cambio de interés','¿Qué se lleva?','Origen'];
 const COLS = ['Sala','ID','Modo','Nombre','Avatar','Integrantes','Negocio','Fase','Progreso','Puntaje','Nivel','Perfil',
   'Rentabilidad','Equipo','Clientes','Crecimiento','Sostenibilidad','Capital','Asignación equipo','Decisiones','Pizarras',
@@ -45,7 +50,9 @@ const CFG_DEF = [
   ['Registro abierto', 'SÍ', 'SÍ = los equipos pueden enviar datos. NO = ninguna sala recibe nada (el ranking se sigue viendo).'],
   ['Salas cerradas', '', 'Códigos separados por coma que ya no aceptan datos nuevos. Ej: ABCD, XK7P. Usa el menú para cerrar o abrir.'],
   ['Retener incompletos (horas)', '24', 'El menú «Limpiar incompletos» borra a quienes no terminaron y llevan más de estas horas sin actividad.'],
-  ['Carpeta Drive de informes (ID)', '', 'Se llena sola la primera vez. Dentro se crea una carpeta por sala y otra por grupo con su informe PDF.']
+  ['Carpeta Drive de informes (ID)', '', 'Se llena sola la primera vez. Dentro se crea una carpeta por sala y otra por grupo con su informe PDF.'],
+  ['Enviar certificado por correo', 'SÍ', 'SÍ = al terminar, cada integrante recibe su certificado en PDF en su correo (una vez por partida). Gmail permite unos 100 correos al día.'],
+  ['WhatsApp de admisiones', '', 'Número con código de país, solo dígitos. Ej: 59171234567. Activa el botón «Hablar con un asesor» en la app y en el correo.']
 ];
 
 /* ═════════════ MENÚ ═════════════ */
@@ -96,8 +103,12 @@ function preparar() {
   });
   paso('Lista SÍ/NO de CONFIG', () => {
     const cfg = hoja_(HOJA_CFG);
-    const reg = filaCfg_(cfg, 'Registro abierto');
-    if (reg) cfg.getRange(reg, 2).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['SÍ', 'NO'], true).build());
+    ['Registro abierto', 'Enviar certificado por correo'].forEach(k => {
+      const r = filaCfg_(cfg, k);
+      if (r) cfg.getRange(r, 2).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['SÍ', 'NO'], true).build());
+    });
+    const w = filaCfg_(cfg, 'WhatsApp de admisiones');
+    if (w) cfg.getRange(w, 2).setNumberFormat('@');
   });
   paso('Fórmula de la hoja Salas', () => {
     const sa = hoja_(HOJA_SALAS);
@@ -160,6 +171,7 @@ function doGet(e) {
     const v = sala ? PropertiesService.getScriptProperties().getProperty('ev_' + sala) : null;
     return json_({ ok: true, ev: v ? JSON.parse(v) : null });
   }
+  if (p.action === 'config') return json_({ ok: true, wa: waNumero_() });
   if (p.action === 'encuesta') {
     const sala = limpiaSala_(p.sala);
     return json_({ ok: true, n: sala ? filasDe_(HOJA_ENC, COLS_ENC).filter(r => r[1] === sala).length : 0 });
@@ -185,6 +197,7 @@ function doPost(e) {
     return json_({ ok: true, ev: ev });
   }
   if (d.action === 'encuesta') return guardarEncuesta_(d);
+  if (d.action === 'certificado') return certificado_(d);
   if (d.action !== 'upsert') return json_({ ok: false, error: 'Acción desconocida' });
   const sala = limpiaSala_(d.sala);
   const id = String(d.id || '').slice(0, 40);
@@ -244,6 +257,8 @@ function cabecera_(nombre, cols, color) {
   if (sh.getLastRow() === 0) {
     sh.getRange(1, 1, 1, cols.length).setValues([cols]).setFontWeight('bold').setBackground(color).setFontColor('#FFFFFF');
     sh.setFrozenRows(1); sh.setColumnWidths(1, cols.length, 140);
+  } else if (sh.getLastColumn() < cols.length) {
+    sh.getRange(1, 1, 1, cols.length).setValues([cols]).setFontWeight('bold').setBackground(color).setFontColor('#FFFFFF');
   }
   return sh;
 }
@@ -302,6 +317,86 @@ function textoEncuesta_(sala) {
     'Interés en NGE: ' + st.antes + ' antes → ' + st.ahora + ' ahora (subió en el ' + st.subio + ' %)' +
     (frases.length ? '\n\n¿Qué se llevan?\n' + frases.map(x => '· ' + x).join('\n') : '');
 }
+/* ═════════════ CERTIFICADO POR CORREO ═════════════ */
+function waNumero_() { return String(cfg_('WhatsApp de admisiones') || '').replace(/\D/g, '').slice(0, 15); }
+function waLink_() {
+  const n = waNumero_();
+  return n ? 'https://wa.me/' + n + '?text=' + encodeURIComponent('Hola, participé en el Laboratorio de Decisiones Financieras de UNIFRANZ y quiero información sobre la carrera de Negocios y Gestión Empresarial.') : '';
+}
+function h_(v) { return String(v == null ? '' : v).replace(/^'/, '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+function sinEmoji_(v) { return String(v || '').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').trim(); }
+/* El PDF se arma en el servidor con los datos guardados: nadie puede mandar un adjunto propio */
+function htmlCertificado_(eq, nombres, negocio, puntaje, nivel, fecha) {
+  return '<html><body style="margin:0;font-family:Arial,Helvetica,sans-serif;color:#1d1626">' +
+    '<div style="margin:24px;border:8px solid #FF8A00;border-radius:18px;padding:56px 44px;text-align:center">' +
+    '<p style="letter-spacing:4px;font-size:11px;color:#c2410c;font-weight:bold;margin:0">UNIFRANZ · NEGOCIOS Y GESTIÓN EMPRESARIAL</p>' +
+    '<p style="font-size:52px;font-weight:bold;margin:26px 0 4px;color:#1d1626">Certificado</p>' +
+    '<p style="font-size:15px;color:#6b6475;margin:0">de «Gerente por un día» otorgado a</p>' +
+    '<p style="font-size:34px;font-weight:bold;color:#FF5E3A;margin:22px 0 8px">' + h_(eq) + '</p>' +
+    (nombres.length ? '<p style="font-size:15px;margin:0 0 6px">' + nombres.map(n => 'Lic. ' + h_(n)).join(' · ') + '</p>' : '') +
+    '<p style="font-size:13px;color:#6b6475;margin:0 0 26px">Licenciadas y licenciados por un día en Negocios y Gestión Empresarial</p>' +
+    '<p style="font-size:16px;line-height:1.6;margin:0 40px">por dirigir <b>' + h_(negocio) + '</b> en el Laboratorio de Decisiones Financieras, ' +
+    'alcanzando <b>' + h_(puntaje) + ' puntos</b> y el nivel <b>' + h_(nivel) + '</b>.</p>' +
+    '<table style="width:100%;margin-top:70px;font-size:12px;color:#6b6475"><tr>' +
+    '<td style="text-align:left"><div style="border-top:1px solid #1d1626;width:220px;margin-bottom:6px"></div>Negocios y Gestión Empresarial<br>UNIFRANZ · Cochabamba</td>' +
+    '<td style="text-align:right;vertical-align:bottom">' + h_(fecha) + '</td></tr></table>' +
+    '</div></body></html>';
+}
+function htmlCorreo_(nombre, eq, negocio, puntaje, nivel) {
+  const wa = waLink_();
+  const btn = (url, txt, bg) => '<a href="' + url + '" style="display:inline-block;margin:6px 4px;padding:12px 22px;border-radius:99px;background:' + bg + ';color:#fff;font-weight:bold;text-decoration:none">' + txt + '</a>';
+  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;color:#1d1626">' +
+    '<div style="background:linear-gradient(120deg,#FFC23D,#FF8A00,#FF3D7F);background-color:#FF8A00;border-radius:16px 16px 0 0;padding:22px;color:#1A0A00">' +
+    '<div style="font-size:12px;letter-spacing:3px;font-weight:bold">UNIFRANZ · LABORATORIO NGE</div>' +
+    '<div style="font-size:26px;font-weight:bold;margin-top:6px">¡Felicitaciones, ' + h_(nombre) + '! 🎓</div></div>' +
+    '<div style="border:1px solid #eee;border-top:0;border-radius:0 0 16px 16px;padding:22px;line-height:1.55">' +
+    '<p>Hoy, con el equipo <b>' + h_(eq) + '</b>, dirigiste <b>' + h_(negocio) + '</b> y lograron <b>' + h_(puntaje) + ' puntos</b> (nivel <b>' + h_(nivel) + '</b>). Te adjuntamos el certificado.</p>' +
+    '<p>Repartir un capital, contratar un equipo, resolver una crisis y negociar: eso es lo que se aprende en <b>Negocios y Gestión Empresarial</b> de UNIFRANZ, con un proyecto real en cada semestre.</p>' +
+    '<p style="text-align:center;margin:22px 0">' + btn(CARRERA_URL, 'Conocer la carrera →', '#FF5E3A') + (wa ? btn(wa, '💬 Hablar con un asesor', '#25D366') : '') + '</p>' +
+    '<p style="font-size:11px;color:#8a8291">Recibes este correo porque tu equipo registró esta dirección en el Laboratorio de Decisiones Financieras de UNIFRANZ. Si no participaste, ignóralo.</p>' +
+    '</div></div>';
+}
+function certificado_(d) {
+  const sala = limpiaSala_(d.sala), id = String(d.id || '').slice(0, 40);
+  if (!sala || !id) return json_({ ok: false, error: 'Faltan datos' });
+  if (String(cfg_('Enviar certificado por correo') || 'SÍ').toUpperCase() === 'NO') return json_({ ok: true, n: 0, apagado: true });
+  if (salaCerrada_(sala)) return json_({ ok: false, error: 'cerrada' });
+  const props = PropertiesService.getScriptProperties(), clave = 'mail_' + sala + '_' + id;
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    if (props.getProperty(clave)) return json_({ ok: true, n: 0, ya: true });
+    const r = filas_().filter(x => x[C.sala] === sala && x[C.id] === id)[0];
+    if (!r || r[C.puntaje] === '') return json_({ ok: true, n: 0, pendiente: true });
+    const sh = SpreadsheetApp.getActive().getSheetByName(HOJA_CON);
+    const cont = filasDe_(HOJA_CON, COLS_CON).map((x, i) => ({ x: x, fila: i + 2 }))
+      .filter(o => o.x[1] === sala && o.x[2] === id && /^[^\s@,;]+@[^\s@,;]+\.[a-z]{2,}$/i.test(String(o.x[6]))).slice(0, 6);
+    if (!cont.length) return json_({ ok: true, n: 0, sinCorreos: true });
+    if (MailApp.getRemainingDailyQuota() < cont.length) return json_({ ok: true, n: 0, cupo: true });
+    const eq = String(r[C.nombre]), negocio = sinEmoji_(r[6]), puntaje = r[C.puntaje], nivel = String(r[C.nivel]);
+    const nombres = cont.map(o => String(o.x[5]).replace(/^'/, ''));
+    const fecha = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'dd/MM/yyyy');
+    const pdf = Utilities.newBlob(htmlCertificado_(eq, nombres, negocio, puntaje, nivel, fecha), MimeType.HTML, 'cert.html')
+      .getAs(MimeType.PDF).setName('Certificado NGE - ' + eq.replace(/[\/:*?"<>|#%]/g, '') + '.pdf');
+    try { subcarpeta_(subcarpeta_(carpetaRaiz_(), 'Sala ' + sala), eq.replace(/[\/:*?"<>|#%]/g, '').trim().slice(0, 60) || 'Grupo').createFile(pdf.copyBlob()); } catch (e) {}
+    const ahora = new Date();
+    let n = 0;
+    cont.forEach(o => {
+      const nombre = String(o.x[5]).replace(/^'/, '').split(/\s+/)[0];
+      MailApp.sendEmail({ to: String(o.x[6]).trim(), subject: '🎓 ' + eq + ': su certificado del Laboratorio de Decisiones Financieras · UNIFRANZ',
+        htmlBody: htmlCorreo_(nombre, eq, negocio, puntaje, nivel), attachments: [pdf.copyBlob()], name: 'Laboratorio NGE · UNIFRANZ' });
+      if (sh) sh.getRange(o.fila, 10).setValue(ahora);
+      n++;
+    });
+    props.setProperty(clave, ahora.toISOString());
+    return json_({ ok: true, n: n });
+  } catch (e) {
+    return json_({ ok: false, error: 'correo', msg: String(e && e.message || e).slice(0, 200) });
+  } finally { lock.releaseLock(); }
+}
+/* Ejecuta esta función una vez desde el editor para autorizar el envío de correos (Gmail) */
+function autorizarCorreo() { return 'Correos disponibles hoy: ' + MailApp.getRemainingDailyQuota(); }
+
 function resumenEncuesta() {
   const sala = pedirSala_('📝 Resultados de la encuesta', 'que quieres ver (escribe TODAS para todas)'); if (!sala) return;
   SpreadsheetApp.getUi().alert(textoEncuesta_(sala));

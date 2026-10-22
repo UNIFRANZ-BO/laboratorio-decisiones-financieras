@@ -4,6 +4,7 @@
 const CONFIG={
   API_URL:'https://script.google.com/macros/s/AKfycbx4E1a1cdKiOMZOzahLezsqJVEjW6HmqZSYxLVYQV3wMeV6TssZpivYVLSsnGxfQPw/exec',
   CTA_URL:'https://unifranz.edu.bo/carreras/negocios-y-gestion-empresarial/',
+  WA_NUMERO:'',  // WhatsApp de admisiones (solo dígitos, con 591). Si está vacío se usa el de la hoja CONFIG.
   POLL_MS:4000
 };
 const VOZ_BASE=/\/v\d+\/?$/.test(location.pathname.replace(/index\.html$/,''))?'../voz/':'voz/';
@@ -44,6 +45,11 @@ const Snd={on:store('nge-snd')!=='0',ctx:null,
 };
 function toggleSound(){Snd.on=!Snd.on;store('nge-snd',Snd.on?'1':'0');$('snd-btn').textContent=Snd.on?'🔊':'🔇';if(Snd.on)Snd.click()}
 
+/* Mejor voz en español del navegador: Edge trae las mismas voces neuronales (Sofía y Marcelo de Bolivia) */
+function vozEs(who){
+  const es=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)),nm=who==='marcelo'?/Marcelo/i:who==='dani'?/Dalia/i:/Sofia/i;
+  return es.find(v=>nm.test(v.name)&&/BO|MX/i.test(v.lang))||es.find(v=>/BO/i.test(v.lang)&&/Natural|Online/i.test(v.name))||es.find(v=>/Natural|Online/i.test(v.name))||es.find(v=>/Google/i.test(v.name))||es.find(v=>/es[-_](BO|419|MX|US)/i.test(v.lang))||es[0];
+}
 /* Voz: Sofía (mentora) y Marcelo (noticiero), voces neuronales bolivianas pregrabadas */
 const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
   play(key,text,who,cb){
@@ -61,10 +67,7 @@ const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
     this.audio=null;
     if(!('speechSynthesis'in window)){setTimeout(()=>{if(tok===this.tok)this.end()},Math.min(9000,text.length*55));return}
     const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=1.03;
-    // Edge trae las mismas voces neuronales (Sofía y Marcelo de Bolivia); si no, la mejor voz en español disponible
-    const es=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)),nm=who==='marcelo'?/Marcelo/i:who==='dani'?/Dalia/i:/Sofia/i;
-    const v=es.find(v=>nm.test(v.name)&&/BO|MX/i.test(v.lang))||es.find(v=>/BO/i.test(v.lang)&&/Natural|Online/i.test(v.name))||es.find(v=>/Natural|Online/i.test(v.name))||es.find(v=>/Google/i.test(v.name))||es.find(v=>/es[-_](BO|419|MX|US)/i.test(v.lang))||es[0];
-    if(v){u.voice=v;u.lang=v.lang}
+    const v=vozEs(who);if(v){u.voice=v;u.lang=v.lang}
     u.onend=()=>{if(tok===this.tok)this.end()};speechSynthesis.cancel();speechSynthesis.speak(u);
   },
   stop(silent){
@@ -732,7 +735,7 @@ function initResults(){
   renderDashTab();renderDecisions();renderFeedback();renderMalla();renderTimeline();
   $('pdf-status').innerHTML='';
   const sent=$('sent-msg');
-  if(Live.enabled()){sent.style.display='';sent.innerHTML='📡 Enviando resultado al ranking de la sala <b>'+esc(S.sala)+'</b>…';Live.push('Terminó',()=>{sent.innerHTML='✅ Resultado en el ranking de la sala <b>'+esc(S.sala)+'</b>';fetchClass()})}
+  if(Live.enabled()){sent.style.display='';sent.innerHTML='📡 Enviando resultado al ranking de la sala <b>'+esc(S.sala)+'</b>…';Live.push('Terminó',()=>{sent.innerHTML='✅ Resultado en el ranking de la sala <b>'+esc(S.sala)+'</b>';fetchClass();pedirCertificado()})}
   else sent.style.display='none';
   const cs=COMPS.slice().sort((x,y)=>S.comps[y.id]-S.comps[x.id]);const fu=cs[0].id,me=cs[cs.length-1].id;
   setTimeout(()=>vozSeq([{key:'cierre_'+S.tierIdx,text:CIERRE[S.tierIdx],who:'sofia'},{key:'fuerte_'+fu,text:vozFuerte(fu),who:'sofia'},{key:'mejora_'+me,text:vozMejora(me),who:'sofia'},{key:'carrera',text:VOZ_CARRERA,who:'sofia'}]),2200);

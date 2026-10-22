@@ -70,6 +70,66 @@
   "text": "¡Damas y caballeros! Con ustedes, la nueva gerencia: ¡el equipo Llama Corp!"
  },
  {
+  "key": "ingreso_los_tigres_del_valle",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Los Tigres del Valle."
+ },
+ {
+  "key": "ingreso_llajta_capital",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Llajta Capital."
+ },
+ {
+  "key": "ingreso_condores_s_r_l",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Cóndores S.R.L.."
+ },
+ {
+  "key": "ingreso_tunari_ventures",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Tunari Ventures."
+ },
+ {
+  "key": "ingreso_chicharron_holdings",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Chicharrón Holdings."
+ },
+ {
+  "key": "ingreso_los_lobos_del_mercado",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Los Lobos del Mercado."
+ },
+ {
+  "key": "ingreso_valle_alto_inc",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Valle Alto Inc.."
+ },
+ {
+  "key": "ingreso_cocha_unicornios",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Cocha Unicornios."
+ },
+ {
+  "key": "ingreso_los_estrategas",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Los Estrategas."
+ },
+ {
+  "key": "ingreso_pumas_financieros",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Pumas Financieros."
+ },
+ {
+  "key": "ingreso_quillacollo_power",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Quillacollo Power."
+ },
+ {
+  "key": "ingreso_llama_corp",
+  "voz": "marcelo",
+  "text": "¡Atención, sala! Se une a la competencia el equipo Llama Corp."
+ },
+ {
   "key": "indicadores",
   "voz": "sofia",
   "text": "Su empresa se mide con cinco indicadores, de cero a cien. Cada decisión que tomen moverá estos números. Rentabilidad: cuánto ganan por cada boliviano que invierten. No es cuánto venden, sino cuánto les queda después de pagar todo. Equipo: qué tan capaz, motivado y bien organizado está su personal. Un buen equipo hace que todo lo demás funcione. Clientes: cuántas personas los eligen y vuelven a comprarles. Sin clientes satisfechos no hay negocio. Crecimiento: su capacidad de expandirse, innovar y llegar a nuevos mercados. Sostenibilidad: qué tan preparados están para durar en el tiempo y resistir crisis. Aquí pesan mucho la reserva y las decisiones responsables."

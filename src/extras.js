@@ -113,3 +113,5 @@ const BIENV={
   eq:'¡Bienvenidos! Soy Sofía, su mentora. Desde este momento los presento oficialmente como licenciadas y licenciados en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegan a ser gerentes: hoy lo son. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?',
   solo:'¡Bienvenida, bienvenido! Soy Sofía, tu mentora. Desde este momento te presento oficialmente como profesional en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegas a ser gerente: hoy lo eres. Vas a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que tú vas a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Empezamos?'
 };
+/* Proyector: anuncio cuando un equipo se une (distinto al de la ceremonia para no sonar igual que el celular) */
+const ingreso=(n,solo)=>solo?`¡Atención, sala! Se une a la competencia: ${n}.`:`¡Atención, sala! Se une a la competencia el equipo ${n}.`;

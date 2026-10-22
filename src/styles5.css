@@ -76,3 +76,16 @@
 .btn-ghost.pulse{border-color:var(--gold);color:var(--gold);animation:pulseG 1.4s infinite}
 @keyframes pulseG{50%{box-shadow:0 0 0 8px rgba(255,194,61,.18)}}
 @media(max-width:560px){.enc-cta{grid-template-columns:1fr;justify-items:center;text-align:center}.enc-sc{grid-template-columns:78px 1fr}.enc-leg{padding-left:86px}}
+
+/* ===== v3.4 · WhatsApp y anuncios del proyector ===== */
+.btn.wa-btn{background:linear-gradient(120deg,#25D366,#128C7E);color:#fff;box-shadow:0 12px 30px -10px rgba(37,211,102,.7)}
+.btn.wa-btn:not(:disabled):hover{box-shadow:0 16px 40px -8px rgba(37,211,102,.8)}
+.enc-ok .wa-btn{margin-bottom:2px}
+#cert-mail{margin-top:6px}
+#pj-ann{position:fixed;left:50%;top:18%;z-index:875;transform:translate(-50%,-30px) scale(.8);opacity:0;pointer-events:none;transition:.45s cubic-bezier(.2,.9,.2,1.2)}
+#pj-ann.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.pa-in{display:grid;justify-items:center;gap:4px;min-width:min(560px,90vw);padding:26px 40px 22px;border-radius:30px;text-align:center;background:linear-gradient(160deg,#2C1742,#160C24);border:2px solid rgba(255,194,61,.6);box-shadow:0 40px 100px -20px rgba(255,90,60,.7),0 0 0 8px rgba(255,138,0,.08)}
+.pa-av{font-size:5.5rem;line-height:1;animation:pop .6s both}
+.pa-k{font-family:var(--fm);font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:6px}
+.pa-n{font-family:var(--fd);font-weight:800;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:80vw;word-break:break-word}
+.pa-b{font-size:.9rem;color:var(--ink3);min-height:1.2em}

@@ -413,7 +413,7 @@
         <div>
           <b style="font-family:var(--fd);font-size:1.3rem;display:block">¿Te gustó tomar las decisiones?</b>
           <p class="fb-t" style="margin:4px 0 12px">Programa Internacionalízate · clases espejo y docentes internacionales · intercambios en América, Asia y Europa.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><a class="btn wa-btn" data-wa href="#" target="_blank" rel="noopener" style="display:none">💬 Hablar con un asesor</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
         </div>
       </div>
     </div>
@@ -452,12 +452,16 @@
         <button class="btn" onclick="revealPodium()">🥁 Revelar podio</button>
         <button class="btn-ghost" onclick="openLanzar()">⚡ Crisis en vivo</button>
         <button class="btn-ghost" id="encqr-btn" onclick="abrirEncQR()">📝 Encuesta final</button>
+        <button class="btn-ghost" id="pja-btn" onclick="alternarAnuncios()">🔊 Anuncios: sí</button>
         <button class="btn-ghost" onclick="toggleScores()" id="hide-btn">🙈 Ocultar puntajes</button>
         <button class="btn-ghost" onclick="exitProjector()">← Salir</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Proyector: anuncio de cada equipo que se une -->
+<div id="pj-ann" aria-live="polite"><div class="pa-in"><div class="pa-av" id="pa-av"></div><div class="pa-k">¡Se une a la competencia!</div><div class="pa-n" id="pa-n"></div><div class="pa-b" id="pa-b"></div></div></div>
 
 <!-- Barra de acción -->
 <div class="actionbar" id="actionbar"><span class="hint" id="ab-hint"></span><button class="btn-ghost" id="ab-back" style="display:none">←</button><button class="btn" id="ab-next" disabled>Continuar →</button></div>

@@ -1139,6 +1139,19 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
 @keyframes pulseG{50%{box-shadow:0 0 0 8px rgba(255,194,61,.18)}}
 @media(max-width:560px){.enc-cta{grid-template-columns:1fr;justify-items:center;text-align:center}.enc-sc{grid-template-columns:78px 1fr}.enc-leg{padding-left:86px}}
 
+/* ===== v3.4 · WhatsApp y anuncios del proyector ===== */
+.btn.wa-btn{background:linear-gradient(120deg,#25D366,#128C7E);color:#fff;box-shadow:0 12px 30px -10px rgba(37,211,102,.7)}
+.btn.wa-btn:not(:disabled):hover{box-shadow:0 16px 40px -8px rgba(37,211,102,.8)}
+.enc-ok .wa-btn{margin-bottom:2px}
+#cert-mail{margin-top:6px}
+#pj-ann{position:fixed;left:50%;top:18%;z-index:875;transform:translate(-50%,-30px) scale(.8);opacity:0;pointer-events:none;transition:.45s cubic-bezier(.2,.9,.2,1.2)}
+#pj-ann.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.pa-in{display:grid;justify-items:center;gap:4px;min-width:min(560px,90vw);padding:26px 40px 22px;border-radius:30px;text-align:center;background:linear-gradient(160deg,#2C1742,#160C24);border:2px solid rgba(255,194,61,.6);box-shadow:0 40px 100px -20px rgba(255,90,60,.7),0 0 0 8px rgba(255,138,0,.08)}
+.pa-av{font-size:5.5rem;line-height:1;animation:pop .6s both}
+.pa-k{font-family:var(--fm);font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:6px}
+.pa-n{font-family:var(--fd);font-weight:800;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:80vw;word-break:break-word}
+.pa-b{font-size:.9rem;color:var(--ink3);min-height:1.2em}
+
 </style>
 </head>
 <body>
@@ -1557,7 +1570,7 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
         <div>
           <b style="font-family:var(--fd);font-size:1.3rem;display:block">¿Te gustó tomar las decisiones?</b>
           <p class="fb-t" style="margin:4px 0 12px">Programa Internacionalízate · clases espejo y docentes internacionales · intercambios en América, Asia y Europa.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="cta-link" href="#" target="_blank" rel="noopener">Conocer la carrera →</a><a class="btn wa-btn" data-wa href="#" target="_blank" rel="noopener" style="display:none">💬 Hablar con un asesor</a><button class="btn-ghost" onclick="restart()">🔄 Jugar de nuevo</button></div>
         </div>
       </div>
     </div>
@@ -1596,12 +1609,16 @@ body:has(#xb.on) #toasts{top:auto;bottom:calc(84px + var(--safe-b))}
         <button class="btn" onclick="revealPodium()">🥁 Revelar podio</button>
         <button class="btn-ghost" onclick="openLanzar()">⚡ Crisis en vivo</button>
         <button class="btn-ghost" id="encqr-btn" onclick="abrirEncQR()">📝 Encuesta final</button>
+        <button class="btn-ghost" id="pja-btn" onclick="alternarAnuncios()">🔊 Anuncios: sí</button>
         <button class="btn-ghost" onclick="toggleScores()" id="hide-btn">🙈 Ocultar puntajes</button>
         <button class="btn-ghost" onclick="exitProjector()">← Salir</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Proyector: anuncio de cada equipo que se une -->
+<div id="pj-ann" aria-live="polite"><div class="pa-in"><div class="pa-av" id="pa-av"></div><div class="pa-k">¡Se une a la competencia!</div><div class="pa-n" id="pa-n"></div><div class="pa-b" id="pa-b"></div></div></div>
 
 <!-- Barra de acción -->
 <div class="actionbar" id="actionbar"><span class="hint" id="ab-hint"></span><button class="btn-ghost" id="ab-back" style="display:none">←</button><button class="btn" id="ab-next" disabled>Continuar →</button></div>
@@ -2985,6 +3002,8 @@ const BIENV={
   eq:'¡Bienvenidos! Soy Sofía, su mentora. Desde este momento los presento oficialmente como licenciadas y licenciados en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegan a ser gerentes: hoy lo son. Van a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que ustedes mismos van a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Listos?',
   solo:'¡Bienvenida, bienvenido! Soy Sofía, tu mentora. Desde este momento te presento oficialmente como profesional en Negocios y Gestión Empresarial de UNIFRANZ. Hoy no juegas a ser gerente: hoy lo eres. Vas a dirigir un negocio real de Cochabamba, con cien mil bolivianos y un equipo que tú vas a contratar. Habrá crisis, negociaciones y oportunidades. Cada decisión cuenta. ¿Empezamos?'
 };
+/* Proyector: anuncio cuando un equipo se une (distinto al de la ceremonia para no sonar igual que el celular) */
+const ingreso=(n,solo)=>solo?`¡Atención, sala! Se une a la competencia: ${n}.`:`¡Atención, sala! Se une a la competencia el equipo ${n}.`;
 
 /* ═══════════════════════════════════════
    PIZARRA — vectorial, táctil, pantalla completa
@@ -3555,6 +3574,7 @@ const Pizarra=(()=>{
 const CONFIG={
   API_URL:'https://script.google.com/macros/s/AKfycbx4E1a1cdKiOMZOzahLezsqJVEjW6HmqZSYxLVYQV3wMeV6TssZpivYVLSsnGxfQPw/exec',
   CTA_URL:'https://unifranz.edu.bo/carreras/negocios-y-gestion-empresarial/',
+  WA_NUMERO:'',  // WhatsApp de admisiones (solo dígitos, con 591). Si está vacío se usa el de la hoja CONFIG.
   POLL_MS:4000
 };
 const VOZ_BASE=/\/v\d+\/?$/.test(location.pathname.replace(/index\.html$/,''))?'../voz/':'voz/';
@@ -3595,6 +3615,11 @@ const Snd={on:store('nge-snd')!=='0',ctx:null,
 };
 function toggleSound(){Snd.on=!Snd.on;store('nge-snd',Snd.on?'1':'0');$('snd-btn').textContent=Snd.on?'🔊':'🔇';if(Snd.on)Snd.click()}
 
+/* Mejor voz en español del navegador: Edge trae las mismas voces neuronales (Sofía y Marcelo de Bolivia) */
+function vozEs(who){
+  const es=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)),nm=who==='marcelo'?/Marcelo/i:who==='dani'?/Dalia/i:/Sofia/i;
+  return es.find(v=>nm.test(v.name)&&/BO|MX/i.test(v.lang))||es.find(v=>/BO/i.test(v.lang)&&/Natural|Online/i.test(v.name))||es.find(v=>/Natural|Online/i.test(v.name))||es.find(v=>/Google/i.test(v.name))||es.find(v=>/es[-_](BO|419|MX|US)/i.test(v.lang))||es[0];
+}
 /* Voz: Sofía (mentora) y Marcelo (noticiero), voces neuronales bolivianas pregrabadas */
 const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
   play(key,text,who,cb){
@@ -3612,10 +3637,7 @@ const Voz={on:store('nge-voz')!=='0',audio:null,cb:null,tok:0,
     this.audio=null;
     if(!('speechSynthesis'in window)){setTimeout(()=>{if(tok===this.tok)this.end()},Math.min(9000,text.length*55));return}
     const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=1.03;
-    // Edge trae las mismas voces neuronales (Sofía y Marcelo de Bolivia); si no, la mejor voz en español disponible
-    const es=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang)),nm=who==='marcelo'?/Marcelo/i:who==='dani'?/Dalia/i:/Sofia/i;
-    const v=es.find(v=>nm.test(v.name)&&/BO|MX/i.test(v.lang))||es.find(v=>/BO/i.test(v.lang)&&/Natural|Online/i.test(v.name))||es.find(v=>/Natural|Online/i.test(v.name))||es.find(v=>/Google/i.test(v.name))||es.find(v=>/es[-_](BO|419|MX|US)/i.test(v.lang))||es[0];
-    if(v){u.voice=v;u.lang=v.lang}
+    const v=vozEs(who);if(v){u.voice=v;u.lang=v.lang}
     u.onend=()=>{if(tok===this.tok)this.end()};speechSynthesis.cancel();speechSynthesis.speak(u);
   },
   stop(silent){
@@ -4283,7 +4305,7 @@ function initResults(){
   renderDashTab();renderDecisions();renderFeedback();renderMalla();renderTimeline();
   $('pdf-status').innerHTML='';
   const sent=$('sent-msg');
-  if(Live.enabled()){sent.style.display='';sent.innerHTML='📡 Enviando resultado al ranking de la sala <b>'+esc(S.sala)+'</b>…';Live.push('Terminó',()=>{sent.innerHTML='✅ Resultado en el ranking de la sala <b>'+esc(S.sala)+'</b>';fetchClass()})}
+  if(Live.enabled()){sent.style.display='';sent.innerHTML='📡 Enviando resultado al ranking de la sala <b>'+esc(S.sala)+'</b>…';Live.push('Terminó',()=>{sent.innerHTML='✅ Resultado en el ranking de la sala <b>'+esc(S.sala)+'</b>';fetchClass();pedirCertificado()})}
   else sent.style.display='none';
   const cs=COMPS.slice().sort((x,y)=>S.comps[y.id]-S.comps[x.id]);const fu=cs[0].id,me=cs[cs.length-1].id;
   setTimeout(()=>vozSeq([{key:'cierre_'+S.tierIdx,text:CIERRE[S.tierIdx],who:'sofia'},{key:'fuerte_'+fu,text:vozFuerte(fu),who:'sofia'},{key:'mejora_'+me,text:vozMejora(me),who:'sofia'},{key:'carrera',text:VOZ_CARRERA,who:'sofia'}]),2200);
@@ -4979,7 +5001,8 @@ function encGracias(){
   const inGame=ENC.origen==='app';
   ENC.el.innerHTML=`<div class="enc-ok"><div class="enc-big">🎉</div><h3 class="enc-h">¡Gracias!</h3>
     <p>Tu opinión nos ayuda a que el próximo Laboratorio sea todavía mejor.</p>
-    <a class="btn" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
+    ${waUrl()?`${ENC.r.ahora>=4?'<p><b>¿Te interesó la carrera?</b> Un asesor te cuenta todo por WhatsApp.</p>':''}<a class="btn wa-btn" href="${waUrl()}" target="_blank" rel="noopener">💬 Hablar con un asesor</a>`:''}
+    <a class="${waUrl()&&ENC.r.ahora>=4?'btn-ghost':'btn'}" href="${CONFIG.CTA_URL}" target="_blank" rel="noopener">Conocer la carrera →</a>
     <div class="enc-row">${inGame?`<button class="btn-ghost" onclick="renderEnc($('enc-modal'),'app')">👥 Responde otro integrante</button><button class="btn-ghost" onclick="closeModal('m-enc')">Cerrar</button>`:`<button class="btn-link" onclick="renderEnc($('enc-page'),'qr')">Otra persona usa este celular</button>`}</div></div>`;
   Snd.fanfare();Confetti.burst(160);
   if(inGame)AB.set('🔄 Jugar de nuevo',restart,{back:()=>go('results')});
@@ -5007,6 +5030,70 @@ async function contarEnc(){
   try{const r=await fetch(`${CONFIG.API_URL}?action=encuesta&sala=${encodeURIComponent(pjCode)}&t=${Date.now()}`);const j=await r.json();
     if(j.ok){const el=$('encqr-n'),old=+el.textContent||0;el.textContent=j.n||0;if((j.n||0)>old){el.parentElement.classList.remove('bump');void el.offsetWidth;el.parentElement.classList.add('bump');Snd.coin()}}}catch(e){}
 }
+
+/* ═══════════════════════════════════════
+   v3.4 · Certificado por correo, asesor por WhatsApp y anuncios en el proyector
+═══════════════════════════════════════ */
+
+/* ---------- WhatsApp de admisiones (CONFIG.WA_NUMERO o la hoja CONFIG) ---------- */
+let WA=String(CONFIG.WA_NUMERO||'').replace(/\D/g,'');
+const waUrl=()=>WA?'https://wa.me/'+WA+'?text='+encodeURIComponent('Hola, participé en el Laboratorio de Decisiones Financieras de UNIFRANZ y quiero información sobre la carrera de Negocios y Gestión Empresarial.'):'';
+function waPintar(){document.querySelectorAll('[data-wa]').forEach(a=>{a.href=waUrl()||'#';a.style.display=WA?'':'none'})}
+(async()=>{
+  if(WA||!CONFIG.API_URL){waPintar();return}
+  try{const r=await fetch(`${CONFIG.API_URL}?action=config&t=${Date.now()}`);const j=await r.json();if(j.ok&&j.wa){WA=String(j.wa).replace(/\D/g,'');waPintar()}}catch(e){}
+})();
+
+/* ---------- Certificado por correo: lo arma y envía el Apps Script ---------- */
+async function pedirCertificado(intento){
+  intento=intento||0;
+  if(!Live.enabled()||S.certMail||!S.personas.some(p=>p.e))return;
+  const sm=$('sent-msg'),linea=t=>{if(!sm)return;let el=$('cert-mail');if(!el){el=document.createElement('div');el.id='cert-mail';sm.appendChild(el)}el.innerHTML=t};
+  if(!intento)linea('📧 Preparando su certificado para enviarlo a sus correos…');
+  try{
+    const r=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'certificado',sala:S.sala,id:S.id})});const j=await r.json();
+    if(j.ok&&j.n>0){S.certMail=true;linea(`📧 Certificado enviado a ${j.n} ${j.n===1?'correo':'correos'}. Revisen su bandeja (y la carpeta de spam).`);Snd.coin()}
+    else if(j.ok&&j.ya){S.certMail=true;linea('📧 Su certificado ya fue enviado a sus correos.')}
+    else if(j.ok&&j.pendiente&&intento<3)setTimeout(()=>pedirCertificado(intento+1),6000);
+    else if(j.ok&&j.apagado)linea('');
+    else linea('📧 No se pudo enviar el certificado por correo. Pueden descargarlo con 🏅 Certificado.');
+  }catch(e){if(intento<2)setTimeout(()=>pedirCertificado(intento+1),8000);else linea('📴 Sin conexión: el certificado no se envió por correo. Pueden descargarlo con 🏅 Certificado.')}
+}
+
+/* ---------- Proyector: anuncia a cada equipo que se une ---------- */
+const PJA={seen:null,q:[],busy:false,on:store('nge-pja')!=='0',avisado:false};
+function alternarAnuncios(){PJA.on=!PJA.on;store('nge-pja',PJA.on?'1':'0');$('pja-btn').textContent=PJA.on?'🔊 Anuncios: sí':'🔇 Anuncios: no';Snd.click();if(!PJA.on){try{speechSynthesis.cancel()}catch(e){}}}
+function pjAnunciar(items){
+  const L=(items||[]).filter(t=>t&&t.id);
+  if(!PJA.seen){PJA.seen=new Set(L.map(t=>t.id));return}  // quienes ya estaban al abrir el proyector no se anuncian
+  L.forEach(t=>{if(!PJA.seen.has(t.id)){PJA.seen.add(t.id);PJA.q.push(t)}});
+  pjSiguiente();
+}
+async function pjSiguiente(){
+  if(PJA.busy||!PJA.q.length)return;PJA.busy=true;
+  const t=PJA.q.shift(),solo=/indiv/i.test(t.modo||''),n=PJA.q.length;
+  $('pa-av').textContent=t.avatar||'🦊';$('pa-n').textContent=t.nombre||'';$('pa-b').textContent=n?`y ${n} más en camino…`:'';
+  const b=$('pj-ann');b.classList.remove('on');void b.offsetWidth;b.classList.add('on');Snd.coin();Confetti.burst(90,innerWidth/2,innerHeight*.3);
+  await Promise.all([pjHablar(t,solo,n>3),sleep(n>3?1600:2600)]);
+  b.classList.remove('on');await sleep(350);PJA.busy=false;pjSiguiente();
+}
+function pjHablar(t,solo,rapido){return new Promise(res=>{
+  const to=setTimeout(res,9000),fin=()=>{clearTimeout(to);res()};
+  if(!PJA.on||rapido){fin();return}
+  const txt=ingreso(t.nombre,solo);
+  if(!solo&&presetEq(t.nombre)){
+    const a=new Audio(VOZ_BASE+'ingreso_'+slugVoz(t.nombre)+'.mp3');a.onended=fin;a.onerror=()=>pjTTS(txt,fin);
+    a.play().catch(e=>{if(e&&e.name==='NotAllowedError')pjBloqueado();fin()});return}
+  pjTTS(txt,fin);
+})}
+function pjTTS(txt,fin){
+  if(!('speechSynthesis'in window)){fin();return}
+  const u=new SpeechSynthesisUtterance(txt),v=vozEs('marcelo');if(v){u.voice=v;u.lang=v.lang}else u.lang='es-ES';
+  u.onend=fin;u.onerror=e=>{if(e&&e.error==='not-allowed')pjBloqueado();fin()};speechSynthesis.cancel();speechSynthesis.speak(u);
+}
+function pjBloqueado(){if(PJA.avisado)return;PJA.avisado=true;toast('🔊 Toca una vez la pantalla del proyector para activar los anuncios con voz',6000)}
+const _renderRanking=renderRanking;
+renderRanking=function(){_renderRanking();pjAnunciar(pjData)};
 
 </script>
 </body>
