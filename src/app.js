@@ -247,9 +247,10 @@ function randomName(){$('in-name').value=rnd(TEAM_NAMES);validateSetup();Snd.cli
 const salaReq=()=>S.mode==='team'&&!!CONFIG.API_URL;
 function validateSetup(){
   const nm=$('in-name').value.trim().length>=2,sl=$('in-sala').value.trim().length>=3,need=salaReq(),pe=personasEstado();
-  $('sala-req').innerHTML=need?'<b style="color:var(--gold)">obligatorio</b> · está grande en el proyector':'(lo da el docente para el ranking en vivo)';
-  $('in-sala').style.borderColor=need&&!sl?'rgba(255,194,61,.6)':'';
-  AB.ok(nm&&pe.ok&&(!need||sl),!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):!pe.ok?pe.msg:'Escriban el código de sala que muestra el proyector');
+  revisarSala();const sc=salaCerradaUI();  // la sala cerrada no deja empezar (antes solo se avisaba al enviar)
+  $('sala-req').innerHTML=sc?'<b style="color:var(--red)">🔒 la sala '+esc(sc)+' está cerrada</b>':need?'<b style="color:var(--gold)">obligatorio</b> · está grande en el proyector':'(lo da el docente para el ranking en vivo)';
+  $('in-sala').style.borderColor=sc?'rgba(255,71,87,.75)':need&&!sl?'rgba(255,194,61,.6)':'';
+  AB.ok(nm&&pe.ok&&(!need||sl)&&!sc,!nm?P('Escriban el nombre del equipo','Escribe tu nombre'):!pe.ok?pe.msg:sc?'🔒 La sala '+sc+' está cerrada: pidan al docente el código de la sala actual':'Escriban el código de sala que muestra el proyector');
 }
 function startGame(){
   S.name=$('in-name').value.trim().slice(0,28);S.sala=$('in-sala').value.trim().toUpperCase();

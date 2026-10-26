@@ -63,3 +63,23 @@ function abrirMallaPDF(){
   $('mpdf-n').textContent=S.personas&&S.personas.some(p=>p.e)&&CONFIG.API_URL?'¿Con datos móviles? Tranquilos: también les llega al correo junto con su certificado.':'Ocupa unos 7 MB: si tienes datos móviles, mejor descárgala con wifi.';
   $('m-mallapdf').classList.add('on');
 }
+
+/* ---------- Sala cerrada: se revisa al escribir el código, antes de empezar ---------- */
+const SALA_EST={};  // código → 'abierta' | 'cerrada' (una consulta por código)
+let salaT=null;
+function revisarSala(){
+  const c=$('in-sala').value.trim().toUpperCase();
+  if(!CONFIG.API_URL||c.length<3||SALA_EST[c])return;
+  clearTimeout(salaT);
+  salaT=setTimeout(async()=>{
+    try{const r=await fetch(`${CONFIG.API_URL}?action=ranking&sala=${encodeURIComponent(c)}&t=${Date.now()}`);const j=await r.json();
+      if(j.ok){SALA_EST[c]=j.cerrada?'cerrada':'abierta';if(S.phase==='setup')validateSetup()}}catch(e){}
+  },400);
+}
+const salaCerradaUI=()=>{const c=$('in-sala').value.trim().toUpperCase();return SALA_EST[c]==='cerrada'?c:''};
+/* El aviso verde de la portada tampoco debe decir «en vivo» si la sala está cerrada */
+(async()=>{
+  const el=$('home-sala');if(!CONFIG.API_URL||!S.sala||!el||el.style.display==='none')return;
+  try{const r=await fetch(`${CONFIG.API_URL}?action=ranking&sala=${encodeURIComponent(S.sala)}&t=${Date.now()}`);const j=await r.json();
+    if(j.ok){SALA_EST[S.sala]=j.cerrada?'cerrada':'abierta';if(j.cerrada)el.innerHTML='🔒 Sala <b>'+esc(S.sala)+'</b> cerrada · pide al docente el código nuevo'}}catch(e){}
+})();
